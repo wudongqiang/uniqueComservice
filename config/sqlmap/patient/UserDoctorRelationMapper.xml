@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.patient" >
+  <resultMap id="UserDoctorRelation" type="com.unique.patient.po.UserDoctorRelation" >
+     <id column="RELATIN_ID" property="relatinId" jdbcType="DECIMAL" />
+     <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+     <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+     <result column="DOC_USER_ID" property="docUserId" jdbcType="DECIMAL" />
+     <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+     <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <!-- 包含用户简单个人信息 -->
+  <resultMap type="com.unique.patient.po.UserDoctorRelation" id="UserDoctorRelationDetisInfoMap" extends="UserDoctorRelation">
+     <result column="age" property="age" />
+     <result column="sex" property="sex"/>
+     <result column="img_url" property="imgUrl"/>
+  </resultMap>
+
+  <insert id="addUserDoctorRelation" parameterType="com.unique.patient.po.UserDoctorRelation" >
+     <selectKey keyProperty="relatinId" resultType="DECIMAL" order="BEFORE">
+            select  SEQ_USER_DOCTOR_RELATION.NEXTVAL as relatinId from dual
+     </selectKey>
+    insert into USER_DOCTOR_RELATION (
+		RELATIN_ID,	
+		USER_ID,
+		USER_NAME,
+		DOC_USER_ID,
+		STAFF_ID,
+		STAFF_NAME,
+		CREATE_TIME
+	)
+    values (
+     	#{relatinId,jdbcType=DECIMAL},
+		#{userId,jdbcType=DECIMAL},
+		#{userName,jdbcType=VARCHAR},
+		#{docUserId,jdbcType=DECIMAL},
+		#{staffId,jdbcType=DECIMAL},
+		#{staffName,jdbcType=VARCHAR},
+		#{createTime,jdbcType=TIMESTAMP}
+	)
+  </insert>
+   
+   <select id="getUserdocDoctorRelations" resultMap="UserDoctorRelationDetisInfoMap" parameterType="map">
+  	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+   		select u.*,
+  			(case when a.sex is null or  a.sex=0 then '未知' when  a.sex=1 then '男' else '女' end ) sex ,
+	   		floor(MONTHS_BETWEEN(sysdate, to_date(a.birth,'yyyy-mm-dd'))/12) as age,a.img_url
+ 		from USER_DOCTOR_RELATION u join ams_user a on u.user_id=a.user_id
+ 		where u.DOC_USER_ID = #{staffUserId} and a.status = 'C'
+  	    <if test="userName != null ">
+   		  and u.user_name like '%'||#{userName}||'%'
+      	</if>
+   		order by #{sortCondition}
+      <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	   </if>
+   </select>
+   
+   <resultMap type="com.unique.reg.po.Staff" id="staffMap">
+     <id column="STAFF_ID" jdbcType="DECIMAL" property="staffId" />
+     <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+     <result column="DEP_NAME" jdbcType="VARCHAR" property="depName" />
+     <result column="STAFF_NAME" jdbcType="VARCHAR" property="staffName" />
+     <result column="STAFF_TYPE_NAME" jdbcType="VARCHAR" property="staffTypeName" />
+     <result column="STAFF_ICON" jdbcType="VARCHAR" property="staffIcon" />
+   </resultMap>
+   
+   <!-- 通过用户id查询医生 -->
+   <select id="getStaffInUserDoctorRelationByUserId" resultMap="staffMap" parameterType="map">
+  	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+		select s.staff_id,s.user_id,s.staff_name,d.dep_name,t.staff_type_name,c.hlink_to STAFF_ICON
+ 		from USER_DOCTOR_RELATION u
+	    join staff s on  u.staff_id=s.staff_id
+	    left join staff_type t on t.staff_type_id=s.staff_type_id
+	    left join dep d on d.dep_id=s.dep_id
+	    left join cms_img_lib c on c.staff_id=s.staff_id
+	  	where s.status ='C' and u.user_id = #{userId} 
+   		order by s.staff_name
+      <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	   </if>
+   </select>
+   
+   <sql id="whereOrgIdOrGroupCode">
+  		<choose>
+			<!-- orgId 不为null时 -->
+			<when test="orgId!=null">
+				and s.org_id=#{orgId}
+			</when>
+			<when test="orgGroupCode!=null">
+				and exists (
+			             select 1 from org_group,org_group_det where org_group.org_group_id=org_group_det.org_group_id
+			             and org_group.org_group_code=#{orgGroupCode} and s.org_id=org_group_det.org_id
+			          )
+			</when>
+		</choose>	 
+   </sql>
+   
+   <!-- 获取患者还可以选择添加的医生到医患关系 -->
+   <select id="getCanChooseStaffDoctorRelation" resultMap="staffMap" parameterType="map">
+  	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  	select s.staff_id,s.user_id,s.staff_name,d.dep_name,t.staff_type_name,c.hlink_to STAFF_ICON
+	  	from staff s
+	  	left join staff_type t on t.staff_type_id=s.staff_type_id
+	    left join dep d on d.dep_id=s.dep_id
+	    left join cms_img_lib c on c.staff_id=s.staff_id
+	    where not exists (select 1 from user_doctor_relation u where u.user_id=#{userId} and u.staff_id=s.staff_id )
+		  	  and s.is_open_healty='Y'
+			 <include refid="whereOrgIdOrGroupCode"/>
+   		order by s.staff_name
+      <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	   </if>
+   </select>
+   
+   <!-- 获取患者还可以选择添加的医生到医患关系总数 -->
+   <select id="getCanChooseStaffDoctorRelationCount" resultType="long" parameterType="map">
+	  	select count(s.staff_id) from staff s
+	  	left join staff_type t on t.staff_type_id=s.staff_type_id
+	    left join dep d on d.dep_id=s.dep_id
+	    left join cms_img_lib c on c.staff_id=s.staff_id
+	  	where not exists (select 1 from user_doctor_relation u where u.user_id=#{userId} and u.staff_id=s.staff_id )
+		  	  and s.is_open_healty='Y'
+			 <include refid="whereOrgIdOrGroupCode"/>
+   </select>
+   
+   <!-- 获取用户和医生是否存在医患关系 -->
+   <select id="getIsUserDoctorelation" resultType="long" parameterType="map">
+	  select count(u.relatin_id) from user_doctor_relation u where u.user_id=#{userId} and u.staff_id=#{staffId}
+   </select>
+   
+   <select id="getUserdocDoctorRelationsCountByStaffId" resultType="int" parameterType="string">
+   		select count(u.relatin_id) from user_doctor_relation u where u.staff_id=#{staffId}
+   </select>
+   
+</mapper>

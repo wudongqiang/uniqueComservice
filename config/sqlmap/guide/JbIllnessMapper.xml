@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.guide.ill" >
+  <resultMap id="illResultMap" type="com.unique.guide.po.JbIllness" >
+    <id column="ILL_ID" property="illId" jdbcType="DECIMAL" />
+    <result column="ILL_NAME" property="illName" jdbcType="VARCHAR" />
+    <result column="ILL_CODE" property="illCode" jdbcType="VARCHAR" />
+    <result column="ILL_ALIAS" property="illAlias" jdbcType="VARCHAR" />
+    <result column="ILL_EN_NAME" property="illEnName" jdbcType="VARCHAR" />
+    <result column="ILL_OFTEN_PATHOGENY" property="illOftenPathogeny" jdbcType="VARCHAR" />
+    <result column="ILL_OFTEN_SYMPTOMS" property="illOftenSymptoms" jdbcType="VARCHAR" />
+    <result column="ILL_IMG" property="illImg" jdbcType="VARCHAR" />
+    <result column="ILL_INCIDENCE" property="illIncidence" jdbcType="VARCHAR" />
+    <result column="ILL_INFECTIVITY" property="illInfectivity" jdbcType="CHAR" />
+    <result column="ILL_MEDICAL_INSURANCE" property="illMedicalInsurance" jdbcType="CHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="ILL_DEP" property="illDep" jdbcType="VARCHAR" />
+    <result column="ILL_LIKE" property="illLike" jdbcType="VARCHAR" />
+    <result column="ILL_TXT" property="illTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  <resultMap id="illDetResultMap" type="com.unique.guide.po.JbIllness"  extends="illResultMap">
+    <result column="ILL_FOOD_THERAPY_TXT" property="illFoodTherapyTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_PATHOGENY_TXT" property="illPathogenyTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_CHECK_TXT" property="illCheckTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_CONCURRENT_TXT" property="illConcurrentTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_PREMUNITION_TXT" property="illPremunitionTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_NURSING_TXT" property="illNursingTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_SYMPTOMS_TXT" property="illSymptomsTxt" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_DIAGNOSIS" property="illDiagnosis" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="ILL_PROGNOSIS" property="illPrognosis" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  	<result column="ILL_CLASSIFY" property="illClassify" jdbcType="CLOB"   typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  <select id="getIllness4Lucence" parameterType="map" resultMap="illResultMap">
+  select * from jb_illness where 1=1 
+	<if test="lastTime!=null">
+	<![CDATA[
+	 and jb_illness.op_time>#{lastTime}
+	]]>
+	</if>
+  <if test="ids != null" >
+ 	 and jb_illness.ill_id in (
+  	<foreach collection="ids" item="id" separator=",">
+  	#{id}
+  	</foreach>
+  	)
+  </if>
+  </select>
+  
+  <select id="getIllnessById" parameterType="string" resultMap="illDetResultMap">
+  	select * from jb_illness where ill_id=#{illId}
+  </select>
+  
+  <select id="getIllnessByStandard" parameterType="string" resultMap="illResultMap">
+  	select jb_illness.* from jb_illness
+	left join jb_ill_dep_ref on jb_ill_dep_ref.ill_id = jb_illness.ill_id
+	where 
+	jb_ill_dep_ref.standard_id = #{standId}
+  </select>
+   
+  <select id="getIllnessesByRelation" parameterType="map" resultMap="illResultMap">
+		select jb_illness.*,tmp_jb.ill_like from jb_illness,
+		(
+			select jb_illness.ill_id,sy_relation_ill.ill_like from jb_illness
+			left join sy_relation_ill on sy_relation_ill.ill_id = jb_illness.ill_id
+			left join sy_relation on sy_relation.relation_id = sy_relation_ill.relation_id
+			where 1=1
+			<if test="zsyId!=null">
+			and sy_relation.zsy_id = #{zsyId}
+			</if>
+			<if test="syIds!=null">
+			and sy_relation.all_sy_id = #{syIds}
+			</if>
+			<if test="sex!=null">
+			and sy_relation.sex = #{sex}
+			</if>
+			<if test="sex==null">
+			and sy_relation.sex = 1
+			</if>
+			<if test="age!=null">
+			and sy_relation.age = #{age}
+			</if>
+			<if test="age==null">
+			and sy_relation.age = 25
+			</if>
+		) tmp_jb where tmp_jb.ill_id=jb_illness.ill_id
+  </select>
+  
+  <select id="getOrgsByIll" parameterType="string" resultMap="com.unique.reg.orgResultMap">
+  <![CDATA[
+  	select * from 
+  	(
+  	select * from org where org_id in
+	(
+		select dep_standard_rel.org_id from dep_standard_rel
+		left join jb_ill_dep_ref on jb_ill_dep_ref.standard_id = dep_standard_rel.standard_id
+		where jb_ill_dep_ref.ill_id = #{illId}
+	)
+	order by org.sort_rank
+	) where rownum < 4
+	]]>
+  </select>
+  
+  <insert id="addSyRelation" parameterType="com.unique.guide.po.SyRelationResSts" >
+      <selectKey keyProperty="stsId" resultType="DECIMAL" order="BEFORE">
+		select SEQ_SY_RELATION_RES_STS.nextval as stsId from dual
+      </selectKey>
+    insert into SY_RELATION_RES_STS (STS_ID, RELATION_ID, IS_GOOD, 
+      BAD_REASON, USER_ID, USER_NAME, 
+      DEVICE_TOKEN, OP_TIME)
+    values (#{stsId,jdbcType=DECIMAL}, #{relationId,jdbcType=DECIMAL}, #{isGood,jdbcType=CHAR}, 
+      #{badReason,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, 
+      #{deviceToken,jdbcType=VARCHAR}, #{opTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+    <select id="getSyRelations" parameterType="map" resultType="string">
+			select sy_relation.relation_id from sy_relation
+			where 1=1
+			<if test="zsyId!=null">
+			and sy_relation.zsy_id = #{zsyId}
+			</if>
+			<if test="syIds!=null">
+			and sy_relation.all_sy_id = #{syIds}
+			</if>
+			<if test="sex!=null">
+			and sy_relation.sex = #{sex}
+			</if>
+			<if test="sex==null">
+			and sy_relation.sex = 1
+			</if>
+			<if test="age!=null">
+			and sy_relation.age = #{age}
+			</if>
+			<if test="age==null">
+			and sy_relation.age = 25
+			</if>
+  </select>
+  
+    <select id="getIllnessByPage" parameterType="map" resultMap="illResultMap">
+  	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+        select * from jb_illness where jb_illness.status in ('C','U')
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+    </select>
+    
+    <select id="getIllnessByPageCount" resultType="long">
+        select count(*) from jb_illness where jb_illness.status in ('C','U')
+    </select>
+</mapper>

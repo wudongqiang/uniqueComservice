@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.mb.weight" >
+  <resultMap id="weightResultMap" type="com.unique.mb.po.UserWeightTest" >
+    <id column="TEST_ID" property="testId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME_ID" property="testTimeId" jdbcType="DECIMAL" />
+    <result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+    <result column="USER_DEVICE_ID" property="userDeviceId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME" property="testTime" jdbcType="TIMESTAMP" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_WEIGHT" property="userWeight" jdbcType="DECIMAL" />
+    <result column="USER_HEIGHT" property="userHeight" jdbcType="DECIMAL" />
+    <result column="USER_BMI" property="userBmi" jdbcType="DECIMAL" />
+    <result column="TEST_RESULT" property="testResult" jdbcType="VARCHAR" />
+    <result column="INPUT_MODE" property="inputMode" jdbcType="CHAR" />
+    <result column="USER_DEVICE_CODE" property="userDeviceCode" jdbcType="VARCHAR" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="ALERT_TIME" property="alertTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  
+  <insert id="addUserWeightTest" parameterType="com.unique.mb.po.UserWeightTest" >
+		 <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_WEIGHT_TEST.nextval as testId from dual
+	     </selectKey>
+    insert into USER_WEIGHT_TEST (TEST_ID, USER_ID, TEST_TIME_ID, 
+      SOURCE_ID, USER_DEVICE_ID, TEST_TIME, 
+      USER_NAME, USER_WEIGHT, USER_HEIGHT, 
+      USER_BMI, TEST_RESULT, INPUT_MODE, 
+      USER_DEVICE_CODE, DEVICE_TOKEN, ALERT_TIME, 
+      STATUS)
+    values (#{testId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{testTimeId,jdbcType=DECIMAL}, 
+      #{sourceId,jdbcType=DECIMAL}, #{userDeviceId,jdbcType=DECIMAL}, #{testTime,jdbcType=TIMESTAMP}, 
+      #{userName,jdbcType=VARCHAR}, #{userWeight,jdbcType=DECIMAL}, #{userHeight,jdbcType=DECIMAL}, 
+      #{userBmi,jdbcType=DECIMAL}, #{testResult,jdbcType=VARCHAR}, #{inputMode,jdbcType=CHAR}, 
+      #{userDeviceCode,jdbcType=VARCHAR}, #{deviceToken,jdbcType=VARCHAR}, #{alertTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=CHAR})
+  </insert>
+  
+  <select id="getWeightByPage" resultMap="weightResultMap" parameterType="map">
+ 	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	 </if>
+	select * from USER_WEIGHT_TEST 
+	where USER_WEIGHT_TEST.User_Id = #{userId}
+	order by USER_WEIGHT_TEST.Test_Time desc
+ 	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	 </if>
+  </select>
+  
+  <select id="getWeightByPageCount" resultType="long" parameterType="map">
+	select count(*) from USER_WEIGHT_TEST 
+	where USER_WEIGHT_TEST.User_Id = #{userId}
+  </select>
+  
+  <select id="getWeightByWeek" parameterType="map" resultType="map">
+      <![CDATA[
+	  select 
+	         round(avg(t.user_weight),2) as weight,
+	         round(avg(t.user_bmi),2) as bmi,
+	         max(test_result_det.alert_grade) as alert_grade,
+	         to_char(t.test_time,'yyyy-MM-dd') as day
+	   from USER_WEIGHT_TEST t
+	   left join test_result on test_result.test_id = t.test_id
+	   left join test_result_det on test_result_det.test_result_id = test_result.test_result_id
+	  where 1=1
+	]]>
+	<if test="type==2">
+	<![CDATA[
+	 	and t.test_time >= to_date('${nowdate}','yyyy-mm-dd') - 6
+	 	and t.test_time < to_date('${nowdate}','yyyy-mm-dd') + 1
+	 ]]>
+	</if>
+	<if test="type==3">
+	 <![CDATA[
+	 	and t.test_time >= to_date('${nowdate}','yyyy-mm-dd') - 29
+	 	and t.test_time < to_date('${nowdate}','yyyy-mm-dd') + 1
+	  ]]>
+	</if>
+	<![CDATA[
+	  and t.user_id= #{userId}
+	  group by to_char(t.test_time,'yyyy-MM-dd')
+	  ]]>
+  </select>
+  
+  <!-- 判断用户是否有服务 -->
+  <select id="checkService" parameterType="map" resultType="int">
+  <![CDATA[
+		select count(*) from user_service
+		left join service_con on service_con.service_id = user_service.service_id
+		where user_service.status in ('C','U')
+		and user_service.begin_time <= sysdate
+		and user_service.end_time >= sysdate
+		and service_con.service_code = #{scode}
+		and user_service.user_id = #{userId}
+	 ]]>
+  </select>
+  
+  <!-- 获取末次月经时间 -->
+  <select id="getEndMenstruation" parameterType="string" resultType="map">
+  <![CDATA[
+  select 
+	  user_service.end_menstruation_time as t,
+	  user_service.progestation_bmi as bmi 
+  from user_service
+	left join service_con on service_con.service_id = user_service.service_id
+	where user_service.status in ('C','U')
+	and user_service.begin_time <= sysdate
+	and user_service.end_time >= sysdate
+	and service_con.service_code = 'YQTIZZ'
+	and user_service.user_id = #{userId}
+	and rownum= 1
+	]]>
+  </select>
+  
+  <select id="getBmiReportByPregnancy" parameterType="string" resultType="map">
+  <![CDATA[
+	  select weekn, max(user_weight_test.user_bmi) as bmi
+	  from (select s.weekn, max(s.test_time) test_time
+	          from (select user_weight_test.*,
+	                       ((sysdate + (7 * 40) + 1) - user_weight_test.test_time) / 7 as weekn
+	                  from user_weight_test
+	                 where user_weight_test.test_time >= #{endTime}
+	                   and user_weight_test.test_time < #{endTime} + (7 * 40) + 1
+	                   and user_weight_test.user_id = #{userId}) s
+	         group by s.weekn) m1
+	  left join user_weight_test
+	    on m1.test_time = user_weight_test.test_time
+	   and user_weight_test.user_id = #{userId}
+	 group by weekn
+ ]]>
+  </select>
+</mapper>

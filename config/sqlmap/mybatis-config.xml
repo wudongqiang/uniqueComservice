@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+   <settings>
+   	  <setting name="cacheEnabled" value="true"/>
+      <setting name="lazyLoadingEnabled" value="false" />
+      <setting name="logImpl" value="LOG4J"/>
+   </settings>
+   <typeAliases>
+   </typeAliases>
+   <mappers>
+   		<mapper resource="sqlmap/coreSqlMap.xml"/>
+		<mapper resource="sqlmap/user/userMapper.xml"/>
+		<mapper resource="sqlmap/user/McCardMapper.xml"/>
+		<mapper resource="sqlmap/user/UserScheduleMapper.xml"/>
+		<mapper resource="sqlmap/user/UserWechatMapper.xml"/>
+		
+		<mapper resource="sqlmap/reg/regMapper.xml"/>
+		<mapper resource="sqlmap/reg/payMapper.xml"/>
+		<mapper resource="sqlmap/reg/productPriceMapper.xml"/>
+		<mapper resource="sqlmap/reg/BillingMapper.xml"/>
+		<mapper resource="sqlmap/reg/McAppointMapper.xml"/>
+		<mapper resource="sqlmap/order/mcOrderMapper.xml"/>
+		<mapper resource="sqlmap/order/mcProductMapper.xml"/>
+		
+		<mapper resource="sqlmap/guide/JbBodyPartMapper.xml"/>
+		<mapper resource="sqlmap/guide/JbSymptomMapper.xml"/>
+		<mapper resource="sqlmap/guide/JbIllnessMapper.xml"/>
+		<mapper resource="sqlmap/guide/StandardDepMapper.xml"/>
+	
+		<mapper resource="sqlmap/mb/UserHypertensionTestMapper.xml"/>
+	
+		<mapper resource="sqlmap/org/orgMapper.xml"/>
+		<mapper resource="sqlmap/org/DepMapper.xml"/>
+		<mapper resource="sqlmap/org/StaffMapper.xml"/>
+		<mapper resource="sqlmap/org/QueryMcDutyMapper.xml"/>
+		
+		<mapper resource="sqlmap/system/VersionConfigMapper.xml"/>
+		<mapper resource="sqlmap/system/ImMsgInfoMapper.xml"/>
+		<mapper resource="sqlmap/system/CmsImgLibMapper.xml"/>
+		
+		<!-- 公告 - 文章 -->
+		<mapper resource="sqlmap/notes/McNotesMapper.xml"/>
+		<!-- 医患关系 -->
+		<mapper resource="sqlmap/patient/UserDoctorRelationMapper.xml"/>
+		<mapper resource="sqlmap/patient/UserDoctorRelationApplyMapper.xml"/>
+		<mapper resource="sqlmap/survey/SurveyMapper.xml"/>
+		<mapper resource="sqlmap/mb/UserBloodSugarTestMapper.xml"/>
+		<mapper resource="sqlmap/mb/UserHypertensionTestMapper.xml"/>
+		
+		<!-- 健康计划 -->
+		<mapper resource="sqlmap/plan/HealthyTestPlanMapper.xml"/>
+		<mapper resource="sqlmap/plan/HealthyTestPlanDetMapper.xml"/>
+		<mapper resource="sqlmap/plan/HealthyPlanTaskMapper.xml"/>
+		<mapper resource="sqlmap/plan/HealthyTestPlanTemplateMapper.xml"/>
+   
+   		<mapper resource="sqlmap/mb/UserElectrocardioTestMapper.xml"/>
+   		<mapper resource="sqlmap/mb/UserWeightTestMapper.xml"/>
+   </mappers>
+   
+</configuration>

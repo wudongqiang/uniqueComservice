@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.user">
+
+	<resultMap id="UserWechat" type="com.unique.user.po.UserWechat">
+        <result property="bindId" column="BIND_ID" jdbcType="DECIMAL"/>
+        <result property="clientTypeId" column="CLIENT_TYPE_ID" jdbcType="DECIMAL"/>
+        <result property="orgId" column="ORG_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="bindValue" column="BIND_VALUE" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.BIND_ID,m.CLIENT_TYPE_ID,m.ORG_ID,m.USER_ID,m.BIND_VALUE,m.CREATE_TIME
+	    ]]>
+	</sql>
+
+	<insert id="AddUserWechat" parameterType="com.unique.user.po.UserWechat">
+	  <selectKey keyProperty="bindId" resultType="DECIMAL" order="BEFORE">
+          select SEQ_USER_SCHEDULE.nextval as scheduleId from dual
+      </selectKey>
+    <![CDATA[
+        INSERT INTO USER_WECHAT (
+        	BIND_ID ,
+        	CLIENT_TYPE_ID ,
+        	ORG_ID ,
+        	USER_ID ,
+        	BIND_VALUE ,
+        	CREATE_TIME 
+        ) VALUES (
+        	#{bindId,jdbcType=DECIMAL} ,
+        	#{clientTypeId,jdbcType=DECIMAL} ,
+        	#{orgId,jdbcType=DECIMAL} ,
+        	#{userId,jdbcType=DECIMAL} ,
+        	#{bindValue,jdbcType=VARCHAR} ,
+        	#{createTime,jdbcType=TIMESTAMP} 
+        )
+    ]]>
+	</insert>
+    
+	<update id="updateUserWechat" >
+    <![CDATA[
+        UPDATE USER_WECHAT SET
+	        CLIENT_TYPE_ID = #{clientTypeId,jdbcType=DECIMAL} ,
+	        ORG_ID = #{orgId,jdbcType=DECIMAL} ,
+	        USER_ID = #{userId,jdbcType=DECIMAL} ,
+	        BIND_VALUE = #{bindValue,jdbcType=VARCHAR} ,
+	        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} 
+        WHERE 
+	        BIND_ID = #{bindId,jdbcType=DECIMAL} 
+    ]]>
+	</update>
+
+    <delete id="deleteUserWechat">
+    <![CDATA[
+        DELETE FROM USER_WECHAT m WHERE
+        m.BIND_ID = #{bindId,jdbcType=DECIMAL} 
+    ]]>
+    </delete>
+    
+    <select id="getUserWechatById" resultMap="UserWechat">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM USER_WECHAT m
+	        WHERE 
+		        m.BIND_ID = #{bindId,jdbcType=DECIMAL} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<!-- com.csair.udp.common.utils.Ognl访问静态方法的表达式 为@class@method(args),以下为调用com.csair.udp.common.utils.Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看com.csair.udp.common.utils.Ognl类 -->
+		<where>	      				
+	       <if test="bindId !=null">
+				AND m.BIND_ID = #{bindId,jdbcType=DECIMAL}
+			</if>
+	       <if test="clientTypeId !=null">
+				AND m.CLIENT_TYPE_ID = #{clientTypeId,jdbcType=DECIMAL}
+			</if>
+	       <if test="orgId !=null">
+				AND m.ORG_ID = #{orgId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userId !=null">
+				AND m.USER_ID = #{userId,jdbcType=DECIMAL}
+			</if>
+	       <if test="bindValue !=null">
+				AND m.BIND_VALUE = #{bindValue,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="getUserWechatByUserId" parameterType="map" resultMap="UserWechat">
+		SELECT <include refid="columns" /> FROM USER_WECHAT m
+		WHERE m.USER_ID=#{userId} and m.CLIENT_TYPE_ID=#{calltype}
+	</select>
+		
+    <select id="count" resultType="long">
+        SELECT count(*) FROM USER_WECHAT m
+		<include refid="findPage_where"/>    
+    </select>
+    
+     <delete id="deleteUserWechatByUserId" parameterType="map">
+    <![CDATA[
+        DELETE FROM USER_WECHAT m WHERE
+        m.user_id = #{userId,jdbcType=DECIMAL} and m.CLIENT_TYPE_ID=#{calltype}
+    ]]>
+    </delete>
+	
+</mapper>
+

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.user.card" >
+  <resultMap id="cardResultMap" type="com.unique.user.po.McCard" >
+    <id column="CARD_ID" property="cardId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="CARD_TYPE_ID" property="cardTypeId" jdbcType="DECIMAL" />
+    <result column="CARD_NAME" property="cardName" jdbcType="VARCHAR" />
+    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="HIS_USER_ID" property="hisUserId" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="FRIEND_ID" property="friendId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap type="com.unique.user.po.McCard" id="cardAndTypeResultMap" extends="cardResultMap">
+      <result column="CARD_TYPE_NAME" property="cardTypeName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap id="cardTypeResultMap" type="com.unique.user.po.CardType" >
+    <id column="CARD_TYPE_ID" property="cardTypeId" jdbcType="DECIMAL" />
+    <result column="CARD_TYPE_NAME" property="cardTypeName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 获取就诊人的所有卡 -->
+  <select id="getCardByFriendId" parameterType="string" resultMap="cardAndTypeResultMap">
+      select mc_card.*,card_type.CARD_TYPE_NAME from mc_card 
+      left join card_type on card_type.card_type_id = mc_card.card_type_id and card_type.status in ('C','U')
+      where mc_card.friend_id = #{friendId} and mc_card.status in ('C','U')
+  </select>
+  
+ <insert id="addMcCard" parameterType="com.unique.user.po.McCard" >
+     <selectKey keyProperty="cardId" resultType="DECIMAL" order="BEFORE">
+            select seq_mc_card.nextval as cardId from dual
+     </selectKey>
+    insert into MC_CARD (CARD_ID, USER_ID, ORG_ID, 
+      CARD_TYPE_ID, CARD_NAME, CARD_NO, 
+      STATUS, HIS_USER_ID, OPERATOR, 
+      OP_TIME, OPERATOR_NAME, FRIEND_ID
+      )
+    values (#{cardId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, 
+      #{cardTypeId,jdbcType=DECIMAL}, #{cardName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, #{hisUserId,jdbcType=VARCHAR}, #{operator,jdbcType=DECIMAL}, 
+      #{opTime,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=VARCHAR}, #{friendId,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+ <delete id="delCards" parameterType="map">
+     delete from mc_card where mc_card.card_id in 
+     <foreach collection="ids" open="(" close=")" separator="," item="id">
+         #{id}
+     </foreach>
+ </delete>
+ 
+ <update id="updateMcCardById" parameterType="com.unique.user.po.McCard" >
+    update MC_CARD
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="cardTypeId != null" >
+        CARD_TYPE_ID = #{cardTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="cardName != null" >
+        CARD_NAME = #{cardName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="hisUserId != null" >
+        HIS_USER_ID = #{hisUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=DECIMAL},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="friendId != null" >
+        FRIEND_ID = #{friendId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where CARD_ID = #{cardId}
+  </update>
+  
+ <select id="getCardTypes" resultMap="cardTypeResultMap">
+     select * from card_type where card_type.status in ('C','U') order by card_type.card_type_id
+ </select>
+</mapper>

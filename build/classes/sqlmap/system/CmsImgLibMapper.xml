@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.system.cms" >
+
+   <insert id="addCmsImgLibForAppoint" parameterType="map" >
+    insert into CMS_IMG_LIB (
+    	IMG_GUID,
+    	TYPE_USE_ID,
+    	IMG_NAME,
+    	IMG_FORMAT,
+    	HLINK_TO,
+    	OPERATOR,
+    	OP_TIME,
+    	OPERATOR_NAME,
+    	APPOINT_ID 
+    	)
+    values (
+    	sys_guid(),
+    	#{typeUseId,jdbcType=DECIMAL},
+    	'约诊图片',
+    	#{imgFormat,jdbcType=VARCHAR},
+    	#{hlinkTo,jdbcType=VARCHAR},
+    	#{operator,jdbcType=DECIMAL},
+    	sysdate,
+    	#{operatorName,jdbcType=VARCHAR},
+    	#{appointId,jdbcType=DECIMAL}
+      	)
+  </insert>
+  
+  <select id="getCmsImgTypeIdByTypeCode" parameterType="string" resultType="string">
+  	select cms_img_type_use_rel.type_use_id from cms_img_type_use_rel,cms_img_type,cms_img_use
+	where cms_img_type_use_rel.img_use_id=cms_img_use.img_use_id and cms_img_type_use_rel.img_type_id=cms_img_type.img_type_id
+	and cms_img_type.img_type_code=#{typeCode}
+  </select>
+</mapper>

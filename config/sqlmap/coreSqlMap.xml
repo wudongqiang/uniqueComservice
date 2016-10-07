@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.core" >
+	<sql id="fenye1">
+		<![CDATA[select * from(select rownum as rn,ss.* from(]]>
+	</sql>
+	
+	<sql id="fenye2">
+		<![CDATA[) ss where rownum<=#{endRow}) ff where ff.rn>#{startRow}-1]]>
+	</sql>
+</mapper>

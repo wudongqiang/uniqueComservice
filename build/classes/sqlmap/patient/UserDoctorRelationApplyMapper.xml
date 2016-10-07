@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.patient">
+
+	<resultMap id="UserDoctorRelationApply" type="com.unique.patient.po.UserDoctorRelationApply">
+        <result property="applyId" column="APPLY_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+        <result property="staffUserId" column="STAFF_USER_ID" jdbcType="DECIMAL"/>
+        <result property="staffName" column="STAFF_NAME" jdbcType="VARCHAR"/>
+        <result property="applyTime" column="APPLY_TIME" jdbcType="TIMESTAMP"/>
+        <result property="status" column="STATUS" jdbcType="DECIMAL"/>
+        <result property="agreeTime" column="AGREE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="agreeUserId" column="AGREE_USER_ID" jdbcType="DECIMAL"/>
+        <result property="refuseTime" column="REFUSE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="refuseReason" column="REFUSE_REASON" jdbcType="VARCHAR"/>
+        <result property="refuseUserId" column="REFUSE_USER_ID" jdbcType="DECIMAL"/>
+        <result property="applyCon" column="APPLY_CON" jdbcType="VARCHAR"/>
+        <result property="applyWay" column="APPLY_WAY" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.APPLY_ID,m.USER_ID,m.USER_NAME,m.STAFF_USER_ID,m.STAFF_NAME,m.APPLY_TIME,m.STATUS,m.AGREE_TIME,m.AGREE_USER_ID,m.REFUSE_TIME,m.REFUSE_REASON,m.REFUSE_USER_ID,m.APPLY_CON,m.APPLY_WAY
+	    ]]>
+	</sql>
+
+	<insert id="addUserDoctorRelationApply" parameterType="com.unique.patient.po.UserDoctorRelationApply">
+        <selectKey keyProperty="applyId" resultType="DECIMAL" order="BEFORE">
+            select  SEQ_USER_DOCTOR_RELATION_APPLY.NEXTVAL as applyId from dual
+     	</selectKey>
+    <![CDATA[
+        INSERT INTO USER_DOCTOR_RELATION_APPLY (
+        	APPLY_ID ,
+        	USER_ID ,
+        	USER_NAME ,
+        	STAFF_USER_ID ,
+        	STAFF_NAME ,
+        	APPLY_TIME ,
+        	STATUS ,
+        	AGREE_TIME ,
+        	AGREE_USER_ID ,
+        	REFUSE_TIME ,
+        	REFUSE_REASON ,
+        	REFUSE_USER_ID,
+        	APPLY_CON,
+        	APPLY_WAY
+        ) VALUES (
+        	#{applyId,jdbcType=DECIMAL} ,
+        	#{userId,jdbcType=DECIMAL} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{staffUserId,jdbcType=DECIMAL} ,
+        	#{staffName,jdbcType=VARCHAR} ,
+        	#{applyTime,jdbcType=TIMESTAMP} ,
+        	#{status,jdbcType=DECIMAL} ,
+        	#{agreeTime,jdbcType=TIMESTAMP} ,
+        	#{agreeUserId,jdbcType=DECIMAL} ,
+        	#{refuseTime,jdbcType=TIMESTAMP} ,
+        	#{refuseReason,jdbcType=VARCHAR} ,
+        	#{refuseUserId,jdbcType=DECIMAL} ,
+        	#{applyCon,jdbcType=VARCHAR},
+        	#{applyWay,jdbcType=CHAR} 
+        )
+    ]]>
+	</insert>
+    
+    <select id="getUserDoctorRelationApplyById" resultMap="UserDoctorRelationApply" parameterType="string">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM USER_DOCTOR_RELATION_APPLY m
+	        WHERE 
+		        m.APPLY_ID = #{applyId,jdbcType=DECIMAL} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<where>	    
+		   <if test="1==1">
+			   AND m.status in (1,4)
+		   </if>  				
+	       <if test="applyId !=null">
+				AND m.APPLY_ID = #{applyId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userId !=null">
+				AND m.USER_ID = #{userId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userName !=null">
+				AND m.USER_NAME = #{userName,jdbcType=VARCHAR}
+			</if>
+	       <if test="staffUserId !=null">
+				AND m.STAFF_USER_ID = #{staffUserId,jdbcType=DECIMAL}
+			</if>
+	       <if test="staffName !=null">
+				AND m.STAFF_NAME = #{staffName,jdbcType=VARCHAR}
+			</if>
+		 
+	       <if test="status !=null">
+				AND m.STATUS = #{status,jdbcType=DECIMAL}
+			</if>
+	      
+	       <if test="agreeUserId !=null">
+				AND m.AGREE_USER_ID = #{agreeUserId,jdbcType=DECIMAL}
+			</if>
+	        
+	       <if test="refuseReason !=null">
+				AND m.REFUSE_REASON = #{refuseReason,jdbcType=VARCHAR}
+			</if>
+	       <if test="refuseUserId !=null">
+				AND m.REFUSE_USER_ID = #{refuseUserId,jdbcType=DECIMAL}
+			</if>
+	       <if test="applyWay !=null">
+				AND m.APPLY_WAY = #{applyWay,jdbcType=CHAR}
+			</if>
+		</where>
+	</sql>
+   
+    <select id="getUserDoctorRelationApplyByCondition" parameterType="com.unique.patient.po.UserDoctorRelationApply" resultMap="UserDoctorRelationApply">
+    	SELECT <include refid="columns" />
+	    FROM USER_DOCTOR_RELATION_APPLY m 
+		<include refid="findPage_where"/>
+    </select>
+    
+    <update id="updateUserDoctorRelationApply" parameterType="com.unique.patient.po.UserDoctorRelationApply">
+    	 UPDATE USER_DOCTOR_RELATION_APPLY SET
+			STATUS = #{status,jdbcType=DECIMAL},
+			AGREE_USER_ID = #{agreeUserId,jdbcType=DECIMAL},
+			AGREE_TIME = #{agreeTime,jdbcType=TIMESTAMP},
+			REFUSE_REASON = #{refuseReason,jdbcType=VARCHAR},
+			REFUSE_USER_ID = #{refuseUserId,jdbcType=DECIMAL},
+			REFUSE_TIME = #{refuseTime,jdbcType=TIMESTAMP}
+        WHERE 
+	        APPLY_ID = #{applyId,jdbcType=DECIMAL} 
+    </update>
+	
+</mapper>
+

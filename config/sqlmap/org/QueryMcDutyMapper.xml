@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.org.dao.QueryMcDutyMapper" >
+  <resultMap id="ScheduleResultMap" type="com.unique.org.vo.ScheduleResultMap" >
+    <!-- mc_duty排班表属性 -->
+    <result column="DUTY_ID" property="dutyId"  jdbcType="DECIMAL"/>
+    <result column="UUID" property="uuid"  jdbcType="VARCHAR"/>
+	<result column="DUTY_DATE" property="dutyDate"  jdbcType="VARCHAR"/>	
+	<result column="STAFF_ID" property="staffId"  jdbcType="DECIMAL"/>
+	<result column="DEP_ID" property="depId"  jdbcType="DECIMAL"/>
+	<result column="ORG_ID" property="orgId"  jdbcType="DECIMAL"/>
+	<result column="AMOUNT" property="amount"  jdbcType="DECIMAL"/>
+	<result column="REG_NUM" property="regNum"/>
+	<result column="REG_NUM_REMAIN" property="regNumRemain"/>
+    <!-- PERIOD时段表相关属性 -->
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="PERIOD_ID" property="periodId" jdbcType="VARCHAR" />
+    <!-- staff医生表相关属性 -->
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="GOOT_AT" property="gootAt" jdbcType="VARCHAR" />
+    <!-- STAFF_LABLE挂号级别表相关属性 -->
+    <result column="STAFF_LABLE_NAME" property="staffLabelName" jdbcType="VARCHAR" />
+    <result column="staff_icon" property="staffIcon" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 按日期查询 排班 -->
+   <select id="getMcDutyScheduleByDate" resultMap="ScheduleResultMap"
+		 parameterType="java.lang.String">
+		<![CDATA[
+		select md.uuid as uuid,md.duty_id as DUTY_ID, to_char(md.duty_date, 'yyyy-mm-dd') as DUTY_DATE, md.staff_id as STAFF_ID, md.dep_id as DEP_ID, md.org_id as ORG_ID, amount_group.amount as AMOUNT, md.reg_num as REG_NUM, md.reg_num_remain as REG_NUM_REMAIN,
+		       date_list.PERIOD_NAME as PERIOD_NAME,date_list.PERIOD_ID,
+		       st.STAFF_NAME as STAFF_NAME,st.GOOT_AT as GOOT_AT,
+		       stype.STAFF_TYPE_NAME as STAFF_LABLE_NAME,
+		       cms_img_lib.hlink_to as staff_icon
+		     from MC_DUTY md join
+		     /*一段时间内每天可预约的时段*/ 
+			 (select du_temp.DUTY_DATE,du_temp.PERIOD_NAME,du_temp.PERIOD_ID
+			      from
+				  (select du.* from MC_DUTY du where du.status in ('C','U') and  (du.DUTY_DATE>=trunc(sysdate) and du.DUTY_DATE-trunc(sysdate)<= 
+				         /*部门下的员工最大预约天数（包括二级部门）*/
+				         (select max(nvl(s.DUTY_DATE_NUM,7)) from staff s 
+					         where (s.dep_id=#{depId} or s.dep_id in (select dep_id from dep where parent_id=#{depId}))
+					         and s.status='C'
+				         )) and (du.status='C' or du.status='U')
+			      ) du_temp /*join PERIOD per on du_temp.PERIOD_ID=per.PERIOD_ID*/
+			       group by du_temp.DUTY_DATE,du_temp.PERIOD_NAME,du_temp.PERIOD_ID /*per.PERIOD_NAME,per.PERIOD_ID,per.SORT_RANK*/
+			   ) date_list  
+		   on md.DUTY_DATE=date_list.DUTY_DATE and md.PERIOD_ID=date_list.PERIOD_ID
+		   join STAFF st on md.staff_id=st.staff_id
+		   /*查询号别*/
+		   left join STAFF_TYPE stype on st.staff_type_id=stype.staff_type_id
+		   /*查询价格*/
+		   join (select sum(pp.PRICE_AMOUNT) as AMOUNT, pp.STAFF_TYPE_ID from PRODUCT_PRICE pp group by pp.STAFF_TYPE_ID) amount_group on md.STAFF_TYPE_ID=amount_group.STAFF_TYPE_ID
+		   left join cms_img_lib on cms_img_lib.staff_id = st.staff_id
+		   where (md.status='C' or md.status='U') and md.dep_id=#{depId}
+		   order by date_list.DUTY_DATE,date_list.PERIOD_ID,st.SORT_RANK,st.staff_id
+		 	]]>
+	</select>
+	
+  <!-- 按医生查询 排班 -->
+   <select id="getMcDutyScheduleByDoctor" resultMap="ScheduleResultMap"
+		 parameterType="java.lang.String">
+		<![CDATA[
+		   select 
+		        st.org_id as org_Id, st.dep_id as dep_Id, st.staff_id as staff_Id, st.staff_name as staff_Name, st.goot_At as goot_At,
+		        stype.STAFF_TYPE_NAME as STAFF_LABLE_NAME,
+		        amount_group.AMOUNT as AMOUNT, dutemp.uuid as uuid,dutemp.duty_id as duty_Id, to_char(dutemp.duty_date,'yyyy-mm-dd') as duty_Date, dutemp.reg_num as reg_Num, dutemp.reg_num_remain as reg_Num_Remain,
+		        /*per.period_Name as period_Name,per.PERIOD_ID,*/
+		        dutemp.period_name period_Name, dutemp.period_id,
+		        cms_img_lib.hlink_to as staff_icon
+		    from 
+			/*部门下的员工排班（包括二级部门）*/
+			(select du.* from MC_DUTY du where du.status in ('C','U') and (du.dep_id in (select dep_id from dep where parent_id=#{depId}) or du.dep_id=#{depId})) dutemp
+			join staff st on dutemp.staff_id=st.staff_id
+			/*查询号别*/
+		    left join STAFF_TYPE stype on st.staff_type_id=stype.staff_type_id
+		    /*时段
+		    join PERIOD per on per.PERIOD_ID=dutemp.PERIOD_ID*/
+		    /*查询价格*/
+		    join (select sum(pp.PRICE_AMOUNT) as AMOUNT, pp.STAFF_TYPE_ID from PRODUCT_PRICE pp group by pp.STAFF_TYPE_ID) amount_group on dutemp.STAFF_TYPE_ID=amount_group.STAFF_TYPE_ID
+			left join cms_img_lib on cms_img_lib.staff_id = st.staff_id
+			where dutemp.DUTY_DATE>=trunc(sysdate) and dutemp.DUTY_DATE<=trunc(sysdate+nvl(st.DUTY_DATE_NUM,7))
+			and (dutemp.status='C' or dutemp.status='U')
+			order by st.SORT_RANK,st.staff_id,dutemp.DUTY_DATE,dutemp.PERIOD_ID /*,per.SORT_RANK*/
+		 	]]>
+	</select>
+	
+	<resultMap id="StaffDutyMap" type="com.unique.org.vo.StaffDuty">
+		<result column="staff_id" property="staffId" jdbcType="DECIMAL"/>
+		<result column="staff_name" property="staffName" jdbcType="VARCHAR"/>
+		<result column="dep_name" property="depName" jdbcType="VARCHAR"/>
+		<result column="staff_type_name" property="staffTypeName" jdbcType="VARCHAR"/>
+		<result column="goot_at" property="gootAt" jdbcType="VARCHAR"/>
+		<result column="staff_icon" property="staffIcon" jdbcType="VARCHAR"/>
+		<result column="REG_NUM_REMAIN" property="regNumRemain" jdbcType="VARCHAR"/>
+	</resultMap>
+	<!-- 通过部门id获取部门下所有的医生的排班   
+	du.DUTY_DATE>trunc(sysdate) and du.DUTY_DATE<=trunc(sysdate7)
+	-->
+	<select id="getStaffMcDutyByDepId" parameterType="string" resultMap="StaffDutyMap">
+ 		select 
+           s.staff_id,s.staff_name,s.dep_name,t.staff_type_name,s.goot_at,c.hlink_to staff_icon,tp.REG_NUM_REMAIN
+	    from (
+	      select du.staff_id,sum(du.reg_num_remain) REG_NUM_REMAIN,du.staff_type_id from MC_DUTY du 
+	      left join staff stf on stf.staff_id=du.staff_id
+	       where du.status in ('C','U')
+	       and  (du.dep_id =#{depId} or du.dep_id  in (select dep_id from dep where parent_id=#{depId}))
+	       and  du.duty_date > sysdate
+	        and  du.duty_date &lt; sysdate + nvl(stf.duty_date_num,7) + 1 
+	      group by  du.staff_id,du.staff_type_id
+	    ) tp
+	    left join staff s on s.staff_id=tp.staff_id
+	    left join staff_type t on tp.staff_type_id=t.staff_type_id
+		left join cms_img_lib c on c.staff_id=s.staff_id
+		order by s.staff_name
+	</select>
+	<resultMap id="StaffDutyPeriodMap" type="com.unique.org.vo.StaffDutyPeriod">
+		<result column="duty_id" property="dutyId" jdbcType="DECIMAL"/>
+		<result column="reg_num_remain" property="regNumRemain" jdbcType="VARCHAR"/>
+		<result column="duty_date" property="dutyDate" jdbcType="VARCHAR"/>
+		<result column="period_name" property="periodName" jdbcType="VARCHAR"/>
+		<result column="period_id" property="periodId" jdbcType="DECIMAL"/>
+		<result column="AMOUNT" property="amount" jdbcType="DECIMAL"/>
+		<result column="STAFF_LABLE_NAME" property="staffLableName" jdbcType="VARCHAR"/>
+	</resultMap>
+	<!-- 获取医生近7天的排班信息 -->
+	<select id="getStaffMcDutyRecentlyByStaffId" parameterType="map" resultMap="StaffDutyPeriodMap">
+		 select * from (
+			select
+	      		du.duty_id,to_char(du.duty_date,'yyyy-mm-dd') duty_date,du.reg_num_remain,du.period_name,du.period_id,
+	      		amount_group.AMOUNT,stype.STAFF_TYPE_NAME as STAFF_LABLE_NAME
+			from MC_DUTY du 
+			left join staff st on st.staff_id=du.staff_id
+			 /*查询号别*/
+		    left join STAFF_TYPE stype on st.staff_type_id=stype.staff_type_id
+			 /*查询价格*/
+		    join (select sum(pp.PRICE_AMOUNT) as AMOUNT, pp.STAFF_TYPE_ID from PRODUCT_PRICE pp group by pp.STAFF_TYPE_ID) amount_group on st.STAFF_TYPE_ID=amount_group.STAFF_TYPE_ID
+	 		where du.status in ('C','U') and du.staff_id=#{staffId}
+	 			and  du.duty_date > sysdate
+	  			and  du.duty_date &lt; sysdate + nvl(st.duty_date_num,7) + 1
+			order by du.duty_date,du.period_id
+		 ) 
+		 <if test="type==null or type==0">
+		    where rownum  &lt; 6 
+		 </if>
+	</select>
+	
+    <!-- 排班分时段 -->
+  <resultMap id="DutyPeriodRstMap" type="com.unique.org.vo.DutyPeriodMap" >
+	<result column="DUTY_PERIOD_ID" property="dutyPeriodId"  jdbcType="DECIMAL"/>
+	<result column="DUTY_ID" property="dutyId"  jdbcType="DECIMAL"/>
+	<result column="START_TIME" property="startTime"  jdbcType="VARCHAR"/>	
+	<result column="END_TIME" property="endTime"  jdbcType="VARCHAR"/>	
+	<result column="REG_NUM" property="regNum"  jdbcType="DECIMAL"/>	
+	<result column="REG_TIME" property="regTime"  jdbcType="VARCHAR"/>	
+	<result column="PERIOD_UNIQUE_ID" property="periodUniqueId"  jdbcType="VARCHAR"/>	
+	<result column="remains" property="remains"  jdbcType="DECIMAL"/>
+  </resultMap>
+  
+  <!-- 排班分时段\点查询 -->
+   <select id="getDutyPeriod" resultMap="DutyPeriodRstMap"
+		 parameterType="java.lang.String">
+		<![CDATA[
+		  select 
+		      r1.DUTY_PERIOD_ID DUTY_PERIOD_ID,r1.DUTY_ID DUTY_ID,to_char(r1.START_TIME,'hh24:mi') START_TIME,to_char(r1.END_TIME,'hh24:mi') END_TIME,
+		      r1.REG_NUM REG_NUM,r1.REG_TIME REG_TIME,r1.PERIOD_UNIQUE_ID PERIOD_UNIQUE_ID,
+		      temp_group.remains remains
+		  from 
+		      (select * from DUTY_PERIOD dp1  where dp1.DUTY_ID=#{dutyId} and dp1.status='C' and dp1.START_TIME>sysdate) r1
+		      join 
+		      (select dp.START_TIME,dp.END_TIME,count(0) as remains 
+		       from DUTY_PERIOD dp
+	           where dp.DUTY_ID=#{dutyId} and dp.status='C' and dp.START_TIME>sysdate
+		       group by dp.START_TIME,dp.END_TIME
+			  ) temp_group on r1.START_TIME=temp_group.START_TIME and r1.END_TIME=temp_group.END_TIME
+		  order by r1.START_TIME
+		 	]]>
+	</select>
+  
+</mapper>

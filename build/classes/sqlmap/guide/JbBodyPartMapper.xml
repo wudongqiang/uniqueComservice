@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.guide.body" >
+  <resultMap id="bodyResultMap" type="com.unique.guide.po.JbBodyPart" >
+    <id column="BP_ID" property="bpId" jdbcType="DECIMAL" />
+    <result column="PART_NAME" property="partName" jdbcType="VARCHAR" />
+    <result column="PART_CODE" property="partCode" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+    <result column="PART_DESC" property="partDesc" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="PART_PIC" property="partPic" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getBodys" resultMap="bodyResultMap">
+  	select * from jb_body_part
+  </select>
+</mapper>

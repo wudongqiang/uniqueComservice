@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.plan.po.HealthyTestPlanTask">
+
+	<resultMap id="HealthyPlan" type="com.unique.plan.po.HealthyTestPlan">
+        <result property="healthyId" column="HEALTHY_ID" jdbcType="DECIMAL"/>
+        <result property="orgId" column="ORG_ID" jdbcType="DECIMAL"/>
+        <result property="depId" column="DEP_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="staffId" column="STAFF_ID" jdbcType="DECIMAL"/>
+        <result property="healthyName" column="HEALTHY_NAME" jdbcType="VARCHAR"/>
+        <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="beginTime" column="BEGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP"/>
+        <result property="status" column="STATUS" jdbcType="CHAR"/>
+        <result property="planEffect" column="PLAN_EFFECT" jdbcType="VARCHAR"/>
+        <result property="planResult" column="PLAN_RESULT" jdbcType="VARCHAR"/>
+        <result property="opTime" column="OP_TIME" jdbcType="TIMESTAMP"/>
+        <result property="opeator" column="OPEATOR" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<resultMap id="HealthyTestPlanTask" type="com.unique.plan.po.HealthyTestPlanTask">
+        <result property="planTaskId" column="plan_Task_Id" jdbcType="DECIMAL"/>
+        <result property="userId" column="user_Id" jdbcType="DECIMAL"/>
+        <result property="kpiId" column="kpi_Id" jdbcType="DECIMAL"/>
+        <result property="planId" column="plan_Id" jdbcType="DECIMAL"/>
+        <result property="excTime" column="exc_Time" jdbcType="TIMESTAMP"/>
+        <result property="excStatus" column="exc_Status" jdbcType="CHAR"/>
+        <result property="createTime" column="create_Time" jdbcType="TIMESTAMP"/>
+        <result property="planDetId" column="plan_Det_Id" jdbcType="DECIMAL"/>
+        <result property="operator" column="operator" jdbcType="DECIMAL"/>
+        <result property="opTime" column="op_Time" jdbcType="TIMESTAMP"/>
+        <result property="KpiTitle" column="Kpi_Title" jdbcType="VARCHAR"/>
+        <result property="kpiCode" column="kpi_code" jdbcType="VARCHAR"/>
+        <result property="unit" column="unit" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+  <resultMap id="healthyTestPlanResultMap" type="com.unique.plan.po.HealthyTestPlan" >
+    <id column="PLAN_ID" property="planId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="PLAN_BEGIN_TIME" property="planBeginTime" jdbcType="TIMESTAMP" />
+    <result column="PLAN_END_TIME" property="planEndTime" jdbcType="TIMESTAMP" />
+    <result column="PERIOD_VALUE" property="periodValue" jdbcType="DECIMAL" />
+    <result column="PERIOD_TYPE" property="periodType" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="HEALTHY_ID" property="healthyId" jdbcType="DECIMAL" />
+    <result column="TEST_TEMPLATE_ID" property="testTemplateId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="healthyTestPlanExtraResultMap" type="com.unique.plan.po.HealthyTestPlan"  extends="healthyTestPlanResultMap">
+        <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+        <result property="staffName" column="staff_name" jdbcType="VARCHAR"/>
+  </resultMap>
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.HEALTHY_ID,m.ORG_ID,m.DEP_ID,m.USER_ID,m.STAFF_ID,m.HEALTHY_NAME,m.USER_NAME,m.CREATE_TIME,m.BEGIN_TIME,m.END_TIME,m.STATUS,m.PLAN_EFFECT,m.PLAN_RESULT,m.OP_TIME,m.OPEATOR
+	    ]]>
+	</sql>
+
+	<update id="update" >
+        UPDATE HEALTHY_PLAN 
+		  <set>
+	     	<if test="orgId !=null">
+	       		ORG_ID = #{orgId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="depId !=null">
+	       		DEP_ID = #{depId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="userId !=null">
+	       		USER_ID = #{userId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="staffId !=null">
+	       		STAFF_ID = #{staffId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="healthyName !=null">
+	       		HEALTHY_NAME = #{healthyName,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="userName !=null">
+	       		USER_NAME = #{userName,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="createTime !=null">
+	       		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="beginTime !=null">
+	       		BEGIN_TIME = #{beginTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="endTime !=null">
+	       		END_TIME = #{endTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="status !=null">
+	       		STATUS = #{status,jdbcType=CHAR} ,
+	        </if>
+	     	<if test="planEffect !=null">
+	       		PLAN_EFFECT = #{planEffect,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="planResult !=null">
+	       		PLAN_RESULT = #{planResult,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="opTime !=null">
+	       		OP_TIME = #{opTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="opeator !=null">
+	       		OPEATOR = #{opeator,jdbcType=DECIMAL} 
+	        </if>
+	      </set>
+        WHERE 
+	      	  HEALTHY_ID = #{healthyId,jdbcType=DECIMAL} 
+	</update>
+
+	<sql id="findPage_where">
+		<where>	      				
+	       <if test="healthyId !=null">
+				AND m.HEALTHY_ID = #{healthyId,jdbcType=DECIMAL}
+			</if>
+	       <if test="orgId !=null">
+				AND m.ORG_ID = #{orgId,jdbcType=DECIMAL}
+			</if>
+	       <if test="depId !=null">
+				AND m.DEP_ID = #{depId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userId !=null">
+				AND m.USER_ID = #{userId,jdbcType=DECIMAL}
+			</if>
+	       <if test="staffId !=null">
+				AND m.STAFF_ID = #{staffId,jdbcType=DECIMAL}
+			</if>
+	       <if test="healthyName !=null">
+				AND m.HEALTHY_NAME = #{healthyName,jdbcType=VARCHAR}
+			</if>
+	       <if test="userName !=null">
+				AND m.USER_NAME = #{userName,jdbcType=VARCHAR}
+			</if>
+	 
+	       <if test="status !=null">
+				AND m.STATUS = #{status,jdbcType=CHAR}
+			</if>
+	       <if test="planEffect !=null">
+				AND m.PLAN_EFFECT = #{planEffect,jdbcType=VARCHAR}
+			</if>
+	       <if test="planResult !=null">
+				AND m.PLAN_RESULT = #{planResult,jdbcType=VARCHAR}
+			</if>
+	      
+	       <if test="opeator !=null">
+				AND m.OPEATOR = #{opeator,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 监测任务 -->
+	<select id="getHealthyTestPlanTaskByTime" resultMap="HealthyTestPlanTask" parameterType="map">
+		 select HEALTHY_TEST_PLAN_TASK.*,SURVEY_KPI.kpi_title,SURVEY_KPI.kpi_code,SURVEY_KPI.unit
+		from  HEALTHY_TEST_PLAN_TASK
+		left join HEALTHY_TEST_PLAN on HEALTHY_TEST_PLAN_TASK.PLAN_ID = HEALTHY_TEST_PLAN.Plan_Id
+		left join SURVEY_KPI on SURVEY_KPI.Kpi_Id = HEALTHY_TEST_PLAN_TASK.Kpi_Id
+		where
+		  HEALTHY_TEST_PLAN_TASK.user_id=#{userId}  
+		  and HEALTHY_TEST_PLAN.status in ('C','U')
+		  and HEALTHY_TEST_PLAN_TASK.exc_Time >=  trunc(to_date(#{date},'yyyy-mm-dd')) 
+		  and HEALTHY_TEST_PLAN_TASK.exc_Time &lt; trunc(to_date(#{date},'yyyy-mm-dd'))+1 
+		 order by HEALTHY_TEST_PLAN_TASK.exc_Time
+	</select>
+	
+	<update id="stopTestPlanTask" parameterType="string">
+		update HEALTHY_TEST_PLAN_TASK set HEALTHY_TEST_PLAN_TASK.Exc_Status = '3'
+		where HEALTHY_TEST_PLAN_TASK.Plan_Id = #{planId} and HEALTHY_TEST_PLAN_TASK.Exc_Status = '1'
+	</update>
+	
+	<update id="stopTestPlan" parameterType="map">
+	    update HEALTHY_TEST_PLAN set HEALTHY_TEST_PLAN.Op_Time = sysdate,
+		HEALTHY_TEST_PLAN.Status='R',HEALTHY_TEST_PLAN.Operator = #{opId}
+		where HEALTHY_TEST_PLAN.Plan_Id = #{panId}
+	</update>
+	
+	<select id="getTestPlanByPage" parameterType="map" resultMap="healthyTestPlanResultMap">
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+		select HEALTHY_TEST_PLAN.*,ams_user.user_name,staff.staff_name
+		from HEALTHY_TEST_PLAN 
+			left join ams_user on ams_user.user_id = HEALTHY_TEST_PLAN.User_Id
+			left join staff on staff.staff_id = HEALTHY_TEST_PLAN.Staff_Id
+		where 
+		HEALTHY_TEST_PLAN.Status = 'C'
+		<if test="staffId!=null">
+		    and HEALTHY_TEST_PLAN.Staff_Id = #{staffId}
+		</if>
+		<if test="userId!=null">
+		    and HEALTHY_TEST_PLAN.User_Id = #{userId}
+		</if>
+		order by HEALTHY_TEST_PLAN.Plan_Begin_Time desc,HEALTHY_TEST_PLAN.plan_id desc
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  	</select>
+  
+	<select id="getTestPlanByPageCount" parameterType="map" resultType="long">
+		select count(*) from HEALTHY_TEST_PLAN where 
+		HEALTHY_TEST_PLAN.Status = 'C'
+		<if test="staffId!=null">
+		    and HEALTHY_TEST_PLAN.Staff_Id = #{staffId}
+		</if>
+		<if test="userId!=null">
+		    and HEALTHY_TEST_PLAN.User_Id = #{userId}
+		</if>
+  	</select>
+</mapper>
+

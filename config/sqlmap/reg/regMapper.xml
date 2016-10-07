@@ -1,0 +1,1140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unique.reg">
+  <resultMap id="regResultMap" type="com.unique.reg.po.McReg" >
+    <id column="REG_ID" property="regId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="DUTY_ID" property="dutyId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="PERIOD_ID" property="periodId" jdbcType="DECIMAL" />
+    <result column="REG_WAY_NAME" property="regWayName" jdbcType="VARCHAR" />
+    <result column="PAY_WAY_NAME" property="payWayName" jdbcType="VARCHAR" />
+    <result column="ORDER_TIME" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="ID_CARD" property="idCard" jdbcType="VARCHAR" />
+    <result column="USER_BIRTH" property="userBirth" jdbcType="VARCHAR" />
+    <result column="USER_SEX" property="userSex" jdbcType="CHAR" />
+    <result column="USER_PHONE" property="userPhone" jdbcType="VARCHAR" />
+    <result column="USER_ADDR" property="userAddr" jdbcType="VARCHAR" />
+    <result column="REG_NUMBER" property="regNumber" jdbcType="DECIMAL" />
+    <result column="AMOUNT" property="amount" jdbcType="FLOAT" />
+    <result column="PAY_NUM" property="payNum" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="IS_USED" property="isUsed" jdbcType="CHAR" />
+    <result column="REG_UNIQUE_ID" property="regUniqueId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_OPERATOR" property="createOperator" jdbcType="DECIMAL" />
+    <result column="CREATE_OPERATOR_NAME" property="createOperatorName" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="PICKUP_TIME" property="pickupTime" jdbcType="TIMESTAMP" />
+    <result column="PICKUP_OPERATOR" property="pickupOperator" jdbcType="DECIMAL" />
+    <result column="PICKUP_OPERATOR_NAME" property="pickupOperatorName" jdbcType="VARCHAR" />
+    <result column="CANCEL_TIME" property="cancelTime" jdbcType="TIMESTAMP" />
+    <result column="BACK_OPERATOR" property="backOperator" jdbcType="DECIMAL" />
+    <result column="BACK_OPERATOR_NAME" property="backOperatorName" jdbcType="VARCHAR" />
+    <result column="BACK_OPERATOR_TYPE" property="backOperatorType" jdbcType="DECIMAL" />
+    <result column="BACK_REASON" property="backReason" jdbcType="VARCHAR" />
+    <result column="QUITFEE_TIME" property="quitfeeTime" jdbcType="TIMESTAMP" />
+    <result column="QUITFEE_OPERATOR" property="quitfeeOperator" jdbcType="DECIMAL" />
+    <result column="QUITFEE_OPERATOR_NAME" property="quitfeeOperatorName" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="FIRSTVISITINDICCTOR" property="firstvisitindicctor" jdbcType="DECIMAL" />
+    <result column="DUTY_PERIOD_ID" property="dutyPeriodId" jdbcType="DECIMAL" />
+    <result column="PERIOD_START_TIME" property="periodStartTime" jdbcType="TIMESTAMP" />
+    <result column="PERIOD_END_TIME" property="periodEndTime" jdbcType="TIMESTAMP" />
+    <result column="PERIOD_REG_TIME" property="periodRegTime" jdbcType="VARCHAR" />
+    <result column="PERIOD_UNIQUE_ID" property="periodUniqueId" jdbcType="VARCHAR" />
+    <result column="DSB" property="dsb" jdbcType="CHAR" />
+    <result column="REG_WAY_ID" property="regWayId" jdbcType="DECIMAL" />
+    <result column="PAY_WAY_ID" property="payWayId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="FRIEND_ID" property="friendId" jdbcType="DECIMAL" />
+    <result column="STAFF_TYPE_ID" property="staffTypeId" jdbcType="DECIMAL" />
+    <result column="STAFF_TYPE_NAME" property="staffTypeName" jdbcType="VARCHAR" />
+    <result column="PICKUP_ADDR" property="pickupAddr" jdbcType="VARCHAR" />
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="APPOINT_CODE" property="appointCode" jdbcType="VARCHAR"/>
+  	<result column="HIS_USER_ID" property="hisUserId" jdbcType="VARCHAR"/>
+  	<result column="IC_CARD_ID" property="icCardId" jdbcType="VARCHAR"/>
+  	<result column="CALL_NO" property="callNo" jdbcType="VARCHAR"/>
+  	<result column="IS_BUND" property="isBund" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <resultMap type="com.unique.reg.po.McReg" id="regAndOrderResultMap" extends="regResultMap">
+  	<result column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+  	<result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+  	<result column="order_money" property="orderMoney" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <resultMap id="orgResultMap" type="com.unique.reg.po.Org" >
+    <id column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="ORG_TYPE_ID" property="orgTypeId" jdbcType="DECIMAL" />
+    <result column="ORG_GRADE_ID" property="orgGradeId" jdbcType="DECIMAL" />
+    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="LEGAL_REP" property="legalRep" jdbcType="VARCHAR" />
+    <result column="CONTACT_NAME" property="contactName" jdbcType="VARCHAR" />
+    <result column="CONTACT_PHONE" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="FAX_PHONE" property="faxPhone" jdbcType="VARCHAR" />
+    <result column="ORG_ADDR" property="orgAddr" jdbcType="VARCHAR" />
+    <result column="POST_NO" property="postNo" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="VARCHAR" />
+    <result column="NODE_LEVEL" property="nodeLevel" jdbcType="DECIMAL" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="DECIMAL" />
+    <result column="SPELLING" property="spelling" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="HAS_REMOTE_REG" property="hasRemoteReg" jdbcType="CHAR" />
+    <result column="HOME_PAGE" property="homePage" jdbcType="VARCHAR" />
+    <result column="RECOUP_WAY" property="recoupWay" jdbcType="CHAR" />
+    <result column="ORG_SHORT_NAME" property="orgShortName" jdbcType="VARCHAR" />
+    <result column="ORG_MSGMONEY" property="orgMsgmoney" jdbcType="CHAR" />
+    <result column="HAS_EHCRM" property="hasEhcrm" jdbcType="CHAR" />
+    <result column="HAS_PERIOD" property="hasPeriod" jdbcType="CHAR" />
+    <result column="ORG_NATURE" property="orgNature" jdbcType="DECIMAL" />
+    <result column="CHILD_HOSPITAL" property="childHospital" jdbcType="CHAR" />
+    <result column="PICKUP_ADDR" property="pickupAddr" jdbcType="VARCHAR" />
+    <result column="ESB_URL" property="esbUrl" jdbcType="VARCHAR" />
+    <result column="HOSPITAL_URL" property="hospitalUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="dutyResultMap" type="com.unique.reg.po.McDuty" >
+    <id column="DUTY_ID" property="dutyId" jdbcType="DECIMAL" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="WEEKDAY_ID" property="weekdayId" jdbcType="DECIMAL" />
+    <result column="PERIOD_ID" property="periodId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="STAFF_TYPE_ID" property="staffTypeId" jdbcType="DECIMAL" />
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="STAFF_TYPE_NAME" property="staffTypeName" jdbcType="VARCHAR" />
+    <result column="WEEK_NO" property="weekNo" jdbcType="DECIMAL" />
+    <result column="WEEK_START_DATE" property="weekStartDate" jdbcType="TIMESTAMP" />
+    <result column="DUTY_DATE" property="dutyDate" jdbcType="TIMESTAMP" />
+    <result column="REG_NUM" property="regNum" jdbcType="DECIMAL" />
+    <result column="REG_NUM_REMAIN" property="regNumRemain" jdbcType="DECIMAL" />
+    <result column="CURRET_NO" property="curretNo" jdbcType="DECIMAL" />
+    <result column="CURRET_NO_VER" property="curretNoVer" jdbcType="DECIMAL" />
+    <result column="AMOUNT" property="amount" jdbcType="FLOAT" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="CURRET_NO_VER" property="curretNoVer" jdbcType="DECIMAL"/>
+    <result column="UUID" property="uuid" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap type="com.unique.reg.po.McDuty" id="dutyStatusResultMap" extends="dutyResultMap">
+  	<result column="duty_status" property="dutyStatus" jdbcType="CHAR" />
+  	<result column="has_period" property="hasPeriod" jdbcType="CHAR" />
+  	<result column="HAS_REG_NUMBER" property="hasRegNumber" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap type="com.unique.reg.po.McDuty" id="dutyAmountResultMap" extends="dutyStatusResultMap">
+   <id column="DUTY_ID" property="dutyId" jdbcType="DECIMAL" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="WEEKDAY_ID" property="weekdayId" jdbcType="DECIMAL" />
+    <result column="PERIOD_ID" property="periodId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="STAFF_TYPE_ID" property="staffTypeId" jdbcType="DECIMAL" />
+    <result column="PERIOD_NAME" property="periodName" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="STAFF_TYPE_NAME" property="staffTypeName" jdbcType="VARCHAR" />
+    <result column="WEEK_NO" property="weekNo" jdbcType="DECIMAL" />
+    <result column="WEEK_START_DATE" property="weekStartDate" jdbcType="TIMESTAMP" />
+    <result column="DUTY_DATE" property="dutyDate" jdbcType="TIMESTAMP" />
+    <result column="REG_NUM" property="regNum" jdbcType="DECIMAL" />
+    <result column="REG_NUM_REMAIN" property="regNumRemain" jdbcType="DECIMAL" />
+    <result column="CURRET_NO" property="curretNo" jdbcType="DECIMAL" />
+    <result column="CURRET_NO_VER" property="curretNoVer" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="duty_status" property="dutyStatus" jdbcType="CHAR" />
+  	<result column="has_period" property="hasPeriod" jdbcType="CHAR" />
+  	<result column="HAS_REG_NUMBER" property="hasRegNumber" jdbcType="DECIMAL" />
+  	<result column="AMOUNT2" property="amount" jdbcType="DECIMAL" />
+  </resultMap>
+  
+    <resultMap id="depResultMap" type="com.unique.org.po.Dep" >
+    <id column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="DEP_TYPE_ID" property="depTypeId" jdbcType="DECIMAL" />
+    <result column="DEP_CODE" property="depCode" jdbcType="VARCHAR" />
+    <result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+    <result column="DEP_ADDR" property="depAddr" jdbcType="VARCHAR" />
+    <result column="SERIAL_NO" property="serialNo" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+    <result column="NODE_LEVEL" property="nodeLevel" jdbcType="DECIMAL" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  	<result column="DEP_REMARK" property="depRemark" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  
+  <resultMap id="staffResultMap" type="com.unique.reg.po.Staff" >
+    <id column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="STAFF_TYPE_ID" property="staffTypeId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="DEP_NAME" property="depName" jdbcType="VARCHAR" />
+    <result column="STAFF_CODE" property="staffCode" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="HOME_TEL" property="homeTel" jdbcType="VARCHAR" />
+    <result column="BIRTH" property="birth" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="CHAR" />
+    <result column="MONEY_BAG" property="moneyBag" jdbcType="VARCHAR" />
+    <result column="WEDLOCK" property="wedlock" jdbcType="DECIMAL" />
+    <result column="HOME_ADDR" property="homeAddr" jdbcType="VARCHAR" />
+    <result column="BIRTH_CITY" property="birthCity" jdbcType="VARCHAR" />
+    <result column="FOLK" property="folk" jdbcType="DECIMAL" />
+    <result column="RESIDE_CITY" property="resideCity" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="ID_CARD" property="idCard" jdbcType="VARCHAR" />
+    <result column="GOOT_AT" property="gootAt" jdbcType="VARCHAR" />
+    <result column="STAFF_DESC" property="staffDesc" jdbcType="VARCHAR" />
+    <result column="SPELLING" property="spelling" jdbcType="VARCHAR" />
+    <result column="AVGTIME" property="avgtime" jdbcType="DECIMAL" />
+    <result column="STAFF_UNIQUE_ID" property="staffUniqueId" jdbcType="VARCHAR" />
+    <result column="DUTY_DATE_NUM" property="dutyDateNum" jdbcType="DECIMAL" />
+    <result column="IS_CONSULT" property="isConsult" jdbcType="CHAR" />
+    <result column="E_MAIL" property="eMail" jdbcType="VARCHAR" />
+    <result column="IS_REG" property="isReg" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="HEALTY_USER_NUMBER" property="healtyUserNumber" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="regWayResultMap" type="com.unique.reg.po.RegWay" >
+    <id column="REG_WAY_ID" property="regWayId" jdbcType="DECIMAL" />
+    <result column="REG_WAY_CODE" property="regWayCode" jdbcType="VARCHAR" />
+    <result column="REG_WAY_NAME" property="regWayName" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="dutyPeriodResultMap" type="com.unique.reg.po.DutyPeriod" >
+    <id column="DUTY_PERIOD_ID" property="dutyPeriodId" jdbcType="DECIMAL" />
+    <result column="DUTY_ID" property="dutyId" jdbcType="DECIMAL" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="REG_NUM" property="regNum" jdbcType="DECIMAL" />
+    <result column="REG_TIME" property="regTime" jdbcType="VARCHAR" />
+    <result column="PERIOD_UNIQUE_ID" property="periodUniqueId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="depResultMapHasOrg" type="com.unique.org.po.Dep" extends="depResultMap">
+  	<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+  	<result column="HAS_PERIOD" property="hasPeriod" jdbcType="VARCHAR" />
+  	<result column="ORG_SHORT_NAME" property="orgShortName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.unique.reg.po.McReg" id="regWithAgeResultMap" extends="regResultMap">
+  	<result column="AGE" property="age" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <!-- 分时段占号 -->
+  <update id="modDutyPeriod" parameterType="java.util.Map" >
+    	<![CDATA[ update DUTY_PERIOD 
+    		  set STATUS = #{status} 
+    		where DUTY_PERIOD_ID = #{dutyPeriodId}
+    		  and STATUS = #{preStatus}]]>
+   </update>
+   <!-- 排班占号 -->
+   	<update id="subRegRemain" parameterType="string">
+		<![CDATA[
+	 	update mc_duty 
+	 	set reg_num_remain=decode(reg_num_remain,null,null,reg_num_remain-1)
+		where (reg_num_remain>0 or reg_num_remain is null)
+		and duty_id=#{dutyId}
+		]]>
+	</update>
+	<select id="getRegNum" parameterType="string" resultType="string">
+		select reg_num from mc_duty where duty_id=#{dutyId}
+	</select>
+	<!-- 释放号源 -->
+	<update id="addRegRemain" parameterType="String">
+	<![CDATA[
+	  	update mc_duty 
+	  	set reg_num_remain=decode(reg_num_remain,null,null,reg_num_remain+1)
+		where duty_id=#{dutyId}
+		and reg_num_remain < reg_num
+	]]>
+	</update>
+	
+	<!-- 根据排班ID和身份证检查挂号记录是否存在,防止重复预约 -->
+	<select id="checkRegForRepeat" parameterType="map" resultType="int">
+		select count(*) from mc_reg 
+		where (mc_reg.is_used = '0' or mc_reg.is_used = 'W')
+		and mc_reg.id_card = #{idCard}
+		and mc_reg.duty_id = #{dutyId}
+	</select>
+	
+	<!-- 根据ID获取排班 -->
+	<select id="getDutyById" parameterType="string" resultMap="dutyResultMap">
+		select * from mc_duty where mc_duty.duty_id = #{dutyId}
+	</select>
+	
+	<select id="getCanUserDutyById" parameterType="string" resultMap="dutyResultMap">
+	<!-- <![CDATA[
+	select * from mc_duty 
+		left join staff on staff.staff_id = mc_duty.staff_id
+		where 
+		 mc_duty.duty_id = #{dutyId}
+		 and mc_duty.status in ('C','U')
+		and mc_duty.duty_date > sysdate
+		and mc_duty.duty_date < sysdate + nvl(staff.duty_date_num,7)
+	]]> -->
+	<![CDATA[
+	select * from mc_duty 
+		left join staff on staff.staff_id = mc_duty.staff_id
+		where 
+		 mc_duty.duty_id = #{dutyId}
+		 and mc_duty.status in ('C','U')
+		
+	]]> 
+	</select>
+	
+	<select id="getOrgById" parameterType="string" resultMap="orgResultMap">
+		select * from org where org.org_id = #{orgId}
+	</select>
+	
+	<select id="getStaffById" parameterType="string" resultMap="staffResultMap">
+		select * from staff where staff.staff_id = #{staffId}
+	</select>
+	
+	<!-- 根据医院id和身份证检查当天挂号次数 -->
+	<select id="checkRegForRegTimes" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(*) from mc_reg m 
+			where m.create_time >= trunc(sysdate)
+			and m.create_time < trunc(sysdate)+1
+			and m.is_used in ('0','1','2','W','R')
+			and m.id_card = #{idCard}
+		]]>
+	</select>
+	
+	<!-- 根据用户ID，机构ID查找是否是黑名单 -->
+	<select id="isUserBlack" parameterType="map" resultType="int">
+	       SELECT count(*) FROM Blacklist_User 
+	       where org_id=#{orgId}
+	       and user_Id=#{userId}
+	       and type_code=#{typeCode}
+	       and status = '0'
+	</select>
+
+  
+  <insert id="addMcReg" parameterType="com.unique.reg.po.McReg" >
+     <selectKey keyProperty="regId" resultType="DECIMAL" order="BEFORE">
+            select MC_REG_SEQUENCE.nextval as regId from dual
+     </selectKey>
+    insert into MC_REG (REG_ID, ORG_ID, DUTY_ID, 
+      DEP_ID, STAFF_ID, PERIOD_ID, 
+      REG_WAY_NAME, PAY_WAY_NAME, ORDER_TIME, 
+      PERIOD_NAME, STAFF_NAME, DEP_NAME, 
+      ORG_NAME, USER_NAME, ID_CARD, 
+      USER_BIRTH, USER_SEX, USER_PHONE, 
+      USER_ADDR, REG_NUMBER, AMOUNT, 
+      PAY_NUM, STATUS, IS_USED, REG_UNIQUE_ID, 
+      CREATE_TIME, CREATE_OPERATOR, CREATE_OPERATOR_NAME, 
+      OPERATOR, OPERATOR_NAME, OP_TIME, 
+      PICKUP_TIME, PICKUP_OPERATOR, PICKUP_OPERATOR_NAME, 
+      CANCEL_TIME, BACK_OPERATOR, BACK_OPERATOR_NAME, 
+      BACK_OPERATOR_TYPE, BACK_REASON, QUITFEE_TIME, 
+      QUITFEE_OPERATOR, QUITFEE_OPERATOR_NAME, REMARK, 
+      FIRSTVISITINDICCTOR, DUTY_PERIOD_ID, PERIOD_START_TIME, 
+      PERIOD_END_TIME, PERIOD_REG_TIME, PERIOD_UNIQUE_ID, 
+      DSB, REG_WAY_ID, PAY_WAY_ID,USER_ID,PICKUP_ADDR,FRIEND_ID,APPOINT_CODE,
+      HIS_USER_ID,IS_BUND
+      )
+    values (#{regId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{dutyId,jdbcType=DECIMAL}, 
+      #{depId,jdbcType=DECIMAL}, #{staffId,jdbcType=DECIMAL}, #{periodId,jdbcType=DECIMAL}, 
+      #{regWayName,jdbcType=VARCHAR}, #{payWayName,jdbcType=VARCHAR}, #{orderTime,jdbcType=TIMESTAMP}, 
+      #{periodName,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, #{depName,jdbcType=VARCHAR}, 
+      #{orgName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, 
+      #{userBirth,jdbcType=VARCHAR}, #{userSex,jdbcType=CHAR}, #{userPhone,jdbcType=VARCHAR}, 
+      #{userAddr,jdbcType=VARCHAR}, #{regNumber,jdbcType=DECIMAL}, #{amount,jdbcType=FLOAT}, 
+      #{payNum,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{isUsed,jdbcType=CHAR}, #{regUniqueId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createOperator,jdbcType=DECIMAL}, #{createOperatorName,jdbcType=VARCHAR}, 
+      #{operator,jdbcType=DECIMAL}, #{operatorName,jdbcType=VARCHAR}, #{opTime,jdbcType=TIMESTAMP}, 
+      #{pickupTime,jdbcType=TIMESTAMP}, #{pickupOperator,jdbcType=DECIMAL}, #{pickupOperatorName,jdbcType=VARCHAR}, 
+      #{cancelTime,jdbcType=TIMESTAMP}, #{backOperator,jdbcType=DECIMAL}, #{backOperatorName,jdbcType=VARCHAR}, 
+      #{backOperatorType,jdbcType=DECIMAL}, #{backReason,jdbcType=VARCHAR}, #{quitfeeTime,jdbcType=TIMESTAMP}, 
+      #{quitfeeOperator,jdbcType=DECIMAL}, #{quitfeeOperatorName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{firstvisitindicctor,jdbcType=DECIMAL}, #{dutyPeriodId,jdbcType=DECIMAL}, #{periodStartTime,jdbcType=TIMESTAMP}, 
+      #{periodEndTime,jdbcType=TIMESTAMP}, #{periodRegTime,jdbcType=VARCHAR}, #{periodUniqueId,jdbcType=VARCHAR}, 
+      #{dsb,jdbcType=CHAR}, #{regWayId,jdbcType=DECIMAL}, #{payWayId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL},
+      #{pickupAddr,jdbcType=VARCHAR},#{friendId,jdbcType=DECIMAL},#{appointCode,jdbcType=VARCHAR},
+      #{hisUserId,jdbcType=VARCHAR},#{isBund,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <select id="getRegWayByCode" parameterType="string" resultMap="regWayResultMap">
+  	select * from reg_way where reg_way.reg_way_code =#{regWayCode}
+  </select>
+  
+  <select id="getRegWayById" parameterType="string" resultMap="regWayResultMap">
+  	select * from reg_way where reg_way.reg_way_id =#{regWayId}
+  </select>
+  
+  <select id="getDutyPeriodById" parameterType="string" resultMap="dutyPeriodResultMap">
+  	select * from duty_period where duty_period.duty_period_id = #{pid}
+  </select>
+  
+  <update id="updateRegById" parameterType="com.unique.reg.po.McReg" >
+    update MC_REG
+    <set >
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="dutyId != null" >
+        DUTY_ID = #{dutyId,jdbcType=DECIMAL},
+      </if>
+      <if test="depId != null" >
+        DEP_ID = #{depId,jdbcType=DECIMAL},
+      </if>
+      <if test="staffId != null" >
+        STAFF_ID = #{staffId,jdbcType=DECIMAL},
+      </if>
+      <if test="periodId != null" >
+        PERIOD_ID = #{periodId,jdbcType=DECIMAL},
+      </if>
+      <if test="regWayName != null" >
+        REG_WAY_NAME = #{regWayName,jdbcType=VARCHAR},
+      </if>
+      <if test="payWayName != null" >
+        PAY_WAY_NAME = #{payWayName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null" >
+        ORDER_TIME = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="periodName != null" >
+        PERIOD_NAME = #{periodName,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        STAFF_NAME = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="depName != null" >
+        DEP_NAME = #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        ID_CARD = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="userBirth != null" >
+        USER_BIRTH = #{userBirth,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        USER_SEX = #{userSex,jdbcType=CHAR},
+      </if>
+      <if test="userPhone != null" >
+        USER_PHONE = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddr != null" >
+        USER_ADDR = #{userAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="regNumber != null" >
+        REG_NUMBER = #{regNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=FLOAT},
+      </if>
+      <if test="payNum != null" >
+        PAY_NUM = #{payNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="isUsed != null" >
+        IS_USED = #{isUsed,jdbcType=CHAR},
+      </if>
+      <if test="regUniqueId != null" >
+        REG_UNIQUE_ID = #{regUniqueId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createOperator != null" >
+        CREATE_OPERATOR = #{createOperator,jdbcType=DECIMAL},
+      </if>
+      <if test="createOperatorName != null" >
+        CREATE_OPERATOR_NAME = #{createOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=DECIMAL},
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickupTime != null" >
+        PICKUP_TIME = #{pickupTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickupOperator != null" >
+        PICKUP_OPERATOR = #{pickupOperator,jdbcType=DECIMAL},
+      </if>
+      <if test="pickupOperatorName != null" >
+        PICKUP_OPERATOR_NAME = #{pickupOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null" >
+        CANCEL_TIME = #{cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backOperator != null" >
+        BACK_OPERATOR = #{backOperator,jdbcType=DECIMAL},
+      </if>
+      <if test="backOperatorName != null" >
+        BACK_OPERATOR_NAME = #{backOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="backOperatorType != null" >
+        BACK_OPERATOR_TYPE = #{backOperatorType,jdbcType=DECIMAL},
+      </if>
+      <if test="backReason != null" >
+        BACK_REASON = #{backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="quitfeeTime != null" >
+        QUITFEE_TIME = #{quitfeeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="quitfeeOperator != null" >
+        QUITFEE_OPERATOR = #{quitfeeOperator,jdbcType=DECIMAL},
+      </if>
+      <if test="quitfeeOperatorName != null" >
+        QUITFEE_OPERATOR_NAME = #{quitfeeOperatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="firstvisitindicctor != null" >
+        FIRSTVISITINDICCTOR = #{firstvisitindicctor,jdbcType=DECIMAL},
+      </if>
+      <if test="dutyPeriodId != null" >
+        DUTY_PERIOD_ID = #{dutyPeriodId,jdbcType=DECIMAL},
+      </if>
+      <if test="periodStartTime != null" >
+        PERIOD_START_TIME = #{periodStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="periodEndTime != null" >
+        PERIOD_END_TIME = #{periodEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="periodRegTime != null" >
+        PERIOD_REG_TIME = #{periodRegTime,jdbcType=VARCHAR},
+      </if>
+      <if test="periodUniqueId != null" >
+        PERIOD_UNIQUE_ID = #{periodUniqueId,jdbcType=VARCHAR},
+      </if>
+      <if test="dsb != null" >
+        DSB = #{dsb,jdbcType=CHAR},
+      </if>
+      <if test="regWayId != null" >
+        REG_WAY_ID = #{regWayId,jdbcType=DECIMAL},
+      </if>
+      <if test="payWayId != null" >
+        PAY_WAY_ID = #{payWayId,jdbcType=DECIMAL},
+      </if>
+      <if test="friendId != null" >
+        FRIEND_ID = #{friendId,jdbcType=DECIMAL},
+      </if>
+      <if test="appointCode != null" >
+        APPOINT_CODE = #{appointCode,jdbcType=VARCHAR},
+      </if>
+      <if test="hisUserId != null" >
+        HIS_USER_ID = #{hisUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="icCardId != null" >
+        IC_CARD_ID = #{icCardId,jdbcType=VARCHAR},
+      </if>
+      <if test="callNo != null" >
+        CALL_NO = #{callNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+	where reg_id =  #{regId,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getRegById" parameterType="string" resultMap="regResultMap">
+  	select mc_reg.*,mc_duty.staff_type_id,mc_duty.staff_type_name
+  	 from mc_reg 
+  	left join mc_duty on mc_reg.duty_id = mc_duty.duty_id
+  	where mc_reg.reg_id = #{regId}
+  </select>
+  
+  <resultMap type="com.unique.reg.po.McReg" id="getMcRegAndFriendInfoMap" extends="regResultMap">
+  	 <result column="card_no" property="cardNo" jdbcType="VARCHAR" />
+  	 <result column="card_type_name" property="cardTypeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 此处查询挂号记录并查询就诊人基本信息和卡类型信息 -->
+  <select id="getMcRegAndFriendInfoByRegId" parameterType="string" resultMap="getMcRegAndFriendInfoMap">
+  	select mc_reg.*,tm.card_no,tm.card_type_name
+  	 from mc_reg 
+  	left join 
+  		(select mc_card.user_id,mc_card.card_no,card_type.card_type_name,mc_card.friend_id from mc_card,card_type where card_type.card_type_id=mc_card.card_type_id) tm
+  	on tm.user_id=mc_reg.user_id and tm.friend_id=mc_reg.friend_id
+  	where mc_reg.reg_id = #{regId}
+  </select>
+  
+  <select id="regList" parameterType="map" resultMap="regAndOrderResultMap">
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  	select mc_reg.*,mc_duty.staff_type_id,mc_duty.staff_type_name,
+	  	(select mc_order_det.order_id from mc_order_det where mc_order_det.product_to_id = mc_reg.reg_id) as order_id
+	  	 from mc_reg 
+	  	left join mc_duty on mc_reg.duty_id = mc_duty.duty_id
+	  	left join org on org.org_id = mc_duty.org_id
+	  	where 1=1
+	  	  <if test="userId != null" >
+		  		and mc_reg.user_id = #{userId}
+		  </if>
+		  <if test="regId != null" >
+		  		and mc_reg.user_id = #{regId}
+		  </if>
+		  <if test="status != null" >
+		 	 and mc_reg.STATUS in (
+		  	<foreach collection="status" item="s" separator=",">
+		  	#{s}
+		  	</foreach>
+		  	)
+		  </if>
+		  <if test="isUsed != null" >
+		 	 and mc_reg.is_used in (
+		  	<foreach collection="isUsed" item="used" separator=",">
+		  	#{used}
+		  	</foreach>
+		  	)
+		  </if>
+	  order by mc_reg.create_time desc
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+   <select id="regListCount" parameterType="map" resultType="long">
+	  	select count(*) from mc_reg where 1=1
+	  	  <if test="userId != null" >
+		  		and mc_reg.user_id = #{userId}
+		  </if>
+		  <if test="regId != null" >
+		  		and mc_reg.user_id = #{regId}
+		  </if>
+		  <if test="status != null" >
+		 	 and mc_reg.STATUS in (
+		  	<foreach collection="status" item="s" separator=",">
+		  	#{s}
+		  	</foreach>
+		  	)
+		  </if>
+		  <if test="isUsed != null" >
+		 	 and mc_reg.is_used in (
+		  	<foreach collection="isUsed" item="used" separator=",">
+		  	#{used}
+		  	</foreach>
+		  	)
+		  </if>
+  </select>
+  
+  <update id="updateDutyNo" parameterType="map">
+	  update mc_duty set mc_duty.curret_no = nvl(mc_duty.curret_no,0)+1,
+	  mc_duty.curret_no_ver =  nvl(mc_duty.curret_no_ver,0) + 1
+	  where mc_duty.duty_id = #{dutyId}
+	  and nvl(mc_duty.curret_no_ver,0) = #{ver}
+  </update>
+  
+  <select id="getOrgs4Lucence" resultMap="orgResultMap" parameterType="map">
+  select * from org where 1=1
+  <if test="lastTime!=null">
+  <![CDATA[
+   and org.op_time > #{lastTime}
+  ]]>
+  </if>
+  <if test="ids != null" >
+ 	 and org.org_id in (
+  	<foreach collection="ids" item="id" separator=",">
+  	#{id}
+  	</foreach>
+  	)
+  </if>
+  </select>
+  
+ <select id="getDep4Lucence" parameterType="map" resultMap="depResultMapHasOrg">
+  select dep.*,org.org_name,org.HAS_PERIOD,org.org_short_name from dep
+  left join org on org.org_id = dep.org_id
+   where 1=1
+  <if test="lastTime!=null">
+  <![CDATA[
+   and dep.op_time > #{lastTime}
+  ]]>
+  </if>
+  <if test="ids != null" >
+ 	 and dep.dep_id in (
+  	<foreach collection="ids" item="id" separator=",">
+  	#{id}
+  	</foreach>
+  	)
+  </if>
+  </select>
+  
+  <select id="getDepByIll" resultMap="depResultMapHasOrg" parameterType="map">
+	 select * from 
+	  (
+	  select dep.*,org.org_name,org.org_short_name,org.has_period from dep left join org on org.org_id = dep.org_id where dep.dep_id in
+		(
+			select dep_standard_rel.dep_id from dep_standard_rel
+	    	left join jb_ill_dep_ref on jb_ill_dep_ref.standard_id = dep_standard_rel.standard_id
+	    	where jb_ill_dep_ref.ill_id in
+			<foreach collection="illIds" open="(" close=")" separator="," item="illId">
+	    	    #{illId}
+	    	 </foreach>
+	  )
+	  	and org.status in ('C','U')
+  		and dep.status in ('C','U')
+	  order by org.sort_rank,dep.sort_rank
+	  ) where rownum &lt; 4
+  </select>
+  <!-- 疾病推荐科室 -->
+  <select id="getRecDepByIll" resultMap="depResultMapHasOrg" parameterType="map">
+   select * from (
+	 select  dep.*,org.org_name,org.org_short_name,org.has_period from 
+	 (  
+	         select dep.org_id,max(dep.dep_id) dep_id from dep 
+	          where  
+	           dep.dep_id in 
+	           (      
+	            select dep_standard_rel.dep_id from dep_standard_rel
+		    	left join jb_ill_dep_ref on jb_ill_dep_ref.standard_id = dep_standard_rel.standard_id
+		    	where jb_ill_dep_ref.ill_id in
+				<foreach collection="illIds" open="(" close=")" separator="," item="illId">
+		    	    #{illId}
+		    	 </foreach>
+	           )
+	           and dep.status in ('C','U')
+	           /*and dep.org_id in (6,7,8,9)*/
+	   group by dep.org_id
+	  ) tmp 
+	  join  dep on tmp.dep_id=dep.dep_id
+	  left join org on org.org_id = dep.org_id
+	  where org.status in ('C','U') 
+	   order by org.sort_rank,dep.sort_rank 
+	   )
+	  where rownum &lt; 4 
+  </select>
+  
+  <select id="getStaffByUserId" parameterType="string" resultMap="staffResultMap">
+  	select * from staff where staff.user_id = #{userId}
+  </select>
+  
+  <select id="getDutyByMonth" parameterType="map" resultMap="dutyAmountResultMap">
+  <![CDATA[
+	select mc_duty.*,amount_group.AMOUNT as amount2,
+	(case when mc_duty.reg_num = 0 then 1 /**停班**/
+	 when mc_duty.reg_num is not null and mc_duty.reg_num_remain = 0 then 2 /**已满**/
+	 when mc_duty.reg_num is not null and mc_duty.reg_num_remain > 0 then 3 /**可预约**/
+	 when mc_duty.reg_num is null then 3 /**可预约**/
+	else 4
+	end ) as duty_status,
+	org.has_period,
+ 	 (select count(*) from mc_reg where mc_reg.duty_id = mc_duty.duty_id) as hasRegNumber
+	 from mc_duty 
+	 left join staff on staff.staff_id = mc_duty.staff_id
+	 left join org on org.org_id = mc_duty.org_id
+	 left join (select sum(pp.PRICE_AMOUNT) as AMOUNT, pp.STAFF_TYPE_ID from PRODUCT_PRICE pp group by pp.STAFF_TYPE_ID) amount_group on mc_duty.STAFF_TYPE_ID=amount_group.STAFF_TYPE_ID
+	where 1=1
+	and mc_duty.status in ('C','U')
+   	]]>
+   	<if test="monthStr!=null">
+   	<![CDATA[
+   		and mc_duty.duty_date >= to_date('${monthStr}-01','yyyy-mm-dd')
+		and mc_duty.duty_date < add_months(to_date('${monthStr}-01','yyyy-mm-dd'),1)
+	]]>
+   	</if>
+   	<if test="monthStr==null">
+   	<![CDATA[
+   		and mc_duty.duty_date > sysdate
+		and mc_duty.duty_date < sysdate + nvl(staff.duty_date_num,7) + 1
+	]]>
+   	</if>
+   	<if test="staffId != null ">
+   		and mc_duty.staff_id = #{staffId}
+   	</if>
+   	order by duty_date 
+  </select>
+  
+  <select id="getRegByDutyDate" parameterType="map" resultMap="regResultMap">
+  	select mc_reg.*,
+  	  	floor(MONTHS_BETWEEN(sysdate, to_date(mc_reg.user_birth,'yyyy-mm-dd'))/12) as age
+  	from mc_reg
+	where mc_reg.order_time = to_date('${date}','yyyy-mm-dd')
+	and mc_reg.is_used in ('0','1','U','W') 
+   	<if test="period != null ">
+   		and mc_reg.period_id = #{period}
+   	</if>
+   	<if test="staffId != null ">
+   		and mc_reg.staff_id = #{staffId}
+   	</if>
+  </select> 
+  
+ <!--  <select id="getRegByDutyDate" parameterType="map" resultMap="regResultMap">
+  select mc_reg.*,
+  	  	floor(MONTHS_BETWEEN(sysdate, to_date(mc_reg.user_birth,'yyyy-mm-dd'))/12) as age,period.period_name
+  	from mc_reg 
+    left join  period on period.period_id=mc_reg.period_id
+	where mc_reg.order_time = to_date('${date}','yyyy-mm-dd')
+   	<if test="period != null ">
+   		and mc_reg.period_id = #{period}
+   	</if>
+   	<if test="staffId != null ">
+   		and mc_reg.staff_id = #{staffId}
+   	</if>
+   	 order by period.sort_rank
+  </select>  -->
+  
+  <select id="getDutyByUUID" resultMap="dutyResultMap" parameterType="string">
+  select * from mc_duty where uuid = #{uuid}
+  </select>
+  
+  <insert id="addDuty" parameterType="com.unique.reg.po.McDuty" >
+     <selectKey keyProperty="dutyId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_DUTY.nextval as dutyId from dual
+     </selectKey>
+    insert into MC_DUTY (DUTY_ID, STAFF_ID, WEEKDAY_ID, 
+      PERIOD_ID, ORG_ID, DEP_ID, 
+      STAFF_TYPE_ID, PERIOD_NAME, STAFF_NAME, 
+      DEP_NAME, ORG_NAME, STAFF_TYPE_NAME, 
+      WEEK_NO, WEEK_START_DATE, DUTY_DATE, 
+      REG_NUM, REG_NUM_REMAIN, CURRET_NO, 
+      STATUS, OPERATOR, OP_TIME, 
+      OPERATOR_NAME, CURRET_NO_VER, UUID
+      )
+    values (#{dutyId,jdbcType=DECIMAL}, #{staffId,jdbcType=DECIMAL}, #{weekdayId,jdbcType=DECIMAL}, 
+      #{periodId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{depId,jdbcType=DECIMAL}, 
+      #{staffTypeId,jdbcType=DECIMAL}, #{periodName,jdbcType=VARCHAR}, #{staffName,jdbcType=VARCHAR}, 
+      #{depName,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, #{staffTypeName,jdbcType=VARCHAR}, 
+      #{weekNo,jdbcType=DECIMAL}, #{weekStartDate,jdbcType=TIMESTAMP}, #{dutyDate,jdbcType=TIMESTAMP}, 
+      #{regNum,jdbcType=DECIMAL}, #{regNumRemain,jdbcType=DECIMAL}, #{curretNo,jdbcType=DECIMAL}, 
+      #{status,jdbcType=CHAR}, #{operator,jdbcType=DECIMAL}, #{opTime,jdbcType=TIMESTAMP}, 
+      #{operatorName,jdbcType=VARCHAR}, #{curretNoVer,jdbcType=DECIMAL}, #{uuid,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="addDutyPeriod" parameterType="com.unique.reg.po.DutyPeriod" >
+      <selectKey keyProperty="dutyPeriodId" resultType="DECIMAL" order="BEFORE">
+            select duty_period_seq.nextval as dutyPeriodId from dual
+     </selectKey>
+    insert into DUTY_PERIOD (DUTY_PERIOD_ID, DUTY_ID, START_TIME, 
+      END_TIME, REG_NUM, REG_TIME, 
+      PERIOD_UNIQUE_ID, STATUS)
+    values (#{dutyPeriodId,jdbcType=DECIMAL}, #{dutyId,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{regNum,jdbcType=DECIMAL}, #{regTime,jdbcType=VARCHAR}, 
+      #{periodUniqueId,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  </insert>
+  
+  <insert id="addStaffType" parameterType="com.unique.org.po.StaffType" >
+     <selectKey keyProperty="staffTypeId" resultType="DECIMAL" order="BEFORE">
+            select seq_staff_type.nextval as staffTypeId from dual
+     </selectKey>
+    insert into STAFF_TYPE (STAFF_TYPE_ID, TYPE_GROUP_ID, STAFF_TYPE_CODE, 
+      STAFF_TYPE_NAME, STAFF_TYPE_SYMBOL, CHARGE_TYPE_NAME, 
+      REMARK, SORT_RANK, STATUS, 
+      OPERATOR, OP_TIME, OPERATOR_NAME, 
+      ORG_ID)
+    values (#{staffTypeId,jdbcType=DECIMAL}, #{typeGroupId,jdbcType=DECIMAL}, #{staffTypeCode,jdbcType=VARCHAR}, 
+      #{staffTypeName,jdbcType=VARCHAR}, #{staffTypeSymbol,jdbcType=VARCHAR}, #{chargeTypeName,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{sortRank,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, 
+      #{operator,jdbcType=DECIMAL}, #{opTime,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=DECIMAL})
+  </insert>
+  
+  <!-- 自定义vo对象封装信息 -->
+  <resultMap type="com.unique.reg.vo.patient.PatientInfo" id="getFriendMap" >
+	<result column="FRIEND_ID" property="friendId" />
+    <result column="USER_NAME" property="userName" />
+    <result column="SEX" property="sex"  />
+    <result column="AGE" property="age" />  	
+    <result column="ORDER_TIME" property="orderTime" />  	
+    <result column="DEP_NAME" property="depName" />  	
+  </resultMap>
+  
+  <resultMap type="com.unique.reg.vo.patient.McRegInfo" id="getMcRegInfoMap" >
+	<result column="friend_id" property="friendId" />
+    <result column="user_name" property="userName" />
+    <result column="order_time" property="orderTime" />
+    <result column="sex" property="userSex"  />
+    <result column="age" property="userAge" />  	
+    <result column="is_used" property="isUsed" />  	
+    <result column="status" property="status" />  	
+    <result column="reg_number" property="regNumber" />  	
+    <result column="period_name" property="periodName" />  	
+    <result column="period_start_time" property="periodStartTime" />  	
+    <result column="period_end_time" property="periodEndTime" />  	
+    <result column="sort_rank" property="sortRank" />  	
+  </resultMap>
+  
+  <!-- 获取医生的患者 -->
+  <select id="getFriendByStaffId" resultMap="getFriendMap" parameterType="map">
+     <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	</if>
+  	SELECT 
+  		DISTINCT friend_id,user_name,
+		(case when user_sex is null or user_sex=0 then '未知' when user_sex=1 then '男' else '女' end ) sex ,
+		floor(MONTHS_BETWEEN(sysdate, to_date(user_birth,'yyyy-mm-dd'))/12) as age,
+		order_time, dep_name
+ 	FROM mc_reg 
+ 	WHERE staff_id=#{staffId}
+	<if test="userName != null ">
+   		and user_name like '%'||#{userName}||'%'
+   	</if>
+ 	ORDER BY user_name
+ 	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+
+  <!-- 挂号查询 -->
+  <select id="getMcRegInfos" resultMap="getMcRegInfoMap" parameterType="map">
+    SELECT  DISTINCT
+	    m.friend_id, m.user_name,to_char(m.order_time,'yyyy-mm-dd'),
+	    (case when m.user_sex is null or  m.user_sex=0 then '未知' when  m.user_sex=1 then '男' else '女' end ) sex ,
+	    floor(MONTHS_BETWEEN(sysdate, to_date(m.user_birth,'yyyy-mm-dd'))/12) as age,
+	    (case when m.IS_USED = '0' then '0' when m.is_used='1' then '1' when m.is_used='2' then '2' else '3' end) is_used,
+	    m.reg_number, p.period_name , m.period_start_time,m.period_end_time,m.status,sort_rank
+	FROM  mc_reg m
+	LEFT JOIN period p on m.period_id=p.period_id
+	WHERE m.staff_id=#{staffId} and to_char(m.ORDER_TIME,'yyyy-mm-dd')=#{date} 
+	ORDER BY p.sort_rank,m.REG_NUMBER
+  </select>
+  
+  <!-- 
+   select mc_reg.* , (select mc_order_det.order_id from mc_order_det where mc_order_det.product_to_id = mc_reg.reg_id) as order_id
+  	from mc_reg where REG_ID = #{regId}
+  -->
+  <select id="getMcRegById" parameterType="map" resultMap="regAndOrderResultMap"> 
+  	 select mc_reg.*,mc_order_det.order_id,mc_order.order_no,mc_order.order_money
+  	 from mc_reg 
+	 left join mc_order_det on mc_order_det.product_to_id = mc_reg.reg_id 
+	 left join mc_order on mc_order.order_id=mc_order_det.order_id
+	 where mc_reg.REG_ID = #{regId} 
+	 <if test="orderStauts!=null">
+	 	and mc_order.order_status='5' /*查询支付成功的挂号记录*/ 
+	 </if>
+  </select>
+  
+  <!-- and m.reg_number > 0 -->
+  <!-- 获取当前挂号数集 -->
+   <resultMap type="com.unique.reg.po.McDuty" id="mcDutyCountMap" >
+    <result column="reg_num" property="regNum" />
+	<result column="reg_num_remain" property="regNumRemain" />
+  </resultMap>
+  
+  	<!-- select * from 
+  		(select reg_num,reg_num_remain from  MC_DUTY where staff_id=#{staffId} and to_char(duty_date,'yyyy-mm-dd')=#{date} order by op_time desc ) 
+  	where rownum=1 -->
+  <select id="getCountMcReg" resultType="long" parameterType="map">
+	select count(staff_id) from mc_reg where to_char(order_time,'yyyy-mm-dd') = #{date} and staff_id=#{staffId} 	
+  </select>
+  
+  <!-- 挂号 查询 （日期信息） -->
+  <select id="searchMcRegs" resultType="string" parameterType="map">
+    select distinct to_char(ORDER_TIME,'yyyy-mm-dd') ORDER_TIME 
+    from MC_REG  where  staff_id=#{staffId} and to_char(ORDER_TIME,'yyyy-mm')=#{monthStr} order by ORDER_TIME 
+  </select>
+  
+  <!-- 日程列表查询 -->
+  <resultMap type="com.unique.reg.vo.patient.ScheduleDutyInfo" id="getDutyByDateAndStaffIdMap">
+  	<result column="duty_status" property="dutyStatus" />
+  	<result column="period_name" property="periodName" />
+  	<result column="duty_date" property="dutyDate" />
+  	<result column="regCount" property="regCount" />
+  	<result column="reg_num" property="regNum" />
+  	<result column="period_id" property="periodId" />
+  </resultMap>
+  <select id="getDutyByDateAndStaffId" parameterType="map" resultMap="getDutyByDateAndStaffIdMap">
+  	select 
+  		(case when m.reg_num = 0 then 1 /**未排班**/
+		else 2 end ) as duty_status,  /**有排班**/
+		(case when m.reg_num = 0 then 0 else (m.reg_num-m.reg_num_remain) end ) as regCount,m.reg_num, p.period_name, p.period_id,m.duty_date
+	from MC_DUTY m
+	left join PERIOD p on m.period_id=p.period_id 
+	where m.staff_id=#{staffId} 
+	<if test="month != null"> 
+		and to_char(m.DUTY_DATE,'yyyy-mm')=#{month}
+	</if>
+	<if test="date != null"> 
+		and m.DUTY_DATE>=to_date(#{date},'yyyy-mm-dd') 
+	</if>
+	<if test="searchDate != null"> 
+		and to_char(m.DUTY_DATE,'yyyy-mm-dd')=#{searchDate}
+	</if>
+	order by m.DUTY_DATE ASC ,p.sort_rank
+  </select>
+  
+  <!-- 日程排班查询 日历信息 -->
+  <select id="getScheduleDutys" parameterType="map" resultType="string">
+  	select distinct to_char(duty_date,'yyyy-mm-dd') duty_date
+    from MC_DUTY where staff_id=#{staffId} and to_char(duty_date,'yyyy-mm')=#{monthStr} and reg_num > 0 order by duty_date 
+  </select>
+  
+  <!-- 根据订单流水号 得到 挂号记录 -->
+  <select id="getRegByPayNo" resultMap="regResultMap" parameterType="string">
+	select * from mc_reg m join (
+		select product_to_id reg_id from  mc_order_pay p join mc_order_det d on p.order_id=d.order_id where p.pay_no=#{payNo}) t
+	on m.reg_id=t.reg_id
+  </select>
+  
+  <resultMap type="com.unique.reg.vo.MyReservation" id="myReservationMap">
+    <result column="reg_id" property="regId" jdbcType="DECIMAL" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="is_used" property="isUsed" jdbcType="VARCHAR" />
+    <result column="user_name" property="friedUserName" jdbcType="VARCHAR"/>
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+    <result column="period_name" property="periodName" jdbcType="VARCHAR"/>
+    <result column="period_id" property="periodId" jdbcType="DECIMAL"/>
+    <result column="status" property="status" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 我的预约 -->
+  <select id="myReservation" parameterType="map" resultMap="myReservationMap">
+      <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  select 
+	     m.reg_id,m.org_name,m.staff_name,m.dep_name,m.status, m.order_time,m.is_used, uf.user_name,d.parent_id,
+	     m.period_name,m.period_id
+	 from mc_reg m
+	 left join user_friend uf on uf.friend_id=m.friend_id  
+	 left join dep d on d.dep_id=m.dep_id
+	 <!-- LEFT JOIN period p on m.period_id=p.period_id -->
+	 where m.user_id=#{userId}
+	  <if test="type==0">
+       and  m.is_used in ('0','U') /**待就医**/
+	  </if> 
+	  <if test="type==1">
+	  <!--  /**预约记录 [所有]需要分页**/
+        and (m.is_used in ('0','1','3','U') or m.status='3')  -->
+	  </if> 
+      order by m.order_time desc,m.period_id  
+    <if test="startRow != null and endRow!=null">
+	 	<include refid="com.unique.core.fenye2"></include>
+	</if>
+  </select>
+  <!-- 我的预约总数-->
+  <select id="myReservationCount" parameterType="map" resultType="long">
+	  select count(m.reg_id) from mc_reg m
+	 left join user_friend uf on uf.friend_id=m.friend_id  
+	 left join dep d on d.dep_id=m.dep_id
+	 where m.user_id=#{userId}
+	  <if test="type==0">
+       and  m.is_used in ('0','U') /**待就医**/
+	  </if> 
+	  <if test="type==1">
+       and (m.is_used in ('0','1','3','U') or m.status='3')  /**预约记录  需要分页**/
+	  </if> 
+  </select>
+  
+  
+   <resultMap type="com.unique.reg.vo.ReservationDetails" id="ReservationDetailsMap">
+    <result column="org_id" property="orgId" jdbcType="DECIMAL" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="dep_name" property="depName" jdbcType="VARCHAR" />
+    <result column="order_time" property="orderTime" jdbcType="TIMESTAMP" />
+    <result column="is_used" property="isUsed" jdbcType="VARCHAR" />
+    <result column="user_name" property="patientName" jdbcType="VARCHAR"/>
+    <result column="sex" property="sex" jdbcType="VARCHAR"/>
+    <result column="mobile" property="telPhone" jdbcType="VARCHAR"/>
+    <result column="USER_IDCARD" property="idCard" jdbcType="VARCHAR"/>
+    <result column="card_type_name" property="cardType" jdbcType="VARCHAR"/>
+    <result column="card_no" property="cardNo" jdbcType="VARCHAR"/>
+    <result column="reg_id" property="regId" jdbcType="DECIMAL"/>
+    <result column="period_name" property="periodName" jdbcType="VARCHAR"/>
+    <result column="period_id" property="periodId" jdbcType="DECIMAL"/>
+    <result column="imageUrl" property="imageUrl" jdbcType="VARCHAR"/>
+    <result column="his_user_id" property="hisUserId" jdbcType="VARCHAR"/>
+    <result column="reservation_no" property="reservationNo" jdbcType="VARCHAR"/>
+  </resultMap>
+  <!-- 预约详情 -->
+  <select id="reservationDetails" parameterType="string" resultMap="ReservationDetailsMap">
+     select 
+	 	m.reg_id,o.org_id,o.org_name,m.staff_name,d.dep_name,u.user_name,u.mobile,m.is_used,u.USER_IDCARD,
+	    decode(u.user_sex,1,'男',2,'女','未知') sex, cms.hlink_to imageUrl,m.APPOINT_CODE reservation_no, 
+	    m.order_time, m.period_name,m.period_id,
+	    tm.card_no,tm.card_type_name,m.his_user_id
+	 from mc_reg  m
+	 left join user_friend u on m.friend_id=u.friend_id
+	 left join org o on m.org_id=o.org_id
+	 left join dep d on m.dep_id=d.dep_id 
+	 left join (select mc_card.user_id,mc_card.friend_id,mc_card.card_no,card_type.card_type_name 
+   		from mc_card ,card_type where mc_card.card_type_id=card_type.card_type_id and card_type.status in ('C','U') and mc_card.status in ('C','U') ) tm
+ 	 on tm.friend_id = u.friend_id
+ 	 left join cms_img_lib cms on cms.user_id=u.user_id 
+ 	 where m.reg_id=#{regId}
+  </select>
+  
+  <select id="getCanRegNums" parameterType="string" resultType="long">
+   <![CDATA[
+      select nvl(sum(
+		  case when mc_duty.reg_num=0 then 0
+		  when mc_duty.reg_num>0 then mc_duty.reg_num_remain
+		  else 300 end
+		),0) as num from mc_duty
+		left join staff on staff.staff_id = mc_duty.staff_id
+		where mc_duty.staff_id = #{staffId}
+		and mc_duty.status in ('C','U')
+		and mc_duty.duty_date > sysdate
+		and  mc_duty.duty_date < sysdate + nvl(staff.duty_date_num,7) + 1
+  ]]>
+  </select>
+  
+  <!-- 
+  <![CDATA[
+      select  nvl(sum(
+		  case when mc_duty.reg_num=0 then 0
+		  when mc_duty.reg_num>0 and mc_duty.reg_num >= mc_duty.reg_num_remain  then mc_duty.reg_num-mc_duty.reg_num_remain
+		  else 300 end
+		),0) as num from mc_duty
+		left join staff on staff.staff_id = mc_duty.staff_id
+		where mc_duty.staff_id = #{staffId}
+		and mc_duty.status in ('C','U')
+		and mc_duty.duty_date > sysdate
+		and  mc_duty.duty_date < sysdate + nvl(staff.duty_date_num,7) + 1
+  ]]>
+   -->
+  <!-- 预约量 -->
+  <select id="getBeReservedRegNums" parameterType="string" resultType="long">
+      select count(1)  from mc_reg where staff_id=#{staffId} and IS_USED in('0','1','2')
+  </select>
+</mapper>

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.mcproduct" >
+  <resultMap id="productResultMap" type="com.unique.order.po.McProduct" >
+    <id column="MC_PRODUCT_ID" property="mcProductId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL" />
+    <result column="ORG_ORG_ID" property="orgOrgId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="RECOUP_WAY" property="recoupWay" jdbcType="CHAR" />
+    <result column="product_image" property="productImage" jdbcType="VARCHAR" />
+    <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="org_name" property="orgName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.unique.order.po.McProduct" id="productDesResultMap" extends="productResultMap">
+    <result column="PRODUCT_NUM" property="productNum" jdbcType="DECIMAL" />
+    <result column="SUB_HEAD" property="subHead" jdbcType="VARCHAR" />
+    <result column="BUY_NOTICE" property="buyNotice" jdbcType="CLOB" typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="PROCESS" property="process" jdbcType="CLOB" typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  
+  <resultMap id="priceResultMap" type="com.unique.reg.po.ProductPrice" >
+    <id column="PRICE_ID" property="priceId" jdbcType="DECIMAL" />
+    <result column="TYPE_ID" property="typeId" jdbcType="DECIMAL" />
+    <result column="MC_PRODUCT_ID" property="mcProductId" jdbcType="DECIMAL" />
+    <result column="USER_TYPE_ID" property="userTypeId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_CHARACTER_ID" property="productCharacterId" jdbcType="DECIMAL" />
+    <result column="SALE_TYPE_ID" property="saleTypeId" jdbcType="DECIMAL" />
+    <result column="AREA_ID" property="areaId" jdbcType="DECIMAL" />
+    <result column="QUANTITY_RULE_ID" property="quantityRuleId" jdbcType="DECIMAL" />
+    <result column="AMOUNT_RULE_ID" property="amountRuleId" jdbcType="DECIMAL" />
+    <result column="PRICE_AMOUNT" property="priceAmount" jdbcType="DECIMAL" />
+    <result column="PERCENT" property="percent" jdbcType="DECIMAL" />
+    <result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="STAFF_TYPE_ID" property="staffTypeId" jdbcType="DECIMAL" />
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="productTypeResultMap" type="com.unique.order.po.ProductType" >
+    <id column="PRODUCT_TYPE_ID" property="productTypeId" jdbcType="DECIMAL" />
+    <result column="PRO_PRODUCT_TYPE_ID" property="proProductTypeId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="TYPE_ATT" property="typeAtt" jdbcType="CHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="productChannelResultMap" type="com.unique.order.po.McProductChannel" >
+    <id column="PRODUCT_CHANNEL_ID" property="productChannelId" jdbcType="DECIMAL" />
+    <result column="CHANNEL_ID" property="channelId" jdbcType="DECIMAL" />
+    <result column="MC_PRODUCT_ID" property="mcProductId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="CHANNEL_NAME" property="channelName" jdbcType="VARCHAR" />
+    <result column="DIVIDE_WAY" property="divideWay" jdbcType="CHAR" />
+    <result column="DIVIDE_VALUE" property="divideValue" jdbcType="DECIMAL" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="OTHER" />
+  </resultMap>
+  
+  <resultMap id="orderPayResultMap" type="com.unique.order.po.McOrderPay" >
+    <id column="ORDER_PAY_ID" property="orderPayId" jdbcType="DECIMAL" />
+    <result column="PAY_WAY_ID" property="payWayId" jdbcType="DECIMAL" />
+    <result column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+    <result column="PAY_NO" property="payNo" jdbcType="VARCHAR" />
+    <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="PAY_MONEY" property="payMoney" jdbcType="DECIMAL" />
+    <result column="POUNDAGE" property="poundage" jdbcType="DECIMAL" />
+    <result column="PAY_STATUS" property="payStatus" jdbcType="CHAR" />
+    <result column="PAY_ACCT" property="payAcct" jdbcType="VARCHAR" />
+    <result column="PAY_BANK" property="payBank" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getProductById" parameterType="string" resultMap="productDesResultMap">
+  	select mc_product.*,org.org_name,cms_img_lib.HLINK_TO product_image,product_type.name product_type_name from mc_product
+  	left join org on org.org_id=mc_product.org_id
+	left join  cms_img_lib on cms_img_lib.PRODUCT_ID=mc_product.mc_product_id
+	left join product_category on mc_product.mc_product_id = product_category.mc_product_id
+    left join product_type on product_type.product_type_id=product_category.product_type_id
+  	where mc_product.MC_PRODUCT_ID = #{pid}
+  </select>
+  
+  <select id="getProductPricesByProductId" parameterType="map" resultMap="priceResultMap">
+	  select product_price.*,product_price_type.type_code,product_price_type.type_name from product_price 
+	left join product_price_type on product_price_type.type_id = product_price.type_id
+	where product_price.mc_product_id = #{pid}
+	<if test="staffTypeId!=null">
+	  and product_price.staff_type_id = #{staffTypeId}
+	</if>
+  </select>
+  
+  <select id="getProductTypeByProduct" parameterType="string" resultMap="productTypeResultMap">
+  select * from (
+  	select product_type.* from mc_product 
+	left join product_category on product_category.mc_product_id = mc_product.mc_product_id
+	left join product_type on product_type.product_type_id = product_category.product_type_id
+	where 
+	mc_product.mc_product_id = #{pid}
+	) where rownum = 1
+  </select>
+  
+  <select id="getProductsByParentId" parameterType="string" resultMap="productResultMap">
+  select * from mc_product childs
+	left join PRODUCT_COMPOSITION on PRODUCT_COMPOSITION.Child_Product_Id = childs.mc_product_id
+	left join mc_product p on p.mc_product_id = PRODUCT_COMPOSITION.MC_PRODUCT_ID
+	where childs.status = 'C'
+	and p.mc_product_id = #{pid}
+  </select>
+  
+  <select id="getChannelInfoByProduct" resultMap="productChannelResultMap" parameterType="string">
+  select * from MC_PRODUCT_CHANNEL where MC_PRODUCT_CHANNEL.MC_PRODUCT_ID=#{pid}
+  </select>
+  
+  <select id="getProductByStaffTypeId" parameterType="string" resultMap="productResultMap">
+    select distinct 
+           mc_product.MC_PRODUCT_ID,mc_product.ORG_ID,mc_product.UNIT_ID,mc_product.PRODUCT_NAME,
+    	   mc_product.PRODUCT_CODE,mc_product.OPERATOR,mc_product.OP_TIME,mc_product.OPERATOR_NAME,mc_product.STATUS,mc_product.RECOUP_WAY
+    from mc_product
+	left join product_price on product_price.mc_product_id = mc_product.mc_product_id
+	where product_price.staff_type_id = #{staffTypeId}
+  </select>
+  <!-- 根据产品类型和业务ID获取交易记录 -->
+  <select id="getOrderPayByProductCodeAndId" parameterType="map" resultMap="orderPayResultMap">
+	select * from mc_order_pay 
+	left join mc_order_det on mc_order_pay.order_id = mc_order_det.order_id
+	left join product_type on product_type.product_type_id= mc_order_det.product_type_id
+	where mc_order_det.product_to_id = #{toId}
+	and product_type.code = #{typeCode}
+  </select>
+  
+  <select id="getProductTypeById" resultMap="productTypeResultMap" parameterType="string">
+  select * from product_type where product_type.product_type_id = #{pid}
+  </select>
+  
+  
+  <select id="getGhProductByOrg" resultMap="productResultMap" parameterType="string">
+    select * from mc_product where mc_product.org_id = #{orgId} and mc_product.product_code = 'GH' and mc_product.status = 'C'
+  </select>
+  
+  
+  <!-- 根据产品类型获取产品分页 -->
+  <select id="getProductsByType" parameterType="map" resultMap="productDesResultMap">
+  	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  select mc_product.*,cms_img_lib.HLINK_TO product_image from mc_product
+	  left join  cms_img_lib on cms_img_lib.PRODUCT_ID=mc_product.mc_product_id
+	   where mc_product.mc_product_id in
+	  (
+	  select distinct mc_product.mc_product_id from mc_product 
+	  left join product_category on product_category.mc_product_id = mc_product.mc_product_id
+	  left join product_type on product_type.product_type_id = product_category.product_type_id
+	  where mc_product.status='U' and product_type.type_att = #{typeAttr}
+	  )
+	  order by 1 desc
+   	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+    <select id="getProductsByType_Count" parameterType="map" resultType="long">
+        select count(*) from mc_product where mc_product.mc_product_id in
+        (
+		  select distinct mc_product.mc_product_id from mc_product 
+		  left join product_category on product_category.mc_product_id = mc_product.mc_product_id
+		  left join product_type on product_type.product_type_id = product_category.product_type_id
+		  where mc_product.status='U' and product_type.type_att = #{typeAttr}
+	  	)
+  </select>
+  
+    <update id="changeProductNum" parameterType="map">
+        update mc_product set mc_product.product_num=mc_product.product_num + #{num} where mc_product.mc_product_id =  #{productId}
+    </update>
+    
+    <select id="getProductByCode" parameterType="map" resultMap="productDesResultMap">
+        select * from mc_product where mc_product.product_code = #{code}
+		and mc_product.org_id = #{orgId}
+    </select>
+    
+  <select id="getOrderPayByOrderId" parameterType="string" resultMap="orderPayResultMap">
+  	select * from mc_order_pay where mc_order_pay.order_id = #{orderId} and mc_order_pay.pay_status = 3
+  </select>
+</mapper>

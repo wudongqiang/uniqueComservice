@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.mb" >
+  <resultMap id="testResultMap" type="com.unique.mb.po.UserHypertensionTest" >
+    <id column="TEST_ID" property="testId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+    <result column="USER_DEVICE_ID" property="userDeviceId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME" property="testTime" jdbcType="TIMESTAMP" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="HIGH_TENSION" property="highTension" jdbcType="DECIMAL" />
+    <result column="LOW_TENSION" property="lowTension" jdbcType="DECIMAL" />
+    <result column="HEART_RATE" property="heartRate" jdbcType="DECIMAL" />
+    <result column="TEST_RESULT" property="testResult" jdbcType="VARCHAR" />
+    <result column="INPUT_MODE" property="inputMode" jdbcType="CHAR" />
+    <result column="USER_DEVICE_CODE" property="userDeviceCode" jdbcType="VARCHAR" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="userHyperTensionTimeResultMap" type="com.unique.mb.po.UserHypertensionTestByTime" >
+    <id column="H" property="h" jdbcType="VARCHAR" />
+    <result column="D" property="d" jdbcType="VARCHAR" />
+    <result column="MAX_HIGH_TENSION" property="maxHighTension" jdbcType="DECIMAL" />
+    <result column="MIN_HIGH_TENSION" property="minHighTension" jdbcType="DECIMAL" />
+    <result column="MAX_LOW_TENSION" property="maxLowTension" jdbcType="TIMESTAMP" />
+    <result column="MIN_LOW_TENSION" property="minLowTension" jdbcType="VARCHAR" />
+    <result column="MAX_HEART_RATE" property="maxHeartRate" jdbcType="DECIMAL" />
+    <result column="MIN_HEART_RATE" property="minHeartRate" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <resultMap id="userTestResultResultMap" type="com.unique.mb.po.UserTestResult" >
+    <id column="TEST_RESULT_ID" property="testResultId" jdbcType="DECIMAL" />
+    <result column="EQUP_ID" property="equpId" jdbcType="DECIMAL" />
+    <result column="USER_DEVICE_ID" property="userDeviceId" jdbcType="DECIMAL" />
+    <result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME" property="testTime" jdbcType="TIMESTAMP" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="TEST_ITME_NAME" property="testItmeName" jdbcType="VARCHAR" />
+    <result column="TEST_ITEM_REFERENCE" property="testItemReference" jdbcType="VARCHAR" />
+    <result column="TEST_ITEM_UNIT" property="testItemUnit" jdbcType="VARCHAR" />
+    <result column="TEST_RESULT" property="testResult" jdbcType="VARCHAR" />
+    <result column="RESULT_LIFT" property="resultLift" jdbcType="VARCHAR" />
+    <result column="INPUT_MODE" property="inputMode" jdbcType="CHAR" />
+    <result column="USER_DEVICE_CODE" property="userDeviceCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="CUSTOM1" property="custom1" jdbcType="VARCHAR" />
+    <result column="CUSTOM2" property="custom2" jdbcType="VARCHAR" />
+    <result column="CUSTOM3" property="custom3" jdbcType="VARCHAR" />
+    <result column="CUSTOM4" property="custom4" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="equpResultMap" type="com.unique.mb.po.EqupType" >
+    <id column="EQUP_ID" property="equpId" jdbcType="DECIMAL" />
+    <result column="EQUP_CODE" property="equpCode" jdbcType="VARCHAR" />
+    <result column="EQUP_NAME" property="equpName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.unique.mb.po.UserTestByTime" id="UserTestByTimeResultMap">
+      <id column="D" property="d" jdbcType="VARCHAR" />
+      <id column="H" property="h" jdbcType="DECIMAL" />
+      <id column="VALUE" property="value" jdbcType="DECIMAL" />
+      <id column="D_VALUE" property="dValue" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="UserTestTime" type="com.unique.mb.po.UserTestTime">
+        <result property="testTimeId" column="TEST_TIME_ID" jdbcType="DECIMAL"/>
+        <result property="kpiId" column="KPI_ID" jdbcType="DECIMAL"/>
+        <result property="testBeginTime" column="TEST_BEGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="testEndTime" column="TEST_END_TIME" jdbcType="TIMESTAMP"/>
+        <result property="referenceBegin" column="REFERENCE_BEGIN" jdbcType="DECIMAL"/>
+        <result property="referenceEnd" column="REFERENCE_END" jdbcType="DECIMAL"/>
+        <result property="alertTime" column="ALERT_TIME" jdbcType="TIMESTAMP"/>
+        <result property="alertCon" column="ALERT_CON" jdbcType="VARCHAR"/>
+        <result property="opTime" column="OP_TIME" jdbcType="TIMESTAMP"/>
+        <result property="opeator" column="OPEATOR" jdbcType="DECIMAL"/>
+        <result property="testTimeName" column="TEST_TIME_NAME" jdbcType="VARCHAR"/>
+	</resultMap>
+  
+  <insert id="addTest" parameterType="com.unique.mb.po.UserHypertensionTest" >
+     <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_USER_HYPERTENSION_TEST.nextval as testId from dual
+     </selectKey>
+    insert into USER_HYPERTENSION_TEST (TEST_ID, USER_ID, SOURCE_ID, 
+      USER_DEVICE_ID, TEST_TIME, USER_NAME, 
+      HIGH_TENSION, LOW_TENSION, HEART_RATE, 
+      TEST_RESULT, INPUT_MODE, USER_DEVICE_CODE, 
+      DEVICE_TOKEN, STATUS)
+    values (#{testId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{sourceId,jdbcType=DECIMAL}, 
+      #{userDeviceId,jdbcType=DECIMAL}, #{testTime,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}, 
+      #{highTension,jdbcType=DECIMAL}, #{lowTension,jdbcType=DECIMAL}, #{heartRate,jdbcType=DECIMAL}, 
+      #{testResult,jdbcType=VARCHAR}, #{inputMode,jdbcType=CHAR}, #{userDeviceCode,jdbcType=VARCHAR}, 
+      #{deviceToken,jdbcType=VARCHAR}, #{status,jdbcType=CHAR})
+  </insert>
+  
+  <select id="getTestPage" parameterType="map" resultMap="testResultMap">
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  	select * from USER_HYPERTENSION_TEST where user_id = #{userId}
+	  	order by USER_HYPERTENSION_TEST.TEST_TIME DESC
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+   <select id="getTestPageCount" parameterType="map" resultType="long">
+	  	select count(*) from USER_HYPERTENSION_TEST where user_id = #{userId}
+  </select>
+  
+  <resultMap id="UserHypertensionTestDto" type="com.unique.mb.po.UserHypertensionTestDto">
+        <result property="date" column="testTime"  jdbcType="VARCHAR"/>
+		<result property="maxHighTension" column="max_high_tension" jdbcType="DECIMAL"/>
+		<result property="minHighTension" column="min_high_tension" jdbcType="DECIMAL"/>
+		<result property="maxLowTension" column="max_low_tension" jdbcType="DECIMAL"/>
+		<result property="minLowTension" column="min_low_tension" jdbcType="DECIMAL"/>
+		<result property="maxHeartRate" column="max_heart_rate" jdbcType="DECIMAL"/>
+		<result property="minHeartRate" column="min_heart_rate" jdbcType="DECIMAL"/>
+	</resultMap>
+	<!-- （高血压,心率） 查询用户检测数据，得到当前时间的数据 -->
+	<select id="getUserHypertensionTestDays" parameterType="string" resultMap="testResultMap">
+		select m.* from USER_HYPERTENSION_TEST  m
+        where m.user_id=#{userId} and to_char(m.test_time,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+	</select>
+    <!-- （高血压,心率） 查询用户检测数据，得到周或月的数据 -->
+	<select id="getUserHypertensionTestWeeksAndMonth" parameterType="map" resultMap="UserHypertensionTestDto">
+		select to_char(test_time,'yyyy-mm-dd') testTime,
+	       max(high_tension) max_high_tension,min(high_tension) min_high_tension ,
+	       max(low_tension) max_low_tension,min(low_tension) min_low_tension ,
+	       max(heart_rate) max_heart_rate,min(heart_rate) min_heart_rate 
+ 		from USER_HYPERTENSION_TEST  
+        where user_id=#{userId}
+       	  <if test="type == 'weeks'">
+			and to_char(test_time,'yyyy-mm-dd') between to_char(sysdate-7,'yyyy-mm-dd') and to_char(sysdate,'yyyy-mm-dd')
+       	  </if> 
+       	  <if test="type == 'month'">
+       	  	and to_char(test_time,'yyyy-mm-dd') between to_char(sysdate-28,'yyyy-mm-dd') and to_char(sysdate,'yyyy-mm-dd')
+       	  </if> 
+       	group by to_char(test_time,'yyyy-mm-dd') order by to_char(test_time,'yyyy-mm-dd')
+	</select>
+  
+	
+	<select id="getUserHypertensionTestByDay" parameterType="map" resultMap="userHyperTensionTimeResultMap">
+	<![CDATA[
+	    select t.h,
+	    		'' as D,
+		       avg(t.HIGH_TENSION) as max_high_tension,
+		       avg(t.HIGH_TENSION) as min_high_tension,
+		       avg(t.LOW_TENSION) as max_low_tension,
+		       avg(t.LOW_TENSION) as min_low_tension,
+		       avg(t.HEART_RATE) as max_heart_rate,
+		       avg(t.HEART_RATE) as min_heart_rate
+		 from 
+		(
+		select USER_HYPERTENSION_TEST.*,
+		       to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24') as h
+		 from USER_HYPERTENSION_TEST
+		where
+		 USER_HYPERTENSION_TEST.User_Id = #{userId} 
+		and USER_HYPERTENSION_TEST.Test_Time >= #{time}
+		and  USER_HYPERTENSION_TEST.Test_Time < #{time}+1
+		) t
+		group by t.h
+		order by t.h
+	]]>
+	</select>
+  
+	<select id="getUserHypertensionTestByWeekAndMonth" parameterType="map" resultMap="userHyperTensionTimeResultMap">
+	<![CDATA[
+		select 
+				'' as h,
+				t.d,
+		       max(t.HIGH_TENSION) as max_high_tension,
+		       min(t.HIGH_TENSION) as min_high_tension,
+		       max(t.LOW_TENSION) as max_low_tension,
+		       min(t.LOW_TENSION) as min_low_tension,
+		       max(t.HEART_RATE) as max_heart_rate,
+		       min(t.HEART_RATE) as min_heart_rate
+		 from 
+		(
+		select USER_HYPERTENSION_TEST.*,
+		       to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd') as d
+		 from USER_HYPERTENSION_TEST
+		where 
+		USER_HYPERTENSION_TEST.User_Id = #{userId} 
+	]]>
+	<if test="type=='week'">
+	    <![CDATA[
+	    and USER_HYPERTENSION_TEST.Test_Time >= #{time} - 6
+		and  USER_HYPERTENSION_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<if test="type=='month'">
+	    <![CDATA[
+	    and USER_HYPERTENSION_TEST.Test_Time >= #{time}- 27
+		and  USER_HYPERTENSION_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<![CDATA[
+		) t
+		group by t.d
+		order by t.d
+	]]>
+	</select>
+	
+	<select id="getUserHypertensionTestByDayAvg" parameterType="map" resultMap="userHyperTensionTimeResultMap">
+	<![CDATA[
+		select 
+		       to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd hh24:mi:ss') as h,
+           USER_HYPERTENSION_TEST.High_Tension as max_high_tension,
+           USER_HYPERTENSION_TEST.High_Tension as min_high_tension,
+           USER_HYPERTENSION_TEST.Low_Tension as max_low_tension,
+           USER_HYPERTENSION_TEST.Low_Tension as min_low_tension,
+           USER_HYPERTENSION_TEST.Heart_Rate as max_heart_rate,
+           USER_HYPERTENSION_TEST.Heart_Rate as min_heart_rate
+		 from USER_HYPERTENSION_TEST
+		where
+		 USER_HYPERTENSION_TEST.User_Id = #{userId} 
+		and USER_HYPERTENSION_TEST.Test_Time >= #{time}
+		and  USER_HYPERTENSION_TEST.Test_Time < #{time}+1
+		order by to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd hh24:mi:ss')
+	]]>
+	</select>
+  
+	<select id="getUserHypertensionTestByWeekAndMonthAvg" parameterType="map" resultMap="userHyperTensionTimeResultMap">
+	<![CDATA[
+		select 
+				t.h,
+				t.d,
+		       avg(t.HIGH_TENSION) as max_high_tension,
+		       avg(t.HIGH_TENSION) as min_high_tension,
+		       avg(t.LOW_TENSION) as max_low_tension,
+		       avg(t.LOW_TENSION) as min_low_tension,
+		       avg(t.HEART_RATE) as max_heart_rate,
+		       avg(t.HEART_RATE) as min_heart_rate
+		 from 
+		(
+		select USER_HYPERTENSION_TEST.*,
+		       to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd') as d,
+	           (case when to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24') >= 8 and to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24')<= 9 then 1
+	              when to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24') >= 13 and to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24')<= 14 then 2
+	              when to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24') >= 18 and to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24')<= 19 then 3
+	                 else 4 end 
+	           )  
+	            as h
+		 from USER_HYPERTENSION_TEST
+		where 
+		USER_HYPERTENSION_TEST.User_Id = #{userId} 
+	]]>
+	<if test="type=='week'">
+	    <![CDATA[
+	    and USER_HYPERTENSION_TEST.Test_Time >= #{time} - 6
+		and  USER_HYPERTENSION_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<if test="type=='month'">
+	    <![CDATA[
+	    and USER_HYPERTENSION_TEST.Test_Time >= #{time}- 27
+		and  USER_HYPERTENSION_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<![CDATA[
+		) t
+		where t.h < 4
+		group by t.d,t.h
+		order by t.d
+	]]>
+	</select>
+	
+ <insert id="addUserTestResult" parameterType="com.unique.mb.po.UserTestResult" >
+     <selectKey keyProperty="testResultId" resultType="DECIMAL" order="BEFORE">
+            select seq_user_test_result.nextval as testResultId from dual
+     </selectKey>
+    insert into USER_TEST_RESULT (TEST_RESULT_ID, EQUP_ID, USER_DEVICE_ID, 
+      SOURCE_ID, TEST_TIME, USER_NAME, 
+      TEST_ITME_NAME, TEST_ITEM_REFERENCE, TEST_ITEM_UNIT, 
+      TEST_RESULT, RESULT_LIFT, INPUT_MODE, 
+      USER_DEVICE_CODE, STATUS, CUSTOM1, 
+      CUSTOM2, CUSTOM3, CUSTOM4, 
+      USER_ID)
+    values (#{testResultId,jdbcType=DECIMAL}, #{equpId,jdbcType=DECIMAL}, #{userDeviceId,jdbcType=DECIMAL}, 
+      #{sourceId,jdbcType=DECIMAL}, #{testTime,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}, 
+      #{testItmeName,jdbcType=VARCHAR}, #{testItemReference,jdbcType=VARCHAR}, #{testItemUnit,jdbcType=VARCHAR}, 
+      #{testResult,jdbcType=VARCHAR}, #{resultLift,jdbcType=VARCHAR}, #{inputMode,jdbcType=CHAR}, 
+      #{userDeviceCode,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{custom1,jdbcType=VARCHAR}, 
+      #{custom2,jdbcType=VARCHAR}, #{custom3,jdbcType=VARCHAR}, #{custom4,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getEqIdByTableName" parameterType="string" resultMap="equpResultMap">
+      select * from equp_type where equp_type.table_name = #{tableName}
+  </select>
+  
+  <select id="getUserTestList_day" parameterType="map" resultMap="UserTestByTimeResultMap">
+      select 
+      <if test="kpiCode=='SZY'">
+          USER_HYPERTENSION_TEST.Low_Tension as value,
+      </if>
+      <if test="kpiCode=='SSY'">
+          USER_HYPERTENSION_TEST.High_Tension as value,
+      </if>
+       <if test="kpiCode=='XL'">
+          USER_HYPERTENSION_TEST.HEART_RATE as value,
+      </if>
+      <![CDATA[
+		     to_char(USER_HYPERTENSION_TEST.Test_Time,'hh24') as h,
+		     USER_HYPERTENSION_TEST.Test_Time as D_VALUE,
+		     '' as d
+		 from USER_HYPERTENSION_TEST 
+		where USER_HYPERTENSION_TEST.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')
+		and USER_HYPERTENSION_TEST.Test_Time < to_date('${nowdate}','yyyy-mm-dd') + 1
+		and USER_HYPERTENSION_TEST.User_Id = #{userId}
+		order by USER_HYPERTENSION_TEST.Test_Time
+	]]>
+  </select>
+  
+   <select id="getUserTestList_weekAndMonth" parameterType="map" resultMap="UserTestByTimeResultMap">
+      select 
+      <if test="kpiCode=='SZY'">
+          floor(avg(USER_HYPERTENSION_TEST.Low_Tension)) as value,
+      </if>
+      <if test="kpiCode=='SSY'">
+          floor(avg(USER_HYPERTENSION_TEST.High_Tension)) as value,
+      </if>
+       <if test="kpiCode=='XL'">
+          floor(avg(USER_HYPERTENSION_TEST.HEART_RATE)) as value,
+      </if>
+      <![CDATA[
+		     0 as h,
+		     null as D_VALUE,
+		     to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd') as d
+		 from USER_HYPERTENSION_TEST 
+		where 
+		 USER_HYPERTENSION_TEST.User_Id = #{userId}
+	]]>
+	<if test="testTimeId!=null">
+		<![CDATA[ 
+		and USER_HYPERTENSION_TEST.test_time_id = #{testTimeId}
+		]]>
+	</if>
+	<if test="type==2">
+	    <![CDATA[
+	    and USER_HYPERTENSION_TEST.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')-6
+	    ]]>
+	</if>
+	<if test="type==3">
+	    <![CDATA[
+	    and USER_HYPERTENSION_TEST.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')-27
+	     ]]>
+	</if>
+	<![CDATA[
+	and USER_HYPERTENSION_TEST.Test_Time < to_date('${nowdate}','yyyy-mm-dd') + 1
+		group by to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd')
+		order by to_char(USER_HYPERTENSION_TEST.Test_Time,'yyyy-mm-dd')
+	]]>
+  </select>
+  
+   
+  <select id="getUserTestXTList_day" parameterType="map" resultMap="UserTestByTimeResultMap">
+      <![CDATA[
+      select 
+		round(avg(test_value),2) as value,
+		h,
+		max(d) as d,
+		null as D_VALUE
+	 from (
+      	select user_blood_sugar_test.test_value,
+     		user_blood_sugar_test.test_time_id as h,
+     		'' as d
+		 from user_blood_sugar_test
+		where user_blood_sugar_test.Test_Time > to_date('${nowdate}','yyyy-mm-dd')
+		and user_blood_sugar_test.Test_Time < to_date('${nowdate}','yyyy-mm-dd') + 1
+		and user_blood_sugar_test.User_Id = #{userId}
+		) tb
+		where tb.h is not null
+		group by tb.h
+		order by tb.h
+	]]>
+  </select>
+  
+  <select id="getUserTestXTList_weekAndMonth" parameterType="map" resultMap="UserTestByTimeResultMap">
+     <![CDATA[ 
+      select round(avg(user_blood_sugar_test.test_value),2) as value,
+		     0 as h,
+		     to_char(user_blood_sugar_test.Test_Time,'yyyy-mm-dd') as d,
+		     null as D_VALUE
+		 from user_blood_sugar_test 
+		where user_blood_sugar_test.User_Id = #{userId}
+	]]>
+	<![CDATA[ 
+	 and user_blood_sugar_test.Test_Time < to_date('${nowdate}','yyyy-mm-dd') + 1
+	]]>
+	<if test="type==2">
+	    <![CDATA[
+	    and user_blood_sugar_test.Test_Time >= to_date('${nowdate}','yyyy-mm-dd') - 6
+	    ]]>
+	</if>
+	<if test="type==3">
+	    <![CDATA[
+	    and user_blood_sugar_test.Test_Time >= to_date('${nowdate}','yyyy-mm-dd') - 27
+	     ]]>
+	</if>
+	<if test="testTimeId!=null">
+		<![CDATA[ 
+		and user_blood_sugar_test.test_time_id = #{testTimeId}
+		]]>
+	</if>
+	<![CDATA[
+		group by to_char(user_blood_sugar_test.Test_Time,'yyyy-mm-dd')
+		order by to_char(user_blood_sugar_test.Test_Time,'yyyy-mm-dd')
+	]]>
+  </select>
+  
+  <select id="getTestTimeById" parameterType="string" resultMap="UserTestTime">
+      select * from test_time where test_time.test_time_id = #{testTimeId}
+  </select>
+  
+  <select id="getTestTimeIdByTime" parameterType="map" resultType="String">
+   <![CDATA[
+   select test_time.test_time_id  from test_time 
+   left join healthy_test_plan_det on healthy_test_plan_det.test_time_id = test_time.test_time_id
+   left join healthy_test_plan on healthy_test_plan.plan_id = healthy_test_plan_det.plan_id
+    where
+    #{time} >= to_date(to_char(#{time},'yyyy-MM-dd ') ||  to_char(test_time.test_begin_time,'hh24:mi'),'yyyy-MM-dd hh24:mi' ) 
+    and  #{time} <= to_date(to_char(#{time},'yyyy-MM-dd ') ||  to_char(test_time.test_end_time,'hh24:mi'),'yyyy-MM-dd hh24:mi' ) 
+    and rownum=1 and healthy_test_plan_det.kpi_id=(
+    	select survey_kpi.kpi_id from survey_kpi where survey_kpi.kpi_code = #{kpiCode} and rownum=1
+    )
+     and healthy_test_plan.status='C'
+    and healthy_test_plan.user_id = #{userId}
+   ]]>
+  </select>
+  
+ <update id="updateUserHypertensionTestById" parameterType="map" >
+    update USER_HYPERTENSION_TEST
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceId != null" >
+        SOURCE_ID = #{sourceId,jdbcType=DECIMAL},
+      </if>
+      <if test="userDeviceId != null" >
+        USER_DEVICE_ID = #{userDeviceId,jdbcType=DECIMAL},
+      </if>
+      <if test="testTime != null" >
+        TEST_TIME = #{testTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="highTension != null" >
+        HIGH_TENSION = #{highTension,jdbcType=DECIMAL},
+      </if>
+      <if test="lowTension != null" >
+        LOW_TENSION = #{lowTension,jdbcType=DECIMAL},
+      </if>
+      <if test="heartRate != null" >
+        HEART_RATE = #{heartRate,jdbcType=DECIMAL},
+      </if>
+      <if test="testResult != null" >
+        TEST_RESULT = #{testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="inputMode != null" >
+        INPUT_MODE = #{inputMode,jdbcType=CHAR},
+      </if>
+      <if test="userDeviceCode != null" >
+        USER_DEVICE_CODE = #{userDeviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="deviceToken != null" >
+        DEVICE_TOKEN = #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="isAlarm != null" >
+        IS_ALARM = #{isAlarm,jdbcType=CHAR},
+      </if>
+      <if test="testTimeId != null" >
+        TEST_TIME_ID = #{testTimeId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where TEST_ID = #{testId}
+  </update>
+  
+ <select id="getHypertensionInfo" parameterType="string" resultMap="testResultMap">
+     select * from user_hypertension_test where test_id = #{testId}
+ </select>
+ 
+ <select id="getHypertensionByWeek" parameterType="map" resultType="map" >
+ <![CDATA[
+     select round(avg(t.high_tension),2) as high_tension,
+       round(avg(t.low_tension),2) as low_tension,
+       max(test_result_det.alert_grade) as alert_grade
+	 from user_hypertension_test t
+	 left join test_result on test_result.test_id = t.test_id
+	 left join test_result_det on test_result_det.test_result_id = test_result.test_result_id
+	where t.test_time_id is not null
+	and t.test_time >= to_date('${nowdate}','yyyy-mm-dd') - 6
+	and t.test_time < to_date('${nowdate}','yyyy-mm-dd') + 1
+	and t.user_id= #{userId}
+	group by to_char(t.test_time,'yyyy-MM-dd') || ' ' || t.test_time_id
+  ]]>
+ </select>
+</mapper>

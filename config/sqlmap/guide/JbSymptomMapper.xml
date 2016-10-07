@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.guide.symptiom" >
+  <resultMap id="symptomResultMap" type="com.unique.guide.po.JbSymptom" >
+    <id column="SY_ID" property="syId" jdbcType="DECIMAL" />
+    <result column="SY_CODE" property="syCode" jdbcType="VARCHAR" />
+    <result column="SY_NAME" property="syName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="SY_IMG" property="syImg" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="SY_CAUSE_TXT" property="syCauseTxt" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="SY_DIAGNOSIS_TXT" property="syDiagnosisTxt" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+    <result column="SY_TXT" property="syTxt" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  <select id="getSymptoms4Lucence" resultMap="symptomResultMap" parameterType="map">
+  select * from jb_symptom where 1=1
+  <if test="lastTime!=null">
+  <![CDATA[
+   and jb_symptom.op_time > #{lastTime}
+  ]]>
+  </if>
+  <if test="ids != null" >
+ 	 and jb_symptom.sy_id in (
+  	<foreach collection="ids" item="id" separator=",">
+  	#{id}
+  	</foreach>
+  	)
+  </if>
+  </select>
+  
+ <select id="getSymptoms" parameterType="map" resultMap="symptomResultMap">
+  	select jb_symptom.* from jb_symptom
+	left join jb_body_symptom_ref on jb_body_symptom_ref.sy_id = jb_symptom.sy_id
+	where 1=1
+	<if test="sex!=null">
+		and (jb_body_symptom_ref.sex= #{sex} or jb_body_symptom_ref.sex= '0')
+	</if>
+	<if test="bodyId!=null">
+		and jb_body_symptom_ref.bp_id = #{bodyId}
+	</if>
+	<if test="syId!=null">
+		and jb_symptom.sy_id = #{syId}
+	</if>
+	order by jb_symptom.op_time
+  </select>
+  
+  
+  <select id="getSymptomsByBs" parameterType="map" resultMap="symptomResultMap">
+  	select * from jb_symptom where jb_symptom.sy_id in
+	(
+	select sy_main_follow.fsy_id from sy_main_follow
+	left join jb_body_symptom_ref on jb_body_symptom_ref.sy_id = sy_main_follow.zsy_id
+	where 1=1
+	<if test="zsyId!=null">
+		and sy_main_follow.zsy_id = #{zsyId}
+	</if>
+	<if test="bpId!=null">
+		and jb_body_symptom_ref.bp_id = #{bpId}
+	</if>
+	<if test="sex!=null">
+		and (jb_body_symptom_ref.sex = #{sex} or jb_body_symptom_ref.sex = '0')
+	</if>
+	)
+  </select>
+  
+  <!-- 获取伴随症状，根据主症状 -->
+  <select id="getBsSyByZzz" parameterType="map" resultMap="symptomResultMap">
+	select jb_symptom.* from jb_symptom
+	left join sy_main_follow on sy_main_follow.fsy_id = jb_symptom.sy_id
+	where sy_main_follow.zsy_id in (
+  	<foreach collection="syIds" item="id" separator=",">
+  	#{id}
+  	</foreach>
+	)
+  </select>
+   
+   <!-- 主症状与伴随症状关系 -->
+   <resultMap id="SyMainFollowMap" type="com.unique.guide.po.SyMainFollow">
+        <result property="syRelatioId" column="SY_RELATIO_ID" jdbcType="DECIMAL"/>
+        <result property="zsyId" column="ZSY_ID" jdbcType="DECIMAL"/>
+        <result property="zsyCode" column="ZSY_CODE" jdbcType="VARCHAR"/>
+        <result property="zsyName" column="ZSY_NAME" jdbcType="VARCHAR"/>
+        <result property="fsyId" column="FSY_ID" jdbcType="DECIMAL"/>
+        <result property="fsyName" column="FSY_NAME" jdbcType="VARCHAR"/>
+        <result property="opTime" column="OP_TIME" jdbcType="TIMESTAMP"/>
+        <result property="operator" column="OPERATOR" jdbcType="DECIMAL"/>
+        <result property="operatorName" column="OPERATOR_NAME" jdbcType="VARCHAR"/>
+        <result property="fsyCode" column="FSY_CODE" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<select id="getSyMainFollowName" parameterType="map" resultMap="SyMainFollowMap">
+		select * from SY_MAIN_FOLLOW 
+		<where>
+			<if test="zsyIds!=null">
+				and zsy_Id in 
+				<foreach collection="zsyIds" open="(" close=")" item="zsyId" separator=",">
+				#{zsyId}
+				</foreach>
+			</if>
+			<if test="fsyIds!=null">
+				and fsy_Id in 
+				<foreach collection="fsyIds" open="(" close=")" item="fsyId" separator=",">
+				#{fsyId}
+				</foreach>
+			</if>
+		</where>
+	</select>
+   
+</mapper>

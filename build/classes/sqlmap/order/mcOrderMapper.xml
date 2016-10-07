@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.order" >
+   <resultMap id="orderTypeResultMap" type="com.unique.order.po.McOrderType" >
+    <id column="ORDER_TYPE_ID" property="orderTypeId" jdbcType="DECIMAL" />
+    <result column="ORDER_CODE" property="orderCode" jdbcType="VARCHAR" />
+    <result column="ORDER_NAME" property="orderName" jdbcType="VARCHAR" />
+    <result column="SORT_BANK" property="sortBank" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="orderResultMap" type="com.unique.order.po.McOrder" >
+    <id column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+    <result column="ORDER_TYPE_ID" property="orderTypeId" jdbcType="DECIMAL" />
+    <result column="PAY_WAY_ID" property="payWayId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+    <result column="ORDER_NAME" property="orderName" jdbcType="VARCHAR" />
+    <result column="ORDER_MONEY" property="orderMoney" jdbcType="DECIMAL" />
+    <result column="ORDER_STATUS" property="orderStatus" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PAY_NO" property="payNo" jdbcType="VARCHAR" />
+    <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="POUNDAGE" property="poundage" jdbcType="DECIMAL" />
+    <result column="ORIGINAL_MONEY" property="originalMoney" jdbcType="DECIMAL" />
+    <result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL"/>
+    <result column="order_code" property="orderTypeCode" jdbcType="VARCHAR"/>
+    <result column="pay_way_name" property="payWayName" jdbcType="VARCHAR"/>
+    <result column="orderStatusName" property="orderStatusName" jdbcType="VARCHAR"/>
+    <result column="DEP_NAME" property="depName" jdbcType="VARCHAR"/>
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR"/>
+    <result column="ORDER_TIME" property="orderTime" jdbcType="VARCHAR"/> 
+    <result column="PAY_WAY_CODE" property="payWayCode" jdbcType="VARCHAR"/> 
+  </resultMap>
+  
+  <resultMap id="payWayResultMap" type="com.unique.reg.po.PayWay" >
+    <id column="PAY_WAY_ID" property="payWayId" jdbcType="DECIMAL" />
+    <result column="PAY_WAY_CODE" property="payWayCode" jdbcType="VARCHAR" />
+    <result column="REG_WAY_NAME" property="regWayName" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="POUNDAGE" property="poundage" jdbcType="DECIMAL" />
+    <result column="REFUND" property="refund" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="orderDetResultMap" type="com.unique.order.po.McOrderDet" >
+    <id column="ORDER_PRODUCT_ID" property="orderProductId" jdbcType="DECIMAL" />
+    <result column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+    <result column="MC_PRODUCT_ID" property="mcProductId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_TYPE_ID" property="productTypeId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_PRICE" property="productPrice" jdbcType="DECIMAL" />
+    <result column="PRODUCT_NUM" property="productNum" jdbcType="DECIMAL" />
+    <result column="PRODUCT_SUM" property="productSum" jdbcType="DECIMAL" />
+    <result column="PRODUCT_TO_ID" property="productToId" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="ORIGINAL_PRICE" property="originalPrice" jdbcType="DECIMAL" />
+    <result column="PRODUCT_TYPE_CODE" property="productTypeCode" jdbcType="VARCHAR" />
+    <result column="PRODUCT_TYPE_NAME" property="productTypeName" jdbcType="VARCHAR" />
+    
+    <result column="PICK_CODE" property="pickCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="BUY_DESC" property="buyDesc" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="FRIEND_ID" property="friendId" jdbcType="DECIMAL" />
+    
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_PHONE" property="userPhone" jdbcType="VARCHAR" />
+    <result column="ID_CARD" property="idCard" jdbcType="VARCHAR" />
+    <result column="HIS_USER_ID" property="hisUserId" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="CHAR" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="billResultMap" type="com.unique.order.po.McOrderBill" >
+    <id column="BILL_ID" property="billId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="PAY_WAY_ID" property="payWayId" jdbcType="DECIMAL" />
+    <result column="ORDER_TYPE_ID" property="orderTypeId" jdbcType="DECIMAL" />
+    <result column="BILL_TYPE" property="billType" jdbcType="CHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="SRC_ORDER_ID" property="srcOrderId" jdbcType="DECIMAL" />
+    <result column="SRC_ORDER_NO" property="srcOrderNo" jdbcType="VARCHAR" />
+    <result column="BILL_TIME" property="billTime" jdbcType="TIMESTAMP" />
+    <result column="PAY_NO" property="payNo" jdbcType="VARCHAR" />
+    <result column="ORDER_MONEY" property="orderMoney" jdbcType="DECIMAL" />
+    <result column="REAL_MONEY" property="realMoney" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="billDetResultMap" type="com.unique.order.po.McOrderBillDet" >
+    <id column="BILL_ID" jdbcType="DECIMAL" property="billId" />
+    <result column="MC_BILL_ID" jdbcType="DECIMAL" property="mcBillId" />
+    <result column="SRC_BILL_ID" jdbcType="DECIMAL" property="srcBillId" />
+    <result column="BILL_MONEY" jdbcType="DECIMAL" property="billMoney" />
+    <result column="REAL_MONEY" jdbcType="DECIMAL" property="realMoney" />
+    <result column="BILL_NUM" jdbcType="DECIMAL" property="billNum" />
+    <result column="ALL_MONEY" jdbcType="DECIMAL" property="allMoney" />
+    <result column="ALL_REAL_MONEY" jdbcType="DECIMAL" property="allRealMoney" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+  <resultMap id="orderBackResultMap" type="com.unique.order.po.McOrderBack" >
+    <id column="BACK_ORDER_ID" property="backOrderId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+    <result column="ORDER_NAME" property="orderName" jdbcType="VARCHAR" />
+    <result column="ORDER_MONEY" property="orderMoney" jdbcType="DECIMAL" />
+    <result column="ORDER_STATUS" property="orderStatus" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PAY_TIME" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="BACK_REASON" property="backReason" jdbcType="VARCHAR" />
+    <result column="PAY_NO" property="payNo" jdbcType="VARCHAR" />
+    <result column="POUNDAGE" property="poundage" jdbcType="DECIMAL" />
+    <result column="OP_USER_ID" property="opUserId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="orderBackDetResultMap" type="com.unique.order.po.McOrderBackDet" >
+    <id column="BACK_ORDER_DET_ID" property="backOrderDetId" jdbcType="DECIMAL" />
+    <result column="ORDER_ID" property="orderId" jdbcType="DECIMAL" />
+    <result column="MC_PRODUCT_ID" property="mcProductId" jdbcType="DECIMAL" />
+    <result column="ORDER_PRODUCT_ID" property="orderProductId" jdbcType="DECIMAL" />
+    <result column="BACK_ORDER_ID" property="backOrderId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_TYPE_ID" property="productTypeId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_PRICE" property="productPrice" jdbcType="DECIMAL" />
+    <result column="BACK_NUM" property="backNum" jdbcType="DECIMAL" />
+    <result column="BACK_MONEY" property="backMoney" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="sourceResultMap" type="com.unique.order.po.SourceType" >
+    <id column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+    <result column="SOURCE_CODE" property="sourceCode" jdbcType="VARCHAR" />
+    <result column="SOURCE_NAME" property="sourceName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="CLIENT_SYSTEM_ID" property="clientSystemId" jdbcType="DECIMAL" />
+    <result column="CONTACTS_PEOPLE" property="contactsPeople" jdbcType="VARCHAR" />
+    <result column="CONTACTS_PHONE" property="contactsPhone" jdbcType="VARCHAR" />
+    <result column="SOURCE_TYPE" property="sourceType" jdbcType="CHAR" />
+  </resultMap>
+  
+  <select id="getOrderTypeByCode" parameterType="string" resultMap="orderTypeResultMap">
+  	select * from mc_order_type where mc_order_type.order_code=#{orderCode}
+  </select>
+  
+  <insert id="addOrder" parameterType="com.unique.order.po.McOrder" >
+     <selectKey keyProperty="orderId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER.nextval as orderId from dual
+     </selectKey>
+    insert into MC_ORDER (ORDER_ID, ORDER_TYPE_ID, PAY_WAY_ID, 
+      USER_ID, USER_NAME, ORDER_NO, 
+      ORDER_NAME, ORDER_MONEY, ORDER_STATUS, 
+      CREATE_TIME, PAY_NO, PAY_TIME, 
+      POUNDAGE,ORIGINAL_MONEY,SOURCE_ID)
+    values (#{orderId,jdbcType=DECIMAL}, #{orderTypeId,jdbcType=DECIMAL}, #{payWayId,jdbcType=DECIMAL}, 
+      #{userId,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{orderName,jdbcType=VARCHAR}, #{orderMoney,jdbcType=DECIMAL}, #{orderStatus,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{payNo,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{poundage,jdbcType=DECIMAL},#{originalMoney,jdbcType=DECIMAL},#{sourceId,jdbcType=DECIMAL})
+   </insert>
+   
+   <insert id="addOrderDet" parameterType="com.unique.order.po.McOrderDet" >
+      <selectKey keyProperty="orderProductId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_DET.nextval as orderProductId from dual
+     </selectKey>
+    insert into MC_ORDER_DET (ORDER_PRODUCT_ID, ORDER_ID, MC_PRODUCT_ID, 
+      PRODUCT_TYPE_ID, PRODUCT_NAME, PRODUCT_PRICE, 
+      PRODUCT_NUM, PRODUCT_SUM, PRODUCT_TO_ID, 
+      ORG_ID, ORG_NAME,ORIGINAL_PRICE,PICK_CODE,STATUS,BUY_DESC,OPERATOR,OPERATOR_NAME,OP_TIME,FRIEND_ID,
+      USER_NAME,USER_PHONE,ID_CARD,HIS_USER_ID,SEX,CARD_TYPE,CARD_NO)
+    values (#{orderProductId,jdbcType=DECIMAL}, #{orderId,jdbcType=DECIMAL}, #{mcProductId,jdbcType=DECIMAL}, 
+      #{productTypeId,jdbcType=DECIMAL}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, 
+      #{productNum,jdbcType=DECIMAL}, #{productSum,jdbcType=DECIMAL}, #{productToId,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=DECIMAL}, #{orgName,jdbcType=VARCHAR},#{originalPrice,jdbcType=DECIMAL}, #{pickCode,jdbcType=VARCHAR},
+      #{status,jdbcType=DECIMAL},#{buyDesc,jdbcType=VARCHAR},#{operator,jdbcType=DECIMAL},#{operatorName,jdbcType=VARCHAR},
+      #{opTime,jdbcType=TIMESTAMP},#{friendId,jdbcType=DECIMAL},#{userName,jdbcType=VARCHAR},#{userPhone,jdbcType=VARCHAR},
+      #{idCard,jdbcType=VARCHAR},#{hisUserId,jdbcType=VARCHAR},#{sex,jdbcType=CHAR},#{cardType,jdbcType=VARCHAR},
+      #{cardNo,jdbcType=VARCHAR}
+      )
+  </insert>
+    
+  <insert id="addOrderPay" parameterType="com.unique.order.po.McOrderPay" >
+     <selectKey keyProperty="orderPayId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_PAY.nextval as orderPayId from dual
+     </selectKey>
+    insert into MC_ORDER_PAY (ORDER_PAY_ID, PAY_WAY_ID, ORDER_ID, 
+      PAY_NO, PAY_TIME, PAY_MONEY, 
+      POUNDAGE, PAY_STATUS, PAY_ACCT, 
+      PAY_BANK)
+    values (#{orderPayId,jdbcType=DECIMAL}, #{payWayId,jdbcType=DECIMAL}, #{orderId,jdbcType=DECIMAL}, 
+      #{payNo,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, #{payMoney,jdbcType=DECIMAL}, 
+      #{poundage,jdbcType=DECIMAL}, #{payStatus,jdbcType=CHAR}, #{payAcct,jdbcType=VARCHAR}, 
+      #{payBank,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="getOrderById" parameterType="string" resultMap="orderResultMap">
+  	select MC_ORDER.*,MC_ORDER_TYPE.order_code,pay_way.pay_way_code from MC_ORDER
+  	left join MC_ORDER_TYPE on MC_ORDER.order_type_id=MC_ORDER_TYPE.order_type_id
+  	left join pay_way on pay_way.pay_way_id=mc_order.pay_way_id
+  	where ORDER_ID =#{orderId}
+  </select>
+  
+  <select id="getPayWayById"  parameterType="string" resultMap="payWayResultMap">
+  select * from pay_way where pay_way.pay_way_id = #{payWayId}
+  </select>
+  
+  <update id="updateOrderById" parameterType="com.unique.order.po.McOrder" >
+    update MC_ORDER
+    <set >
+      <if test="orderTypeId != null" >
+        ORDER_TYPE_ID = #{orderTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="payWayId != null" >
+        PAY_WAY_ID = #{payWayId,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null" >
+        ORDER_NO = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderName != null" >
+        ORDER_NAME = #{orderName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderMoney != null" >
+        ORDER_MONEY = #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        ORDER_STATUS = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payNo != null" >
+        PAY_NO = #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        PAY_TIME = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="poundage != null" >
+        POUNDAGE = #{poundage,jdbcType=DECIMAL},
+      </if>
+       <if test="originalMoney != null" >
+        ORIGINAL_MONEY = #{originalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceId!=null">
+          SOURCE_ID = #{sourceId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ORDER_ID = #{orderId}
+  </update>
+  
+  <insert id="addOrderBill" parameterType="com.unique.order.po.McOrderBill" >
+     <selectKey keyProperty="billId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_BILL.nextval as billId from dual
+     </selectKey>
+    insert into MC_ORDER_BILL (BILL_ID, USER_ID, PAY_WAY_ID, 
+      ORDER_TYPE_ID, BILL_TYPE, USER_NAME, 
+      SRC_ORDER_ID, SRC_ORDER_NO, BILL_TIME, 
+      PAY_NO, ORDER_MONEY, REAL_MONEY, 
+      STATUS)
+    values (#{billId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{payWayId,jdbcType=DECIMAL}, 
+      #{orderTypeId,jdbcType=DECIMAL}, #{billType,jdbcType=CHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{srcOrderId,jdbcType=DECIMAL}, #{srcOrderNo,jdbcType=VARCHAR}, #{billTime,jdbcType=TIMESTAMP}, 
+      #{payNo,jdbcType=VARCHAR}, #{orderMoney,jdbcType=DECIMAL}, #{realMoney,jdbcType=DECIMAL}, 
+      #{status,jdbcType=CHAR})
+  </insert>
+  
+  <insert id="addOrderBillDet" parameterType="com.unique.order.po.McOrderBillDet" >
+     <selectKey keyProperty="billId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_BILL_DET.nextval as billId from dual
+     </selectKey>
+    insert into MC_ORDER_BILL_DET (BILL_ID, MC_BILL_ID, SRC_BILL_ID, 
+      BILL_MONEY, REAL_MONEY, BILL_NUM, 
+      ALL_MONEY, ALL_REAL_MONEY, STATUS, 
+      CREATE_TIME)
+    values (#{billId,jdbcType=DECIMAL}, #{mcBillId,jdbcType=DECIMAL}, #{srcBillId,jdbcType=DECIMAL}, 
+      #{billMoney,jdbcType=DECIMAL}, #{realMoney,jdbcType=DECIMAL}, #{billNum,jdbcType=DECIMAL}, 
+      #{allMoney,jdbcType=DECIMAL}, #{allRealMoney,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <select id="getOrderDetByOrderId" parameterType="string" resultMap="orderDetResultMap">
+  	select d.*,p.code PRODUCT_TYPE_CODE,p.name PRODUCT_TYPE_NAME from mc_order_det d
+  	left join product_type p on d.product_type_id=p.product_type_id
+  	where d.order_id = #{orderId}
+  </select>
+  
+  <!-- 添加分成比例 -->
+  <insert id="addOrderDivide" parameterType="com.unique.order.po.McOrderDivide" >
+     <selectKey keyProperty="divideId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_DIVIDE.nextval as divideId from dual
+     </selectKey>
+    insert into MC_ORDER_DIVIDE (DIVIDE_ID, CHANNEL_ID, MC_PRODUCT_ID, 
+      CREATE_TIME, CHANNEL_NAME, PRODUCT_NAME, 
+      DIVIDE_WAY, DIVIDE_VALUE, DIVIDE_MONEY, 
+      ORDER_PRODUCT_ID)
+    values (#{divideId,jdbcType=DECIMAL}, #{channelId,jdbcType=DECIMAL}, #{mcProductId,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{channelName,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+      #{divideWay,jdbcType=CHAR}, #{divideValue,jdbcType=DECIMAL}, #{divideMoney,jdbcType=DECIMAL}, 
+      #{orderProductId,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getOrderTypeById" parameterType="string" resultMap="orderTypeResultMap">
+  	select * from mc_order_type where mc_order_type.order_type_id = #{typeId}
+  </select>
+  
+  <insert id="addOrderBack" parameterType="com.unique.order.po.McOrderBack" >
+     <selectKey keyProperty="backOrderId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_BACK.nextval as backOrderId from dual
+     </selectKey>
+    insert into MC_ORDER_BACK (BACK_ORDER_ID, USER_ID, ORDER_ID, 
+      USER_NAME, ORDER_NO, ORDER_NAME, 
+      ORDER_MONEY, ORDER_STATUS, CREATE_TIME, 
+      PAY_TIME, BACK_REASON, PAY_NO, 
+      POUNDAGE, OP_USER_ID)
+    values (#{backOrderId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{orderId,jdbcType=DECIMAL}, 
+      #{userName,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{orderName,jdbcType=VARCHAR}, 
+      #{orderMoney,jdbcType=DECIMAL}, #{orderStatus,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{payTime,jdbcType=TIMESTAMP}, #{backReason,jdbcType=VARCHAR}, #{payNo,jdbcType=VARCHAR}, 
+      #{poundage,jdbcType=DECIMAL}, #{opUserId,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="addOrderBackDet" parameterType="com.unique.order.po.McOrderBackDet" >
+     <selectKey keyProperty="backOrderDetId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_ORDER_BACK_DET.nextval as backOrderDetId from dual
+     </selectKey>
+    insert into MC_ORDER_BACK_DET (BACK_ORDER_DET_ID, ORDER_ID, MC_PRODUCT_ID, 
+      ORDER_PRODUCT_ID, BACK_ORDER_ID, PRODUCT_TYPE_ID, 
+      PRODUCT_NAME, PRODUCT_PRICE, BACK_NUM, 
+      BACK_MONEY)
+    values (#{backOrderDetId,jdbcType=DECIMAL}, #{orderId,jdbcType=DECIMAL}, #{mcProductId,jdbcType=DECIMAL}, 
+      #{orderProductId,jdbcType=DECIMAL}, #{backOrderId,jdbcType=DECIMAL}, #{productTypeId,jdbcType=DECIMAL}, 
+      #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=DECIMAL}, #{backNum,jdbcType=DECIMAL}, 
+      #{backMoney,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getOrderBackDetByOrderBack" parameterType="string" resultMap="orderBackDetResultMap">
+  select * from mc_order_back_det where mc_order_back_det.BACK_ORDER_DET_ID = #{orderBackId}
+  </select>
+  
+  <select id="getOrderBackSuccessByOrderNo" parameterType="string" resultMap="orderBackResultMap">
+      select * from mc_order_back where mc_order_back.order_no = #{orderNo} and order_status = '3' and rownum = 1
+  </select>
+  
+  <select id="getOrderBackByOrderNo" parameterType="string" resultMap="orderBackResultMap">
+      select * from mc_order_back where mc_order_back.order_no = #{orderNo} and order_status in ('1','2') and rownum = 1
+  </select>
+  
+ <select id="getOrderByPayNo" parameterType="string" resultMap="orderResultMap">
+  select * from mc_order
+	left join mc_order_pay on mc_order.order_id = mc_order_pay.order_id
+	 where mc_order_pay.pay_no = #{payNo}
+  </select>
+  
+  <select id="getOrderByOrderNo" parameterType="string" resultMap="orderResultMap">
+   select mc_order.*,
+   		DECODE(mc_order.ORDER_STATUS,'1','待支付','2','待支付已过期','3','支付成功交易中','4','支付成功交易失败','5','支付成功交易成功','6','退款中','7','已退款','8','交易取消','9','退费失败','0','已取货','其他') AS orderStatusName,
+   		pay_way.pay_way_name from mc_order 
+   left join pay_way on mc_order.pay_way_id=pay_way.pay_way_id
+   where mc_order.order_no =  #{orderNo}
+  </select>
+  
+  <select id="getOrderByRegId" parameterType="string" resultMap="orderResultMap">
+	select mc_order.* from mc_order 
+	left join  mc_order_det on mc_order.order_id = mc_order_det.order_id 
+	where mc_order_det.product_to_id = #{regId}
+  </select>
+  
+  <select id="getOrderDetByRegId" parameterType="string" resultMap="orderDetResultMap">
+  select * from mc_order_det where mc_order_det.product_to_id = #{regId}
+  </select>
+  
+  <!--select id="getOrderByPage" parameterType="map" resultMap="orderResultMap">
+  	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+		  select mc_order.*,mc_order_type.order_code from mc_order 
+		  left join mc_order_type on mc_order.order_type_id=mc_order_type.order_type_id 
+		  where 1=1
+		  <if test="userId != null" >
+		        and mc_order.user_id = #{userId}
+		  </if>
+		  <if test="status != null" >
+		 	 and mc_order.order_status in (
+		  	<foreach collection="status" item="s" separator=",">
+		  	#{s}
+		  	</foreach>
+		  	)
+		  </if>
+		 order by mc_order.create_time desc
+   	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select-->
+  
+   <select id="getOrderByPage" parameterType="map" resultMap="orderResultMap">
+  	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+		 select 
+		 	mc_order.*,mc_order_type.order_code,mc_reg.dep_name ,mc_reg.org_name,mc_reg.order_time,pay_way.pay_way_code 
+		 from mc_order 
+      	 left join mc_order_type on mc_order.order_type_id=mc_order_type.order_type_id 
+      	 left join mc_reg on mc_order.pay_no= mc_reg.pay_num
+      	 left join pay_way on pay_way.pay_way_id=mc_order.pay_way_id
+		 where 1=1
+		  <if test="userId != null" >
+		        and mc_order.user_id = #{userId}
+		  </if>
+		  <if test="status != null" >
+		 	 and mc_order.order_status in (
+		  	<foreach collection="status" item="s" separator=",">
+		  	#{s}
+		  	</foreach>
+		  	)
+		  </if>
+		 order by mc_order.create_time desc
+   	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+  
+  
+  
+  
+  <select id="getOrderByPageCount" parameterType="map" resultType="long">
+   select count(*) from mc_order where  1=1
+ 		  <if test="userId != null" >
+		        and mc_order.user_id = #{userId}
+		  </if>
+		  <if test="status != null" >
+		 	 and mc_order.order_status in (
+		  	<foreach collection="status" item="s" separator=",">
+		  	#{s}
+		  	</foreach>
+		  	)
+		  </if>
+  </select>
+  
+  <!-- 根据paynum查询bill -->
+  <select id="findBillByPayNum" parameterType="String" resultMap="billResultMap">
+  <![CDATA[
+  	select * from mc_order_bill where mc_order_bill.pay_no = #{payNo}
+  ]]>
+  </select>
+  
+  <select id="findBillByOrderNo" parameterType="string" resultMap="billResultMap">
+      select * from mc_order_bill where mc_order_bill.src_order_no = #{orderNo}
+  </select>
+  
+  <select id="getSourceByCode" resultMap="sourceResultMap" parameterType="string">
+      select * from source_type where source_type.source_code = #{sCode}
+  </select>
+  <select id="getSourceById" resultMap="sourceResultMap" parameterType="string">
+      select * from source_type where source_type.source_id = #{sourceId}
+  </select>
+  
+  <update id="updateOrderDetById" parameterType="com.unique.order.po.McOrderDet" >
+    update MC_ORDER_DET
+    <set >
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId,jdbcType=DECIMAL},
+      </if>
+      <if test="mcProductId != null" >
+        MC_PRODUCT_ID = #{mcProductId,jdbcType=DECIMAL},
+      </if>
+      <if test="productTypeId != null" >
+        PRODUCT_TYPE_ID = #{productTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="productName != null" >
+        PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        PRODUCT_PRICE = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productNum != null" >
+        PRODUCT_NUM = #{productNum,jdbcType=DECIMAL},
+      </if>
+      <if test="productSum != null" >
+        PRODUCT_SUM = #{productSum,jdbcType=DECIMAL},
+      </if>
+      <if test="productToId != null" >
+        PRODUCT_TO_ID = #{productToId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null" >
+        ORIGINAL_PRICE = #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="pickCode != null" >
+        PICK_CODE = #{pickCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buyDesc != null" >
+        BUY_DESC = #{buyDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=DECIMAL},
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="friendId!=null">
+          FRIEND_ID = #{friendId,jdbcType=DECIMAL}
+      </if>
+    </set>
+    where ORDER_PRODUCT_ID = #{orderProductId}
+  </update>
+  
+ <update id="updateOrderBackByBackId" parameterType="com.unique.order.po.McOrderBack" >
+    update MC_ORDER_BACK
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderName != null" >
+        ORDER_NAME = #{orderName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderMoney != null" >
+        ORDER_MONEY = #{orderMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="orderStatus != null" >
+        ORDER_STATUS = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        PAY_TIME = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backReason != null" >
+        BACK_REASON = #{backReason,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null" >
+        PAY_NO = #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="poundage != null" >
+        POUNDAGE = #{poundage,jdbcType=DECIMAL},
+      </if>
+      <if test="opUserId != null" >
+        OP_USER_ID = #{opUserId,jdbcType=DECIMAL},
+      </if>
+    </set>
+	where mc_order_back.back_order_id = #{backOrderId}
+  </update>
+  
+  <select id="getPayProductCount" parameterType="string" resultType="long">
+   select count(1) from mc_order_det where mc_order_det.mc_product_id=#{productId}
+  </select>
+  
+</mapper>

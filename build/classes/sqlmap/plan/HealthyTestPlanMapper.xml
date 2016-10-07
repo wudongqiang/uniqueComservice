@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.plan.po.HealthyTestPlan">
+
+	<resultMap id="HealthyTestPlan" type="com.unique.plan.po.HealthyTestPlan">
+        <result property="planId" column="PLAN_ID" jdbcType="DECIMAL"/>
+        <result property="orgId" column="ORG_ID" jdbcType="DECIMAL"/>
+        <result property="depId" column="DEP_ID" jdbcType="DECIMAL"/>
+        <result property="staffId" column="STAFF_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="planBeginTime" column="PLAN_BEGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="planEndTime" column="PLAN_END_TIME" jdbcType="TIMESTAMP"/>
+        <result property="periodValue" column="PERIOD_VALUE" jdbcType="DECIMAL"/>
+        <result property="periodType" column="PERIOD_TYPE" jdbcType="DECIMAL"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="opTime" column="OP_TIME" jdbcType="TIMESTAMP"/>
+        <result property="operator" column="OPERATOR" jdbcType="DECIMAL"/>
+        <result property="status" column="STATUS" jdbcType="CHAR"/>
+        <result property="healthyId" column="HEALTHY_ID" jdbcType="DECIMAL"/>
+        <result property="testTemplateId" column="TEST_TEMPLATE_ID" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.PLAN_ID,m.ORG_ID,m.DEP_ID,m.STAFF_ID,m.USER_ID,m.PLAN_BEGIN_TIME,m.PLAN_END_TIME,m.PERIOD_VALUE,m.PERIOD_TYPE,m.CREATE_TIME,m.OP_TIME,m.OPERATOR,m.STATUS,m.HEALTHY_ID,m.TEST_TEMPLATE_ID
+	    ]]>
+	</sql>
+
+    <select id="getHealthyTestPlanById" resultMap="HealthyTestPlan">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM HEALTHY_TEST_PLAN m
+	        WHERE 
+		        m.PLAN_ID = #{planId,jdbcType=DECIMAL} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<where>	      				
+	       <if test="planId !=null">
+				AND m.PLAN_ID = #{planId,jdbcType=DECIMAL}
+			</if>
+	       <if test="orgId !=null">
+				AND m.ORG_ID = #{orgId,jdbcType=DECIMAL}
+			</if>
+	       <if test="depId !=null">
+				AND m.DEP_ID = #{depId,jdbcType=DECIMAL}
+			</if>
+	       <if test="staffId !=null">
+				AND m.STAFF_ID = #{staffId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userId !=null">
+				AND m.USER_ID = #{userId,jdbcType=DECIMAL}
+			</if>
+	       <if test="planBeginTimeBegin !=null">
+				AND m.PLAN_BEGIN_TIME >= #{planBeginTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="planBeginTimeEnd !=null">
+				AND m.PLAN_BEGIN_TIME &lt;= #{planBeginTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="planEndTimeBegin !=null">
+				AND m.PLAN_END_TIME >= #{planEndTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="planEndTimeEnd !=null">
+				AND m.PLAN_END_TIME &lt;= #{planEndTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="periodValue !=null">
+				AND m.PERIOD_VALUE = #{periodValue,jdbcType=DECIMAL}
+			</if>
+	       <if test="periodType !=null">
+				AND m.PERIOD_TYPE = #{periodType,jdbcType=DECIMAL}
+			</if>
+	       <if test="createTimeBegin !=null">
+				AND m.CREATE_TIME >= #{createTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="createTimeEnd !=null">
+				AND m.CREATE_TIME &lt;= #{createTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="opTimeBegin !=null">
+				AND m.OP_TIME >= #{opTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="opTimeEnd !=null">
+				AND m.OP_TIME &lt;= #{opTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="operator !=null">
+				AND m.OPERATOR = #{operator,jdbcType=DECIMAL}
+			</if>
+	       <if test="status !=null">
+				AND m.STATUS = #{status,jdbcType=CHAR}
+			</if>
+	       <if test="healthyId !=null">
+				AND m.HEALTHY_ID = #{healthyId,jdbcType=DECIMAL}
+			</if>
+	       <if test="testTemplateId !=null">
+				AND m.TEST_TEMPLATE_ID = #{testTemplateId,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+	<resultMap type="com.unique.plan.po.HealthyTestPlanDto" id="HealthyTestPlanDtoMap">
+		<result property="planId" column="plan_Id" jdbcType="DECIMAL"/>
+        <result property="staffName" column="staff_Name" jdbcType="VARCHAR"/>
+        <result property="firstTime" column="first_Time" jdbcType="TIMESTAMP"/>
+        <result property="endTime" column="end_Time" jdbcType="TIMESTAMP"/>
+        <result property="testName" column="test_Name" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="CHAR"/>
+        <result property="periodTime" column="period_Time" jdbcType="VARCHAR"/>
+        <result property="periodType" column="period_Type" jdbcType="VARCHAR"/>
+        <result property="periodValue" column="period_Value" jdbcType="VARCHAR"/>
+	</resultMap>
+	   
+	<select id="searchHealthTestSchdule" parameterType="map" resultMap="HealthyTestPlanDtoMap">
+		<if test="startRow!=null and endRow!=null">
+       	 	<include refid="com.unique.core.fenye1"></include>
+    	</if>
+		select s_temp.* from (
+			select 
+		      HEALTHY_TEST_PLAN.plan_id, wm_concat(to_char(HEALTHY_TEST_PLAN_DET.TEST_BEGIN_TIME,'hh24:mi')||'-'||to_char(HEALTHY_TEST_PLAN_DET.Test_End_Time,'hh24:mi')) period_time
+		      ,max(s.KPI_TITLE) test_name,min(HEALTHY_TEST_PLAN_DET.PLAN_BEGIN_TIME) first_Time,max(HEALTHY_TEST_PLAN_DET.PLAN_END_TIME) end_Time,
+		      min(HEALTHY_TEST_PLAN_DET.PERIOD_VALUE) PERIOD_VALUE,max(HEALTHY_TEST_PLAN_DET.PERIOD_TYPE) PERIOD_TYPE,max(staff.staff_Name) staff_Name,max(HEALTHY_TEST_PLAN.status) status
+			 from HEALTHY_TEST_PLAN_DET
+			left join HEALTHY_TEST_PLAN on HEALTHY_TEST_PLAN_DET.Plan_Id=HEALTHY_TEST_PLAN.plan_id
+			left join staff on staff.staff_id=HEALTHY_TEST_PLAN.Staff_Id
+			left join  SURVEY_KPI s on s.kpi_id=HEALTHY_TEST_PLAN_DET.kpi_id 
+			where s.status='C'
+			and HEALTHY_TEST_PLAN.status in ('C','U')
+			<if test="staffId!=null">
+				and HEALTHY_TEST_PLAN.staff_id=#{staffId}
+			</if>
+			<if test="userId!=null">
+				and HEALTHY_TEST_PLAN.user_id=#{userId}
+			</if>
+			group by HEALTHY_TEST_PLAN.plan_id
+		) s_temp where s_temp.status='C' order by s_temp.first_Time DESC
+		<if test="startRow!=null and endRow!=null">
+       	 	<include refid="com.unique.core.fenye2"></include>
+    	</if>
+	</select>
+	<select id="searchHealthTestSchduleCount" parameterType="map" resultType="long">
+	select count(1) from (
+			select 
+		      HEALTHY_TEST_PLAN.plan_id, wm_concat(to_char(HEALTHY_TEST_PLAN_DET.TEST_BEGIN_TIME,'hh24:mi')||'-'||to_char(HEALTHY_TEST_PLAN_DET.Test_End_Time,'hh24:mi')) period_time
+		      ,max(s.KPI_TITLE) test_name,min(HEALTHY_TEST_PLAN_DET.PLAN_BEGIN_TIME) first_Time,max(HEALTHY_TEST_PLAN_DET.PLAN_END_TIME) end_Time,
+		      min(HEALTHY_TEST_PLAN_DET.PERIOD_VALUE) PERIOD_VALUE,max(HEALTHY_TEST_PLAN_DET.PERIOD_TYPE) PERIOD_TYPE,max(staff.staff_Name) staff_Name,max(HEALTHY_TEST_PLAN.status) status
+			 from HEALTHY_TEST_PLAN_DET
+			left join HEALTHY_TEST_PLAN on HEALTHY_TEST_PLAN_DET.Plan_Id=HEALTHY_TEST_PLAN.plan_id
+			left join staff on staff.staff_id=HEALTHY_TEST_PLAN.Staff_Id
+			left join  SURVEY_KPI s on s.kpi_id=HEALTHY_TEST_PLAN_DET.kpi_id 
+			where s.status='C'
+			and HEALTHY_TEST_PLAN.status in ('C','U')
+			<if test="staffId!=null">
+				and HEALTHY_TEST_PLAN.staff_id=#{staffId}
+			</if>
+			<if test="userId!=null">
+				and HEALTHY_TEST_PLAN.user_id=#{userId}
+			</if>
+			group by HEALTHY_TEST_PLAN.plan_id
+		) s_temp where s_temp.status='C'  
+	</select>
+	
+</mapper>
+

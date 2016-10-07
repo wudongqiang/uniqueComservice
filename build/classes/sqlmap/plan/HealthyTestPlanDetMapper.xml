@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.HealthyTestPlanDet">
+
+	<resultMap id="HealthyTestPlanDetResultMap" type="com.unique.plan.po.HealthyTestPlanDet">
+        <result property="planDetId" column="PLAN_DET_ID" jdbcType="DECIMAL"/>
+        <result property="kpiId" column="KPI_ID" jdbcType="DECIMAL"/>
+        <result property="testTimeId" column="TEST_TIME_ID" jdbcType="DECIMAL"/>
+        <result property="planId" column="PLAN_ID" jdbcType="DECIMAL"/>
+        <result property="testBeginTime" column="TEST_BEGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="testEndTime" column="TEST_END_TIME" jdbcType="TIMESTAMP"/>
+        <result property="alertTime" column="ALERT_TIME" jdbcType="TIMESTAMP"/>
+        <result property="alertCon" column="ALERT_CON" jdbcType="VARCHAR"/>
+        <result property="planBeginTime" column="PLAN_BEGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="planEndTime" column="PLAN_END_TIME" jdbcType="TIMESTAMP"/>
+        <result property="referenceBegin" column="REFERENCE_BEGIN" jdbcType="DECIMAL"/>
+        <result property="referenceEnd" column="REFERENCE_END" jdbcType="DECIMAL"/>
+        <result property="periodValue" column="PERIOD_VALUE" jdbcType="DECIMAL"/>
+        <result property="periodType" column="PERIOD_TYPE" jdbcType="DECIMAL"/>
+        <result property="alertRuleId" column="ALERT_RULE_ID" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<resultMap id="testResultMain" type="com.unique.mb.po.TestResultMain">
+	    <result property="kpiId" column="KPI_ID" jdbcType="DECIMAL"/>
+	    <result property="oneBeginValue" column="ONE_BEGIN_VALUE" jdbcType="DECIMAL"/>
+        <result property="oneBeginSymbol" column="ONE_BEGIN_SYMBOL" jdbcType="VARCHAR"/>
+        <result property="oneKpiId" column="ONE_KPI_ID" jdbcType="DECIMAL"/>
+        <result property="oneEndSymbol" column="ONE_END_SYMBOL" jdbcType="VARCHAR"/>
+        <result property="oneEndValue" column="ONE_END_VALUE" jdbcType="DECIMAL"/>
+        <result property="oneTwoRelation" column="ONE_TWO_RELATION" jdbcType="VARCHAR"/>
+        <result property="twoBeginValue" column="TWO_BEGIN_VALUE" jdbcType="DECIMAL"/>
+        <result property="twoBeginSymbol" column="TWO_BEGIN_SYMBOL" jdbcType="VARCHAR"/>
+        <result property="twoKpiId" column="TWO_KPI_ID" jdbcType="DECIMAL"/>
+        <result property="twoEndSymbol" column="TWO_END_SYMBOL" jdbcType="VARCHAR"/>
+        <result property="twoEndValue" column="TWO_END_VALUE" jdbcType="DECIMAL"/>
+        <result property="alertGrade" column="ALERT_GRADE" jdbcType="DECIMAL"/>
+        <result property="doctorAlertCon" column="DOCTOR_ALERT_CON" jdbcType="VARCHAR"/>
+        <result property="userAlertResult" column="USER_ALERT_RESULT" jdbcType="VARCHAR"/>
+        <result property="userHealthySuggest" column="USER_HEALTHY_SUGGEST" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="HealthyTestPlanDetRule" type="com.unique.plan.po.HealthyTestPlanDetRule" extends="testResultMain">
+        <result property="planRuleId" column="PLAN_RULE_ID" jdbcType="DECIMAL"/>
+        <result property="planId" column="PLAN_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="planDetId" column="PLAN_DET_ID" jdbcType="DECIMAL"/>
+	</resultMap>
+	<resultMap id="CommonTestPlanDetRule" type="com.unique.plan.po.TestItemRuleDet" extends="testResultMain">
+        <result property="referenceRuleDetId" column="REFERENCE_RULE_DET_ID" jdbcType="DECIMAL"/>
+	</resultMap>
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.PLAN_DET_ID,m.KPI_ID,m.TEST_TIME_ID,m.PLAN_ID,m.TEST_BEGIN_TIME,m.TEST_END_TIME,m.ALERT_TIME,m.ALERT_CON,m.PLAN_BEGIN_TIME,m.PLAN_END_TIME,m.REFERENCE_BEGIN,m.REFERENCE_END,m.PERIOD_VALUE,m.PERIOD_TYPE,m.ALERT_RULE_ID
+	    ]]>
+	</sql>
+    
+    <select id="getHealthyTestPlanDetById" resultMap="HealthyTestPlanDetResultMap">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM HEALTHY_TEST_PLAN_DET m
+	        WHERE 
+		        m.PLAN_DET_ID = #{planDetId,jdbcType=DECIMAL} 
+	    ]]>
+	</select>
+	
+	<sql id="findPage_where">
+		<where>	      				
+	       <if test="planDetId !=null">
+				AND m.PLAN_DET_ID = #{planDetId,jdbcType=DECIMAL}
+			</if>
+	       <if test="kpiId !=null">
+				AND m.KPI_ID = #{kpiId,jdbcType=DECIMAL}
+			</if>
+	       <if test="testTimeId !=null">
+				AND m.TEST_TIME_ID = #{testTimeId,jdbcType=DECIMAL}
+			</if>
+	       <if test="planId !=null">
+				AND m.PLAN_ID = #{planId,jdbcType=DECIMAL}
+			</if>
+	       <if test="testBeginTimeBegin !=null">
+				AND m.TEST_BEGIN_TIME >= #{testBeginTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="testBeginTimeEnd !=null">
+				AND m.TEST_BEGIN_TIME &lt;= #{testBeginTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="testEndTimeBegin !=null">
+				AND m.TEST_END_TIME >= #{testEndTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="testEndTimeEnd !=null">
+				AND m.TEST_END_TIME &lt;= #{testEndTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="alertTimeBegin !=null">
+				AND m.ALERT_TIME >= #{alertTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="alertTimeEnd !=null">
+				AND m.ALERT_TIME &lt;= #{alertTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="alertCon !=null">
+				AND m.ALERT_CON = #{alertCon,jdbcType=VARCHAR}
+			</if>
+	       <if test="planBeginTimeBegin !=null">
+				AND m.PLAN_BEGIN_TIME >= #{planBeginTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="planBeginTimeEnd !=null">
+				AND m.PLAN_BEGIN_TIME &lt;= #{planBeginTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="planEndTimeBegin !=null">
+				AND m.PLAN_END_TIME >= #{planEndTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="planEndTimeEnd !=null">
+				AND m.PLAN_END_TIME &lt;= #{planEndTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="referenceBegin !=null">
+				AND m.REFERENCE_BEGIN = #{referenceBegin,jdbcType=DECIMAL}
+			</if>
+	       <if test="referenceEnd !=null">
+				AND m.REFERENCE_END = #{referenceEnd,jdbcType=DECIMAL}
+			</if>
+	       <if test="periodValue !=null">
+				AND m.PERIOD_VALUE = #{periodValue,jdbcType=DECIMAL}
+			</if>
+	       <if test="periodType !=null">
+				AND m.PERIOD_TYPE = #{periodType,jdbcType=DECIMAL}
+			</if>
+	       <if test="alertRuleId !=null">
+				AND m.ALERT_RULE_ID = #{alertRuleId,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectLevel" parameterType="map" resultMap="HealthyTestPlanDetRule">
+		select a.* from HEALTHY_TEST_PLAN_DET_RULE a 
+		left join HEALTHY_TEST_PLAN_DET b 
+		on a.plan_det_id=b.plan_det_id  where 
+		a.user_id=#{userId} and a.kpi_id=44 
+		and a.one_begin_value &lt; #{bloodglucose} 
+		and  a.one_end_value &gt; #{bloodglucose} 
+		and b.test_time_id=#{testTimeId} 
+	</select>
+	
+	
+	<select id="selectCommonLevel" parameterType="map" resultMap="CommonTestPlanDetRule">
+		select a.* from TEST_ITEM_RULE_DET a left join 
+ TEST_ITEM_RULE b on  a.REFERENCE_RULE_ID=b.REFERENCE_RULE_ID where a.kpi_id=44 and a.one_begin_value &lt; #{bloodglucose} and  a.one_end_value &gt; #{bloodglucose} and b.PERIOD_NAME_RANGE like   '%||(select * from TEST_TIME where test_time_id=#{testTimeId} )||%'
+	</select>
+	<select id="selectHypertensionLevel" parameterType="map" resultMap="HealthyTestPlanDetRule">
+		select *
+       		from
+		(select a.* from HEALTHY_TEST_PLAN_DET_RULE a left join HEALTHY_TEST_PLAN_DET b on a.plan_det_id=b.plan_det_id  where a.user_id=#{userId} and a.kpi_id=1 and (a.one_begin_value &lt; #{highTension} and a.one_end_value &gt; #{highTension})  and b.test_time_id=#{testTimeId} 
+			union 
+		 select a.* from HEALTHY_TEST_PLAN_DET_RULE a left join HEALTHY_TEST_PLAN_DET b on a.plan_det_id=b.plan_det_id  where a.user_id=#{userId} and a.kpi_id=1 and (a.two_begin_value &lt; #{lowTension} and a.two_end_value &gt; #{lowTension})  and b.test_time_id=#{testTimeId} 
+		) 
+	</select>	
+	<select id="selectHypertensionCommonLevel" parameterType="map" resultMap="CommonTestPlanDetRule">
+		select *
+       		from
+		(select a.* from TEST_ITEM_RULE_DET where a left join 
+ TEST_ITEM_RULE b on  a.REFERENCE_RULE_ID=b.REFERENCE_RULE_ID a.kpi_id=1 and (a.one_begin_value &lt; #{highTension} and a.one_end_value &gt; #{highTension}) and b.PERIOD_NAME_RANGE like   '%||(select * from TEST_TIME where test_time_id=#{testTimeId} )||%'
+			union 
+		 select a.* from TEST_ITEM_RULE_DET where a left join 
+ TEST_ITEM_RULE b on  a.REFERENCE_RULE_ID=b.REFERENCE_RULE_ID a.kpi_id=1 and (two_begin_value &lt; #{lowTension} and a.two_end_value &gt; #{lowTension}) and b.PERIOD_NAME_RANGE like  '%||(select * from TEST_TIME where test_time_id=#{testTimeId} )||%'
+		)
+	</select>	
+	
+	<!-- 通过计划明细 时段 查询 对应的测试血压相关的值 -->
+	<select id="getTestItemValue" parameterType="map" resultType="string">
+		select ${columus}
+		 from HEALTHY_TEST_PLAN_DET d
+		 left join ${tableName} on d.test_time_id=t.test_time_id
+		 where  d.plan_det_id=#{planDetId}
+		 		and d.kpi_id=#{kpiId}
+		 		and d.plan_id=#{planId} 
+		 		and t.user_id = #{userId}
+		 		and to_char(t.test_time,'yyyy-MM-dd')=to_char(sysdate,'yyyy-MM-dd')
+		 group by d.plan_det_id,d.kpi_id,d.plan_id
+	</select>
+	
+	<select id="getTestPlanListByUser" resultMap="HealthyTestPlanDetRule" parameterType="map">
+	    select healthy_test_plan_det_rule.* from healthy_test_plan_det_rule 
+		left join healthy_test_plan_det on healthy_test_plan_det.plan_det_id = healthy_test_plan_det_rule.plan_det_id
+		left join healthy_test_plan on healthy_test_plan.plan_id = healthy_test_plan_det.plan_id
+		left join survey_kpi on survey_kpi.kpi_id = healthy_test_plan_det.kpi_id
+		where 
+		healthy_test_plan.status = 'C'
+		and healthy_test_plan.user_id = #{userId}
+		and survey_kpi.kpi_code = #{kpiCode}
+		and healthy_test_plan_det.test_time_id = #{testTimeId}
+		order by healthy_test_plan_det_rule.alert_grade desc,1
+	</select>
+	
+	<select id="getTestRuleListByUser" resultMap="CommonTestPlanDetRule" parameterType="map">
+	    select test_item_rule_det.* from test_item_rule_det where test_item_rule_det.reference_rule_id in (
+        select reference_rule_id from test_item_rule where 
+        <if test="testTimeName==null">
+            test_item_rule.is_default = 'Y'
+        </if>
+        <if test="testTimeName!=null">
+            test_item_rule.period_name_range like '%${testTimeName}%'
+        </if>
+        and rownum = 1 
+        and kpi_id=(select survey_kpi.kpi_id from survey_kpi where survey_kpi.kpi_code=#{kpiCode}))
+        order by test_item_rule_det.alert_grade desc,1
+	</select>
+	
+	<select id="getTestTimeNameById" parameterType="string" resultType="string">
+	    select test_time.test_time_name from test_time where test_time.test_time_id = #{testTimeId}
+	</select>
+	
+	<select id="getKpiCodeByChild" parameterType="string" resultType="string">
+	    select p.kpi_code from survey_kpi p left join
+		survey_kpi c on p.kpi_id = c.parent_id
+		where c.kpi_code = #{kpiCode}
+	</select>
+</mapper>
+

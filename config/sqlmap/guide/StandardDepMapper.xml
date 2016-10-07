@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.guide.standard" >
+  <resultMap id="standardResultMap" type="com.unique.guide.po.StandardDep" >
+    <id column="STANDARD_ID" property="standardId" jdbcType="DECIMAL" />
+    <result column="STANDARD_NAME" property="standardName" jdbcType="VARCHAR" />
+    <result column="STANDARD_CODE" property="standardCode" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="STANDARD_DESC" property="standardDesc" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  <select id="getStandardDeps" resultMap="standardResultMap" parameterType="map">
+	select STANDARD_ID,STANDARD_NAME,STANDARD_CODE from standard_dep where 1=1
+	<if test="illId!=null">
+	and standard_dep.standard_id in
+	(
+	   select jb_ill_dep_ref.standard_id from jb_ill_dep_ref where jb_ill_dep_ref.ill_id = #{illId}
+	)
+	</if>
+	<if test="illDep!=null">
+	and standard_dep.standard_id in
+	(
+	   select distinct jb_ill_dep_ref.standard_id from jb_ill_dep_ref
+	)
+	</if>
+  </select>
+  
+  <!-- 更加id查询标准科室详情 -->
+  <select id="getStandardDepById" resultMap="standardResultMap" parameterType="string">
+	select * from standard_dep where STANDARD_ID = #{standardId}
+  </select>
+</mapper>

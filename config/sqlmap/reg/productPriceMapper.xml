@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.product" >
+  <resultMap id="priceResultMap" type="com.unique.reg.po.ProductPrice" >
+    <id column="PRICE_ID" property="priceId" jdbcType="DECIMAL" />
+    <result column="TYPE_ID" property="typeId" jdbcType="DECIMAL" />
+    <result column="MC_PRODUCT_ID" property="mcProductId" jdbcType="DECIMAL" />
+    <result column="USER_TYPE_ID" property="userTypeId" jdbcType="DECIMAL" />
+    <result column="PRODUCT_CHARACTER_ID" property="productCharacterId" jdbcType="DECIMAL" />
+    <result column="SALE_TYPE_ID" property="saleTypeId" jdbcType="DECIMAL" />
+    <result column="AREA_ID" property="areaId" jdbcType="DECIMAL" />
+    <result column="QUANTITY_RULE_ID" property="quantityRuleId" jdbcType="DECIMAL" />
+    <result column="AMOUNT_RULE_ID" property="amountRuleId" jdbcType="DECIMAL" />
+    <result column="PRICE_AMOUNT" property="priceAmount" jdbcType="DECIMAL" />
+    <result column="PERCENT" property="percent" jdbcType="DECIMAL" />
+    <result column="START_DATE" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="STAFF_TYPE_ID" property="staffTypeId" jdbcType="DECIMAL" />
+    
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="REBATE_TYPE" property="rebateType" jdbcType="CHAR" />
+    <result column="REBATE_AMOUT" property="rebateAmout" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="productPTResultMap" type="com.unique.reg.po.ProductPriceType" >
+    <id column="TYPE_ID" property="typeId" jdbcType="DECIMAL" />
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="IS_SYSTEM" property="isSystem" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+  </resultMap>
+  <!-- 根据挂号级别查询价格列表 -->
+  <select id="getPriceListByStaffType" parameterType="map" resultMap="priceResultMap">
+  	    select * from Product_Price p 
+	    left join Product_Price_Type t on t.type_id = p.type_id
+	    left join MC_PRODUCT m on m.mc_product_id = p.mc_product_id
+	    where m.product_code = 'GH'
+	    and p.Staff_Type_Id = #{staffTypeId}
+  </select>
+  
+  <select id="getProductPriceTypeByCode" resultMap="productPTResultMap" parameterType="string">
+  select * from product_price_type where product_price_type.type_code = #{code}
+  and product_price_type.org_id = #{orgId}
+  </select>
+  
+  <insert id="addProductPriceType" parameterType="com.unique.reg.po.ProductPriceType" >
+     <selectKey keyProperty="typeId" resultType="DECIMAL" order="BEFORE">
+            select product_price_type_sequence.nextval as typeId from dual
+     </selectKey>
+    insert into PRODUCT_PRICE_TYPE (TYPE_ID, TYPE_CODE, TYPE_NAME, 
+      IS_SYSTEM, OPERATOR, OP_TIME, 
+      OPERATOR_NAME, ORG_ID)
+    values (#{typeId,jdbcType=DECIMAL}, #{typeCode,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR}, 
+      #{isSystem,jdbcType=CHAR}, #{operator,jdbcType=DECIMAL}, #{opTime,jdbcType=TIMESTAMP}, 
+      #{operatorName,jdbcType=VARCHAR}, #{orgId,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="addProductPrice" parameterType="com.unique.reg.po.ProductPrice" >
+     <selectKey keyProperty="priceId" resultType="DECIMAL" order="BEFORE">
+            select product_price_sequence.nextval as priceId from dual
+     </selectKey>
+    insert into PRODUCT_PRICE (PRICE_ID, TYPE_ID, MC_PRODUCT_ID, 
+      USER_TYPE_ID, PRODUCT_CHARACTER_ID, SALE_TYPE_ID, 
+      AREA_ID, QUANTITY_RULE_ID, AMOUNT_RULE_ID, 
+      PRICE_AMOUNT, PERCENT, START_DATE, 
+      END_DATE, OPERATOR, OPERATOR_NAME, 
+      OP_TIME, STAFF_TYPE_ID, ORG_ID
+      )
+    values (#{priceId,jdbcType=DECIMAL}, #{typeId,jdbcType=DECIMAL}, #{mcProductId,jdbcType=DECIMAL}, 
+      #{userTypeId,jdbcType=DECIMAL}, #{productCharacterId,jdbcType=DECIMAL}, #{saleTypeId,jdbcType=DECIMAL}, 
+      #{areaId,jdbcType=DECIMAL}, #{quantityRuleId,jdbcType=DECIMAL}, #{amountRuleId,jdbcType=DECIMAL}, 
+      #{priceAmount,jdbcType=DECIMAL}, #{percent,jdbcType=DECIMAL}, #{startDate,jdbcType=TIMESTAMP}, 
+      #{endDate,jdbcType=TIMESTAMP}, #{operator,jdbcType=DECIMAL}, #{operatorName,jdbcType=VARCHAR}, 
+      #{opTime,jdbcType=TIMESTAMP}, #{staffTypeId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}
+      )
+  </insert>
+</mapper>

@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.mb.userBloodSugarTest">
+
+	<resultMap id="UserBloodSugarTest" type="com.unique.mb.po.UserBloodSugarTest">
+        <result property="testId" column="TEST_ID" jdbcType="DECIMAL"/>
+        <result property="userDeviceId" column="USER_DEVICE_ID" jdbcType="DECIMAL"/>
+        <result property="sourceId" column="SOURCE_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="testTime" column="TEST_TIME" jdbcType="TIMESTAMP"/>
+        <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+        <result property="testValue" column="TEST_VALUE" jdbcType="DECIMAL"/>
+        <result property="testResult" column="TEST_RESULT" jdbcType="VARCHAR"/>
+        <result property="inputMode" column="INPUT_MODE" jdbcType="CHAR"/>
+        <result property="userDeviceCode" column="USER_DEVICE_CODE" jdbcType="VARCHAR"/>
+        <result property="alertTime" column="ALERT_TIME" jdbcType="TIMESTAMP"/>
+        <result property="status" column="STATUS" jdbcType="DECIMAL"/>
+        <result property="testTimeId" column="TEST_TIME_ID" jdbcType="DECIMAL"/>
+	</resultMap>
+	<resultMap id="UserTestTimeResultMap" type="com.unique.mb.po.UserTestTime">
+        <result property="testTimeId" column="TEST_TIME_ID" jdbcType="DECIMAL"/>
+        <result property="kpiId" column="KPI_ID" jdbcType="DECIMAL"/>
+        <result property="testBeginTime" column="TEST_BEGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="testEndTime" column="TEST_END_TIME" jdbcType="TIMESTAMP"/>
+        <result property="referenceBegin" column="REFERENCE_BEGIN" jdbcType="DECIMAL"/>
+        <result property="referenceEnd" column="REFERENCE_END" jdbcType="DECIMAL"/>
+        <result property="alertTime" column="ALERT_TIME" jdbcType="TIMESTAMP"/>
+        <result property="alertCon" column="ALERT_CON" jdbcType="VARCHAR"/>
+        <result property="opTime" column="OP_TIME" jdbcType="TIMESTAMP"/>
+        <result property="opeator" column="OPEATOR" jdbcType="DECIMAL"/>
+        <result property="testTimeName" column="TEST_TIME_NAME" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap id="UserBloodSugarTestDto" type="com.unique.mb.po.UserBloodSugarTestDto">
+        <result property="date" column="testTime"  jdbcType="VARCHAR"/>
+		<result property="max_sugar_value" column="test_value" jdbcType="DECIMAL"/>
+		<result property="min_sugar_value" column="test_value" jdbcType="DECIMAL"/>
+	</resultMap>
+  <resultMap id="userBloodSugarTimeResultMap" type="com.unique.mb.po.UserBloodSugarTestByTime" >
+    <id column="H" property="h" jdbcType="VARCHAR" />
+    <result column="D" property="d" jdbcType="VARCHAR" />
+    <result column="test_time_id" property="testTimeId" jdbcType="DECIMAL" />
+    <result column="test_value" property="max_sugar_value" jdbcType="DECIMAL" />
+    <result column="test_value" property="min_sugar_value" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="heartRateResultMap" type="com.unique.mb.po.UserHeartRateTest">
+    <id column="TEST_ID" jdbcType="DECIMAL" property="testId" />
+    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="SOURCE_ID" jdbcType="DECIMAL" property="sourceId" />
+    <result column="USER_DEVICE_ID" jdbcType="DECIMAL" property="userDeviceId" />
+    <result column="TEST_TIME" jdbcType="TIMESTAMP" property="testTime" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="TEST_RESULT" jdbcType="VARCHAR" property="testResult" />
+    <result column="INPUT_MODE" jdbcType="CHAR" property="inputMode" />
+    <result column="USER_DEVICE_CODE" jdbcType="VARCHAR" property="userDeviceCode" />
+    <result column="DEVICE_TOKEN" jdbcType="VARCHAR" property="deviceToken" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="IS_ALARM" jdbcType="CHAR" property="isAlarm" />
+    <result column="TEST_TIME_ID" jdbcType="DECIMAL" property="testTimeId" />
+    <result column="RATE" jdbcType="DECIMAL" property="rate" />
+    <result column="TEST_TYPE" jdbcType="CHAR" property="testType" />
+    <result column="TEST_SOURCE_ID" jdbcType="DECIMAL" property="testSourceId" />
+  </resultMap>
+  
+  <resultMap id="testResultMap" type="com.unique.mb.po.TestResult" >
+    <id column="TEST_RESULT_ID" property="testResultId" jdbcType="DECIMAL" />
+    <result column="TEST_ID" property="testId" jdbcType="DECIMAL" />
+    <result column="TEST_TYPE" property="testType" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="testResultDepMap" type="com.unique.mb.po.TestResultDet">
+    <id column="TEST_RESULT_DET_ID" jdbcType="DECIMAL" property="testResultDetId" />
+    <result column="TEST_RESULT_ID" jdbcType="DECIMAL" property="testResultId" />
+    <result column="ALERT_GRADE" jdbcType="DECIMAL" property="alertGrade" />
+    <result column="DOCTOR_ALERT_CON" jdbcType="VARCHAR" property="doctorAlertCon" />
+    <result column="USER_ALERT_RESULT" jdbcType="VARCHAR" property="userAlertResult" />
+    <result column="USER_HEALTHY_SUGGEST" jdbcType="VARCHAR" property="userHealthySuggest" />
+    <result column="DO_STATUS" jdbcType="DECIMAL" property="doStatus" />
+    <result column="DO_WAY" jdbcType="VARCHAR" property="doWay" />
+    <result column="KPI_ID" jdbcType="DECIMAL" property="kpiId" />
+  </resultMap>
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.TEST_ID,m.USER_DEVICE_ID,m.SOURCE_ID,m.USER_ID,m.TEST_TIME,m.USER_NAME,m.TEST_VALUE,m.TEST_RESULT,m.INPUT_MODE,m.USER_DEVICE_CODE,m.ALERT_TIME,m.STATUS
+	    ]]>
+	</sql>
+	
+	<!-- （血糖） 查询用户检测数据，得到当前时间的数据 -->
+	<select id="getUserBloodSugarTestDays" parameterType="string" resultMap="UserBloodSugarTest">
+		select m.* from USER_BLOOD_SUGAR_TEST  m
+        where m.user_id=#{userId} and to_char(m.test_time,'yyyy-mm-dd') = to_char(sysdate,'yyyy-mm-dd')
+	</select>
+    <!-- （血糖） 查询用户检测数据，得到周或月的数据 -->
+	<select id="getUserBloodSugarTestWeeksAndMonth" parameterType="map" resultMap="UserBloodSugarTestDto">
+		select to_char(test_time,'yyyy-mm-dd') testTime,
+	       max(test_value) max_sugar_value,min(test_value) min_sugar_value 
+ 		from USER_BLOOD_SUGAR_TEST  
+        where user_id=#{userId}
+       	  <if test="type == 'weeks'">
+			and to_char(test_time,'yyyy-mm-dd') between to_char(sysdate-6,'yyyy-mm-dd') and to_char(sysdate,'yyyy-mm-dd')
+       	  </if> 
+       	  <if test="type == 'month'">
+       	  	and to_char(test_time,'yyyy-mm-dd') between to_char(sysdate-27,'yyyy-mm-dd') and to_char(sysdate,'yyyy-mm-dd')
+       	  </if> 
+       	group by to_char(test_time,'yyyy-mm-dd') order by to_char(test_time,'yyyy-mm-dd')
+	</select>
+  
+	
+	<select id="getUserBloodSugarTestByDay" parameterType="map" resultMap="userBloodSugarTimeResultMap">
+	<![CDATA[
+	    select t.h,
+	    		'' as D,
+		       avg(t.test_value) as max_sugar_value,
+           avg(t.test_value) as min_sugar_value
+		 from 
+		(
+		select USER_BLOOD_SUGAR_TEST.*,
+		       to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24') as h
+		 from USER_BLOOD_SUGAR_TEST
+		where
+		 USER_BLOOD_SUGAR_TEST.User_Id = #{userId} 
+		and USER_BLOOD_SUGAR_TEST.Test_Time >= #{time}
+		and  USER_BLOOD_SUGAR_TEST.Test_Time < #{time}+1
+		) t
+		group by t.h
+		order by t.h
+	]]>
+	</select>
+  
+	<select id="getUserBloodSugarTestByWeekAndMonth" parameterType="map" resultMap="userBloodSugarTimeResultMap">
+	<![CDATA[
+		select 
+				'' as h,
+				t.d,
+		       max(t.test_value) max_sugar_value,min(test_value) min_sugar_value 
+		 from 
+		(
+		select USER_BLOOD_SUGAR_TEST.*,
+		       to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'yyyy-mm-dd') as d
+		 from USER_BLOOD_SUGAR_TEST
+		where 
+		USER_BLOOD_SUGAR_TEST.User_Id = #{userId} 
+	]]>
+	<if test="type=='week'">
+	    <![CDATA[
+	    and USER_BLOOD_SUGAR_TEST.Test_Time >= #{time} - 6
+		and  USER_BLOOD_SUGAR_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<if test="type=='month'">
+	    <![CDATA[
+	    and USER_BLOOD_SUGAR_TEST.Test_Time >= #{time}- 27
+		and  USER_BLOOD_SUGAR_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<![CDATA[
+		) t
+		group by t.d
+		order by t.d
+	]]>
+	</select>
+	
+	<select id="getUserBloodSugarTestByDayAvg" parameterType="map" resultMap="userBloodSugarTimeResultMap">
+	<![CDATA[
+		select 
+			to_char(user_blood_sugar_test.Test_Time,'yyyy-mm-dd') as d,
+           USER_BLOOD_SUGAR_TEST.test_time_id as testTimeId,
+		       to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'yyyy-mm-dd hh24:mi:ss') as h,
+           USER_BLOOD_SUGAR_TEST.test_value as max_sugar_value,
+           USER_BLOOD_SUGAR_TEST.test_value as min_sugar_value
+		 from USER_BLOOD_SUGAR_TEST
+		where
+		 USER_BLOOD_SUGAR_TEST.User_Id = #{userId} 
+		and USER_BLOOD_SUGAR_TEST.Test_Time >= #{time}
+		and  USER_BLOOD_SUGAR_TEST.Test_Time < #{time}+1
+		order by to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'yyyy-mm-dd hh24:mi:ss')
+	]]>
+	</select>
+  
+	<select id="getUserBloodSugarTestByWeekAndMonthAvg" parameterType="map" resultMap="userBloodSugarTimeResultMap">
+	<![CDATA[
+		select 
+				t.d,
+				max(t.test_time_id) as testTimeId,
+		      max(t.test_value) as max_sugar_value,
+          	 max(t.test_value) as min_sugar_value
+		 from 
+		(
+		select USER_BLOOD_SUGAR_TEST.*,
+		       to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'yyyy-mm-dd') as d,
+	           (case when to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24') >= 8 and to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24')<= 9 then 1
+	              when to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24') >= 13 and to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24')<= 14 then 2
+	              when to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24') >= 18 and to_char(USER_BLOOD_SUGAR_TEST.Test_Time,'hh24')<= 19 then 3
+	                 else 4 end 
+	           )  
+	            as h
+		 from USER_BLOOD_SUGAR_TEST
+		where 
+		USER_BLOOD_SUGAR_TEST.User_Id = #{userId} 
+	]]>
+	<if test="testTimeId == null or testTimeId == ''">
+	    <![CDATA[
+	     and USER_BLOOD_SUGAR_TEST.TEST_TIME_ID=2
+		]]>
+	</if>
+	<if test="testTimeId != null and testTimeId != ''">
+	    <![CDATA[
+	     and USER_BLOOD_SUGAR_TEST.TEST_TIME_ID=#{testTimeId}
+		]]>
+	</if>
+	<if test="type=='week'">
+	    <![CDATA[
+	    and USER_BLOOD_SUGAR_TEST.Test_Time >= #{time} - 6
+		and USER_BLOOD_SUGAR_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<if test="type=='month'">
+	    <![CDATA[
+	    and USER_BLOOD_SUGAR_TEST.Test_Time >= #{time}- 27
+		and USER_BLOOD_SUGAR_TEST.Test_Time < #{time}+1
+		]]>
+	</if>
+	<![CDATA[
+		) t
+		where t.h < 5 
+		group by t.d
+		order by t.d
+	]]>
+	</select>
+	<!-- 血糖分页  -->
+	<select id="getSugarPage" parameterType="map" resultMap="UserBloodSugarTest">
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  	select * from user_blood_sugar_test where user_id = #{userId}
+	  	<if test="periodId!=null">
+	  	    and test_time_id = #{periodId}
+	  	</if>
+	  	order by user_blood_sugar_test.TEST_TIME DESC
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  	</select>
+  <!-- 血糖分页 统计总数 -->
+  	 <select id="getSugarPageCount" parameterType="map" resultType="long">
+	  	select count(*) from user_blood_sugar_test 
+	  	where user_id = #{userId}
+	  	<if test="periodId!=null">
+	  	    and test_time_id = #{periodId}
+	  	</if>
+ 	 </select>
+  	<!-- 写入血糖记录-->
+	<insert id="addUserBloodSugarTest" parameterType="com.unique.mb.po.UserBloodSugarTest">
+		 <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_BLOOD_SUGAR_TEST.nextval as testId from dual
+	     </selectKey>
+        INSERT INTO USER_BLOOD_SUGAR_TEST (
+        	TEST_ID ,
+        	USER_DEVICE_ID ,
+        	SOURCE_ID ,
+        	USER_ID ,
+        	TEST_TIME ,
+        	USER_NAME ,
+        	TEST_VALUE ,
+        	TEST_RESULT ,
+        	INPUT_MODE ,
+        	USER_DEVICE_CODE ,
+        	ALERT_TIME ,
+        	STATUS ,
+        	TEST_TIME_ID
+        ) VALUES (
+        	#{testId,jdbcType=DECIMAL} ,
+        	#{userDeviceId,jdbcType=DECIMAL} ,
+        	#{sourceId,jdbcType=DECIMAL} ,
+        	#{userId,jdbcType=DECIMAL} ,
+        	#{testTime,jdbcType=TIMESTAMP} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{testValue,jdbcType=DECIMAL} ,
+        	#{testResult,jdbcType=VARCHAR} ,
+        	#{inputMode,jdbcType=CHAR} ,
+        	#{userDeviceCode,jdbcType=VARCHAR} ,
+        	#{alertTime,jdbcType=TIMESTAMP} ,
+        	#{status,jdbcType=DECIMAL} ,
+        	#{testTimeId,jdbcType=DECIMAL}
+        )
+	</insert>
+	<!-- 血糖 写入TESTTIME表
+	<insert id="addUserTestResult" parameterType="com.unique.mb.po.UserTestResult">
+		 <selectKey keyProperty="testResultId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_TEST_RESULT.nextval as testResultId from dual
+	     </selectKey>
+        INSERT INTO USER_TEST_RESULT (
+        	TEST_RESULT_ID ,
+        	EQUP_ID ,
+        	USER_DEVICE_ID ,
+        	SOURCE_ID ,
+        	TEST_TIME ,
+        	USER_NAME ,
+        	TEST_ITME_NAME ,
+        	TEST_ITEM_REFERENCE ,
+        	TEST_ITEM_UNIT ,
+        	TEST_RESULT ,
+        	RESULT_LIFT ,
+        	INPUT_MODE ,
+        	USER_DEVICE_CODE ,
+        	STATUS ,
+        	CUSTOM1 ,
+        	CUSTOM2 ,
+        	CUSTOM3 ,
+        	CUSTOM4 ,
+        	USER_ID 
+        ) VALUES (
+        	#{testResultId,jdbcType=DECIMAL} ,
+        	#{equpId,jdbcType=DECIMAL} ,
+        	#{userDeviceId,jdbcType=DECIMAL} ,
+        	#{sourceId,jdbcType=DECIMAL} ,
+        	#{testTime,jdbcType=TIMESTAMP} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{testItmeName,jdbcType=VARCHAR} ,
+        	#{testItemReference,jdbcType=VARCHAR} ,
+        	#{testItemUnit,jdbcType=VARCHAR} ,
+        	#{testResult,jdbcType=VARCHAR} ,
+        	#{resultLift,jdbcType=VARCHAR} ,
+        	#{inputMode,jdbcType=CHAR} ,
+        	#{userDeviceCode,jdbcType=VARCHAR} ,
+        	#{status,jdbcType=CHAR} ,
+        	#{custom1,jdbcType=VARCHAR} ,
+        	#{custom2,jdbcType=VARCHAR} ,
+        	#{custom3,jdbcType=VARCHAR} ,
+        	#{custom4,jdbcType=VARCHAR} ,
+        	#{userId,jdbcType=DECIMAL} 
+        )
+	</insert>
+	-->
+  <update id="updateUserBloodSugarTest" parameterType="com.unique.mb.po.UserBloodSugarTest" >
+    update USER_BLOOD_SUGAR_TEST
+    <set >
+      <if test="userDeviceId != null" >
+        USER_DEVICE_ID = #{userDeviceId,jdbcType=DECIMAL},
+      </if>
+      <if test="sourceId != null" >
+        SOURCE_ID = #{sourceId,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="testTime != null" >
+        TEST_TIME = #{testTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="testValue != null" >
+        TEST_VALUE = #{testValue,jdbcType=DECIMAL},
+      </if>
+      <if test="testResult != null" >
+        TEST_RESULT = #{testResult,jdbcType=VARCHAR},
+      </if>
+      <if test="inputMode != null" >
+        INPUT_MODE = #{inputMode,jdbcType=CHAR},
+      </if>
+      <if test="userDeviceCode != null" >
+        USER_DEVICE_CODE = #{userDeviceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="alertTime != null" >
+        ALERT_TIME = #{alertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="testTimeId != null" >
+        TEST_TIME_ID = #{testTimeId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where test_id = #{testId}
+  </update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM USER_BLOOD_SUGAR_TEST m WHERE
+        m.TEST_ID = #{testId,jdbcType=DECIMAL} 
+    ]]>
+    </delete>
+    
+    <select id="getUserBloodSugarTestById" resultMap="UserBloodSugarTest" parameterType="string">
+		SELECT <include refid="columns" />
+	    <![CDATA[
+		    FROM USER_BLOOD_SUGAR_TEST m
+	        WHERE 
+		        m.TEST_ID = #{testId,jdbcType=DECIMAL} 
+	    ]]>
+	</select>
+	<!-- 血糖 入口数据查询 -->
+	<select id="queryUserBloodSugarTestById" resultMap="UserTestTimeResultMap" parameterType="map">
+		SELECT A.*
+		FROM TEST_TIME A LEFT JOIN SURVEY_KPI B ON A.KPI_ID=B.KPI_ID
+		WHERE B.KPI_CODE=#{kpiCode,jdbcType=VARCHAR} and A.STATUS in ('C','U') and B.STATUS in ('C','U')
+		ORDER BY TO_CHAR(A.TEST_BEGIN_TIME,'hh24:mi')  
+	</select>
+	<!-- 查寻时段列表，作为时段ID对应 -->
+	<select id="queryTestTimeByKpi" resultMap="UserTestTimeResultMap" parameterType="map">
+		select test_time.* from test_time 
+		left join survey_kpi c on c.kpi_id = test_time.kpi_id
+		where 1=1
+		<if test="kpiCode!=null">
+		    and c.kpi_code = #{kpiCode} 
+		</if>
+		ORDER BY to_char(TEST_BEGIN_TIME,'hh24:mi'),test_time_id 
+	</select>
+	
+	<sql id="findPage_where">
+		<where>	      				
+	       <if test="testId !=null">
+				AND m.TEST_ID = #{testId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userDeviceId !=null">
+				AND m.USER_DEVICE_ID = #{userDeviceId,jdbcType=DECIMAL}
+			</if>
+	       <if test="sourceId !=null">
+				AND m.SOURCE_ID = #{sourceId,jdbcType=DECIMAL}
+			</if>
+	       <if test="userId !=null">
+				AND m.USER_ID = #{userId,jdbcType=DECIMAL}
+			</if>
+	       <if test="testTimeBegin !=null">
+				AND m.TEST_TIME >= #{testTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="testTimeEnd !=null">
+				AND m.TEST_TIME &lt;= #{testTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="userName !=null">
+				AND m.USER_NAME = #{userName,jdbcType=VARCHAR}
+			</if>
+	       <if test="testValue !=null">
+				AND m.TEST_VALUE = #{testValue,jdbcType=DECIMAL}
+			</if>
+	       <if test="testResult !=null">
+				AND m.TEST_RESULT = #{testResult,jdbcType=VARCHAR}
+			</if>
+	       <if test="inputMode !=null">
+				AND m.INPUT_MODE = #{inputMode,jdbcType=CHAR}
+			</if>
+	       <if test="userDeviceCode !=null">
+				AND m.USER_DEVICE_CODE = #{userDeviceCode,jdbcType=VARCHAR}
+			</if>
+	       <if test="alertTimeBegin !=null">
+				AND m.ALERT_TIME >= #{alertTimeBegin,jdbcType=TIMESTAMP}
+		   </if>
+		   <if test="alertTimeEnd !=null">
+				AND m.ALERT_TIME &lt;= #{alertTimeEnd,jdbcType=TIMESTAMP}
+		   </if>
+	       <if test="status !=null">
+				AND m.STATUS = #{status,jdbcType=DECIMAL}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="userBloodSugarTestCount" resultType="long">
+        SELECT count(*) FROM USER_BLOOD_SUGAR_TEST m
+		<include refid="findPage_where"/>    
+    </select>
+    
+    <select id="userBloodSugarTestfindPage" resultMap="UserBloodSugarTest" parameterType="com.unique.mb.po.UserBloodSugarTest">
+    	<if test="startRow != null and endRow!=null">
+	  	   <include refid="com.unique.core.fenye1"></include>
+	    </if>
+	    
+    	SELECT <include refid="columns" />
+	    FROM USER_BLOOD_SUGAR_TEST m
+		<include refid="findPage_where"/>
+		
+		<if test="sortColumns !=null ">
+			ORDER BY ${sortColumns}
+		</if>
+		
+		<if test="startRow != null and endRow!=null">
+	  	   <include refid="com.unique.core.fenye2"></include>
+	    </if>
+    </select>
+
+   <insert id="addTestResult" parameterType="com.unique.mb.po.TestResult" >
+		 <selectKey keyProperty="testResultId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_TEST_RESULT.nextval as testResultId from dual
+	     </selectKey>
+	    insert into TEST_RESULT (TEST_RESULT_ID, TEST_ID, TEST_TYPE
+	      )
+	    values (#{testResultId,jdbcType=DECIMAL}, #{testId,jdbcType=DECIMAL}, #{testType,jdbcType=CHAR}
+	      )
+  </insert>
+  
+  <insert id="addTestResultDet" parameterType="com.unique.mb.po.TestResultDet" >
+		 <selectKey keyProperty="testResultDetId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_TEST_RESULT_DET.nextval as testResultDetId from dual
+	     </selectKey>
+    insert into TEST_RESULT_DET (TEST_RESULT_DET_ID, TEST_RESULT_ID, ALERT_GRADE, 
+      DOCTOR_ALERT_CON, USER_ALERT_RESULT, DO_STATUS, 
+      DO_WAY, USER_HEALTHY_SUGGEST,KPI_ID,IS_ALERT)
+    values (#{testResultDetId,jdbcType=DECIMAL}, #{testResultId,jdbcType=DECIMAL}, #{alertGrade,jdbcType=DECIMAL}, 
+      #{doctorAlertCon,jdbcType=VARCHAR}, #{userAlertResult,jdbcType=VARCHAR}, #{doStatus,jdbcType=DECIMAL}, 
+      #{doWay,jdbcType=VARCHAR}, #{userHealthySuggest,jdbcType=VARCHAR}, #{kpiId,jdbcType=DECIMAL},#{isAlert,jdbcType=CHAR})
+  </insert>
+  
+  <insert id="addHeartRateTest" parameterType="com.unique.mb.po.UserHeartRateTest">
+		 <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_HEART_RATE_TEST.nextval as testId from dual
+	     </selectKey>
+    insert into USER_HEART_RATE_TEST (TEST_ID, USER_ID, SOURCE_ID, 
+      USER_DEVICE_ID, TEST_TIME, USER_NAME, 
+      TEST_RESULT, INPUT_MODE, USER_DEVICE_CODE, 
+      DEVICE_TOKEN, STATUS, IS_ALARM, 
+      TEST_TIME_ID, RATE, TEST_TYPE,TEST_SOURCE_ID
+      )
+    values (#{testId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{sourceId,jdbcType=DECIMAL}, 
+      #{userDeviceId,jdbcType=DECIMAL}, #{testTime,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}, 
+      #{testResult,jdbcType=VARCHAR}, #{inputMode,jdbcType=CHAR}, #{userDeviceCode,jdbcType=VARCHAR}, 
+      #{deviceToken,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{isAlarm,jdbcType=CHAR}, 
+      #{testTimeId,jdbcType=DECIMAL}, #{rate,jdbcType=DECIMAL}, #{testType,jdbcType=CHAR},
+      #{testSourceId,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <select id="getUserHeartRateTest" parameterType="string" resultMap="heartRateResultMap">
+      select * from USER_HEART_RATE_TEST where test_id = #{testId}
+  </select>
+  
+  <select id="getTestResult" parameterType="map" resultMap="testResultMap">
+      select * from TEST_RESULT where TEST_RESULT.TEST_ID = #{testId}
+       and TEST_RESULT.TEST_TYPE = #{type} and rownum = 1
+  </select>
+  
+  <select id="getTestResultDet" parameterType="string" resultMap="testResultDepMap">
+      select * from Test_Result_Det where test_result_id = #{testResultId}
+  </select>
+  
+  <!-- 更新处理预警 -->
+  <update id="handlerEarlyWarn" parameterType="map">
+  	update TEST_RESULT_DET set do_status=1,do_way=#{doWay} where test_result_det_id=#{testResultDetId}
+  </update>
+  
+  <select id="getBloodSugarByWeek" parameterType="map" resultType="map">
+   <![CDATA[   
+	select 
+	       round(avg(t.test_value),2) as value,
+	       max(test_result_det.alert_grade) as alert_grade
+	 from user_blood_sugar_test t
+	 left join test_result on test_result.test_id = t.test_id
+	 left join test_result_det on test_result_det.test_result_id = test_result.test_result_id
+	where t.test_time_id is not null
+	and t.test_time >= to_date('${nowdate}','yyyy-mm-dd') - 6
+	and t.test_time < to_date('${nowdate}','yyyy-mm-dd') + 1
+	and t.user_id= #{userId}
+	group by to_char(t.test_time,'yyyy-MM-dd') || ' ' || t.test_time_id
+	]]>
+  </select>
+  
+  <!-- 获取没有建立结果记录的检测记录 -->
+  <select id="getNoTestResultRecord" parameterType="map" resultType="map">
+		select * from ${tableName} t
+		left join test_result on test_result.test_id = t.test_id and test_result.test_type = #{type}
+		where test_result.test_result_id is null
+  </select>
+  
+  <!--  -->
+  <select id="getNoTestResultRecord2" parameterType="map" resultType="map">
+		select * from ${tableName} t
+		left join test_result on test_result.test_id = t.test_id and test_result.test_type = #{type}
+		where test_result.test_result_id is null
+  </select>
+</mapper>
+

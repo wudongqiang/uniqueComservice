@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+						http://www.springframework.org/schema/aop
+						http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+						http://cxf.apache.org/jaxws 
+    					http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	<jaxws:client id="webUserService"  serviceClass="com.unique.user.webservice.WebUserService" address="${imaddr}/webservice/web4UserService"/>
+	<jaxws:client id="webHealthService" serviceClass="com.unique.user.webservice.WebHealthService" address="${healthaddr}/patientPHRQueryService?wsdl"/>
+	<jaxws:client id="webPatDocBrowsService" serviceClass="com.unique.user.webservice.WebPatDocBrowsService" address="${healthaddr}/patDocBrowsIndxQuery?wsdl"/>
+	<jaxws:client id="webRetrieveDocumentService" serviceClass="com.unique.user.webservice.WebRetrieveDocumentService" address="${healthaddr}/retrieveDocumentSetRequest?wsdl"/>
+	<jaxws:client id="webCreateHealthDocService" serviceClass="com.unique.user.webservice.WebCreateHealthDocService" address="${healthaddr}/checkPatientRegistry?wsdl"/>
+
+	<bean id="webRegService" class="com.unique.reg.webservice.WebRegServiceImpl"></bean>
+	
+	<bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+	<bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+	<!-- 注意下面的address，这里的address的名称就是访问的WebService的name -->
+	<jaxws:server id="web4RegService" serviceClass="com.unique.reg.webservice.WebRegServiceImpl"
+		address="/web4RegService" >
+		<jaxws:serviceBean>
+			<!-- 要暴露的 bean 的引用 -->
+			<ref bean="webRegService" />
+		</jaxws:serviceBean>
+		<jaxws:inInterceptors>
+			<ref bean="loggingInInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<ref bean="loggingOutInterceptor" />
+		</jaxws:outInterceptors>
+	</jaxws:server>
+</beans>

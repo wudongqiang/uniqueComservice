@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.order.dao.UserScheduleMapper" >
+  <resultMap id="scheduleResultMap" type="com.unique.user.po.UserSchedule" >
+    <id column="SCHEDULE_ID" property="scheduleId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="SCHEDULE_TITLE" property="scheduleTitle" jdbcType="VARCHAR" />
+    <result column="SCHEDULE_CON" property="scheduleCon" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="BEGIN_TIME" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="scheduleByPageParam">
+    <if test="startTime!=null">
+   	<![CDATA[
+    and  to_char(user_schedule.BEGIN_TIME,'yyyy-mm-dd') = #{startTime}
+  	]]>
+    </if>
+   <if test="userId!=null">
+   	<![CDATA[
+    and user_schedule.USER_ID = #{userId}
+  	]]>
+    </if>
+  </sql>
+  
+  
+  <!-- 获取分页离线消息 -->
+  <select id="getScheduleResultMapByPage" parameterType="map" resultMap="scheduleResultMap">
+  <include refid="com.unique.core.fenye1"></include>
+    <![CDATA[
+    select * from user_schedule
+    where 1=1 and status='C'
+    ]]>
+	<include refid="scheduleByPageParam"></include>
+    order by user_schedule.BEGIN_TIME
+  <include refid="com.unique.core.fenye2"></include>
+  </select>
+  
+  <!-- 获取消息 -->
+  <select id="getScheduleResultMapByPageCount" parameterType="map" resultType="long">
+    <![CDATA[
+    select count(*) from user_schedule
+    where 1=1 and status='C'
+    ]]>
+	<include refid="scheduleByPageParam"></include>
+  </select>
+  
+  <!-- 添加日程 -->
+  <insert id="addUserSchedule" parameterType="com.unique.user.po.UserSchedule">
+  	<selectKey keyProperty="scheduleId" resultType="DECIMAL" order="BEFORE">
+            select seq_user_schedule.nextval as scheduleId from dual
+     </selectKey>
+    insert into user_schedule (SCHEDULE_ID, USER_ID, SCHEDULE_TITLE, SCHEDULE_CON, CREATE_TIME, BEGIN_TIME,END_TIME,STATUS)
+    values (#{scheduleId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{scheduleTitle,jdbcType=VARCHAR}, 
+      #{scheduleCon,jdbcType=VARCHAR}, sysdate, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, 'C')
+  </insert>
+  
+  <!-- 查询日程 -->
+  <select id="getUserScheduleByUserIdAndDate" parameterType="map" resultMap="scheduleResultMap">
+  	 select * from USER_SCHEDULE 
+  	 where status='C' and user_id=#{userId} 
+  	 <if test="month != null"> 
+		and to_char(BEGIN_TIME,'yyyy-mm')=#{month} 
+	 </if>
+	<if test="date != null"> 
+		and  BEGIN_TIME>=to_date(#{date},'yyyy-mm-dd')
+	</if>
+	<if test="searchDate != null"> 
+		and to_char(BEGIN_TIME,'yyyy-mm-dd')=#{searchDate} 
+	</if>
+	order by begin_time ASC
+  </select>
+  <!-- 根据id查询日程 -->
+  <select id="getUsersScheduleById" parameterType="string" resultMap="scheduleResultMap">
+  	SELECT * FROM user_schedule where schedule_id=#{scheduleId}
+  </select>
+  
+  <!--  更新日程  -->
+  <update id="updateUserScheduleParams" parameterType="com.unique.user.po.UserSchedule">
+  	UPDATE user_schedule SET 
+  		 user_id = #{userId,jdbcType=DECIMAL}, 
+  		 schedule_title = #{scheduleTitle,jdbcType=VARCHAR}, 
+  		 schedule_con = #{scheduleCon,jdbcType=VARCHAR}, 
+  		 create_time = #{createTime,jdbcType=TIMESTAMP},
+  		 begin_time = #{beginTime,jdbcType=TIMESTAMP},
+  		 end_time = #{endTime,jdbcType=TIMESTAMP},
+  		 status = #{status,jdbcType=CHAR}
+  	WHERE  
+  		schedule_id = #{scheduleId}
+  </update>
+  
+  <!-- 删除自定义日程 使用假删 更改状态为R -->
+  <update id="deleteByScheduleId" parameterType="string">
+  	 UPDATE user_schedule SET  status = 'R' WHERE schedule_id = #{scheduleId}
+  </update>
+  
+  <!-- 获取医生自定义日程 某月 有安排的日程日期集 -->
+  <select id="getScheduleDates" parameterType="map" resultType="string">
+  	select distinct to_char(USER_SCHEDULE.begin_time,'yyyy-mm-dd') 
+  	from USER_SCHEDULE,STAFF 
+  	where USER_SCHEDULE.User_Id = STAFF.User_Id and staff.staff_id=#{staffId} and to_char(USER_SCHEDULE.begin_time,'yyyy-mm')=#{monthStr}
+  </select>
+</mapper>

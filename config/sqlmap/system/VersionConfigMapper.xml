@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.system" >
+  <resultMap id="sysResultMap" type="com.unique.system.po.VersionConfig" >
+    <id column="VER_ID" property="verId" jdbcType="DECIMAL" />
+    <result column="VER_TYPE" property="verType" jdbcType="VARCHAR" />
+    <result column="VER_VALUE" property="verValue" jdbcType="VARCHAR" />
+    <result column="VER_UPDATE" property="verUpdate" jdbcType="CHAR" />
+    <result column="VER_CON" property="verCon" jdbcType="VARCHAR" />
+    <result column="VER_ADDR" property="verAddr" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CLIENT_TYPE_ID" property="clientTypeId" jdbcType="DECIMAL" />
+    <result column="CLIENT_TYPE_NAME" property="clientTypeName" jdbcType="VARCHAR" />
+    <result column="PUBLISH_TIME" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="UPGRADE_VERSION" property="upgradeVersion" jdbcType="VARCHAR" />
+    <result column="DEL_STATUS" property="delStatus" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="adResultMap" type="com.unique.system.po.AdContent" >
+    <id column="CONTENT_ID" property="contentId" jdbcType="DECIMAL" />
+    <result column="CONTENT_NAME" property="contentName" jdbcType="VARCHAR" />
+    <result column="POSITION_CODE" property="positionCode" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="DECIMAL" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="LINK_URL" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="IMG_URL_BIG" property="imgUrlBig" jdbcType="VARCHAR" />
+    <result column="IMG_URL_SMALL" property="imgUrlSmall" jdbcType="VARCHAR" />
+    <result column="PLAY_TIME" property="playTime" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="userClientResultMap" type="com.unique.system.po.UserClientType" >
+    <id column="UCT_ID" property="uctId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="CLIENT_TYPE_ID" property="clientTypeId" jdbcType="DECIMAL" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="VERSION_NO" property="versionNo" jdbcType="VARCHAR" />
+    <result column="PUSH_CODE" property="pushCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.unique.system.po.UserClientType" id="userClientResultMapEx" extends="userClientResultMap">
+  	<result column="PROJECT_CODE" property="projectCode" jdbcType="VARCHAR" />
+  	<result column="CLIENT_TYPE_CODE" property="clientTypeCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getVersion" parameterType="string" resultMap="sysResultMap">
+  	select * from 
+	(
+	 select version_config.* from version_config where 
+	 version_config.del_status = '0' 
+	 and version_config.status='1'
+	 and version_config.client_type_id = #{typeId}
+	order by version_config.publish_time desc
+	) s where rownum = 1
+  </select>
+  
+  <select id="getAdByPosition" parameterType="string" resultMap="adResultMap">
+  <![CDATA[
+  	select * from ad_content where ad_content.status = 'Y' 
+	and ad_content.start_time <= sysdate
+	and ad_content.end_time >= sysdate
+	and ad_content.position_code = #{code}
+  ]]>
+  </select>
+  
+  <insert id="addUserClient" parameterType="com.unique.system.po.UserClientType" >
+      <selectKey keyProperty="uctId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_USER_CLIENT_TYPE.nextval as uctId from dual
+     </selectKey>
+    insert into USER_CLIENT_TYPE (UCT_ID, USER_ID, CLIENT_TYPE_ID, 
+      DEVICE_TOKEN, VERSION_NO,PUSH_CODE)
+    values (#{uctId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{clientTypeId,jdbcType=DECIMAL}, 
+      #{deviceToken,jdbcType=VARCHAR}, #{versionNo,jdbcType=VARCHAR},#{pushCode,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="getUserClientByToken" parameterType="string" resultMap="userClientResultMap">
+  select * from user_client_type where user_client_type.device_token = #{deviceToken}
+  </select>
+  
+ <update id="updateUserClient" parameterType="map" >
+    update USER_CLIENT_TYPE
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="clientTypeId != null" >
+        CLIENT_TYPE_ID = #{clientTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="deviceToken != null" >
+        DEVICE_TOKEN = #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="versionNo != null" >
+        VERSION_NO = #{versionNo,jdbcType=VARCHAR},
+      </if>
+      <if test="pushCode != null" >
+        PUSH_CODE = #{pushCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_CLIENT_TYPE.UCT_ID = #{uctId,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="getClientTypeByUcts" parameterType="map" resultMap="userClientResultMapEx">
+		select user_client_type.*,ad_client_type.project_code ,ad_client_type.client_type_code
+		from user_client_type left join ad_client_type 
+		on ad_client_type.client_type_id = user_client_type.client_type_id
+		 where 1=1
+		 <if test="ucts!=null">
+		 and user_client_type.uct_id in (
+		 	<foreach collection="ucts" item="s" separator=",">
+		 	#{s}
+		 	</foreach>
+		 )
+		 </if>
+		 and user_client_type.client_type_id is not null
+  </select>
+  
+  <update id="updateClientType" parameterType="map" >
+  	update user_client_type set user_client_type.push_code = #{pushCode}
+	where user_client_type.client_type_id = #{clientTypeId} and user_client_type.device_token = #{deviceToken}
+  </update>
+  
+  <select id="getPushCode" parameterType="map" resultMap="userClientResultMap">
+  select * from user_client_type where user_client_type.device_token = #{deviceToken} and user_client_type.client_type_id = #{clientId}
+  </select>
+</mapper>

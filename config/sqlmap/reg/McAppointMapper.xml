@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<!-- 不使用namespace的话sql搜索定位会比较方便 -->
+<mapper namespace="com.unique.reg.po">
+
+	<resultMap id="McAppoint" type="com.unique.reg.po.McAppoint">
+        <result property="appointId" column="APPOINT_ID" jdbcType="DECIMAL"/>
+        <result property="staffId" column="STAFF_ID" jdbcType="DECIMAL"/>
+        <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+        <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+        <result property="staffName" column="STAFF_NAME" jdbcType="VARCHAR"/>
+        <result property="appointTime" column="APPOINT_TIME" jdbcType="TIMESTAMP"/>
+        <result property="symptomDesc" column="SYMPTOM_DESC" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="status" column="STATUS" jdbcType="DECIMAL"/>
+        <result property="agreeTime" column="AGREE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="agreeUserId" column="AGREE_USER_ID" jdbcType="DECIMAL"/>
+        <result property="refuseUserId" column="REFUSE_USER_ID" jdbcType="DECIMAL"/>
+        <result property="refuseTime" column="REFUSE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="refuseCon" column="REFUSE_CON" jdbcType="VARCHAR"/>
+        <result property="noticeCon" column="NOTICE_CON" jdbcType="VARCHAR"/>
+        <result property="orgId" column="ORG_ID" jdbcType="DECIMAL"/>
+        <result property="doWay" column="DO_WAY" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		m.APPOINT_ID,m.ORG_ID,m.STAFF_ID,m.USER_ID,m.USER_NAME,m.STAFF_NAME,m.APPOINT_TIME,m.SYMPTOM_DESC,m.CREATE_TIME,m.STATUS,m.AGREE_TIME,m.AGREE_USER_ID,m.REFUSE_USER_ID,m.REFUSE_TIME,m.REFUSE_CON,m.NOTICE_CON,m.DO_WAY
+	    ]]>
+	</sql>
+
+	<insert id="addMcAppoint" parameterType="com.unique.reg.po.McAppoint">
+         <selectKey keyProperty="appointId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_APPOINT.nextval as appointId from dual
+     	</selectKey>
+    <![CDATA[
+        INSERT INTO MC_APPOINT (
+        	APPOINT_ID ,
+        	STAFF_ID ,
+        	USER_ID ,
+        	USER_NAME ,
+        	STAFF_NAME ,
+        	APPOINT_TIME ,
+        	SYMPTOM_DESC ,
+        	CREATE_TIME ,
+        	STATUS ,
+        	AGREE_TIME ,
+        	AGREE_USER_ID ,
+        	REFUSE_USER_ID ,
+        	REFUSE_TIME ,
+        	REFUSE_CON ,
+        	NOTICE_CON ,
+        	ORG_ID
+        ) VALUES (
+        	#{appointId,jdbcType=DECIMAL} ,
+        	#{staffId,jdbcType=DECIMAL} ,
+        	#{userId,jdbcType=DECIMAL} ,
+        	#{userName,jdbcType=VARCHAR} ,
+        	#{staffName,jdbcType=VARCHAR} ,
+        	#{appointTime,jdbcType=TIMESTAMP} ,
+        	#{symptomDesc,jdbcType=VARCHAR} ,
+        	sysdate ,
+        	#{status,jdbcType=DECIMAL} ,
+        	#{agreeTime,jdbcType=TIMESTAMP} ,
+        	#{agreeUserId,jdbcType=DECIMAL} ,
+        	#{refuseUserId,jdbcType=DECIMAL} ,
+        	#{refuseTime,jdbcType=TIMESTAMP} ,
+        	#{refuseCon,jdbcType=VARCHAR} ,
+        	#{noticeCon,jdbcType=VARCHAR} ,
+        	#{orgId,jdbcType=DECIMAL}
+        )
+    ]]>
+	</insert>
+    
+	<update id="update" parameterType="com.unique.reg.po.McAppoint">
+        UPDATE MC_APPOINT 
+		  <set>
+	     	<if test="staffId !=null">
+	       		STAFF_ID = #{staffId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="userId !=null">
+	       		USER_ID = #{userId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="orgId !=null">
+	       		ORG_ID = #{orgId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="userName !=null">
+	       		USER_NAME = #{userName,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="staffName !=null">
+	       		STAFF_NAME = #{staffName,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="appointTime !=null">
+	       		APPOINT_TIME = #{appointTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="symptomDesc !=null">
+	       		SYMPTOM_DESC = #{symptomDesc,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="createTime !=null">
+	       		CREATE_TIME = #{createTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="status !=null">
+	       		STATUS = #{status,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="agreeTime !=null">
+	       		AGREE_TIME = #{agreeTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="agreeUserId !=null">
+	       		AGREE_USER_ID = #{agreeUserId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="refuseUserId !=null">
+	       		REFUSE_USER_ID = #{refuseUserId,jdbcType=DECIMAL} ,
+	        </if>
+	     	<if test="refuseTime !=null">
+	       		REFUSE_TIME = #{refuseTime,jdbcType=TIMESTAMP} ,
+	        </if>
+	     	<if test="refuseCon !=null">
+	       		REFUSE_CON = #{refuseCon,jdbcType=VARCHAR} ,
+	        </if>
+	     	<if test="noticeCon !=null">
+	       		NOTICE_CON = #{noticeCon,jdbcType=VARCHAR} 
+	        </if>
+	      </set>
+        WHERE 
+	      	  APPOINT_ID = #{appointId,jdbcType=DECIMAL} 
+	</update>
+
+	<select id="getMcAppoints" resultMap="McAppoint" parameterType="map">
+		<if test="startRow != null and endRow!=null">
+	  		<include refid="com.unique.core.fenye1"></include>
+	    </if>
+	    select <include refid="columns"/> from MC_APPOINT m 
+	    where 1=1
+	    <if test="staffId!=null">
+	    	and m.staff_id=#{staffId}
+	    </if>
+	    <if test="userId!=null">
+	    	and m.user_id=#{userId}
+	    </if>
+	    <if test="status!=null">
+	    	and m.status=#{status}
+	    </if>
+	    
+	    order by m.CREATE_TIME DESC
+	    <if test="startRow != null and endRow!=null">
+  			<include refid="com.unique.core.fenye2"></include>
+    	</if>
+    </select>
+	<select id="getMcAppointsCount" resultType="long" parameterType="map">
+	    select count(1) from MC_APPOINT m 
+	    where 1=1
+	    <if test="staffId!=null">
+	    	and m.staff_id=#{staffId}
+	    </if>
+	    <if test="userId!=null">
+	    	and m.user_id=#{userId}
+	    </if>
+	     <if test="status!=null">
+	    	and m.status=#{status}
+	    </if>
+    </select>
+    
+    <resultMap id="McAppointDetMap" type="com.unique.reg.po.McAppoint" extends="McAppoint">
+    	<collection property="images" javaType="com.unique.reg.po.AppointImages">
+    		<result column="imageUrl" property="imageUrl" jdbcType="VARCHAR"/>
+    	</collection>
+    </resultMap>
+    <select id="getMcAppointById" resultMap="McAppointDetMap" parameterType="string">
+    	select m.*,tp.hlink_to imageUrl from MC_APPOINT m
+		left join ( select * from (
+		select c.appoint_id,c.hlink_to from cms_img_lib c 
+		left join cms_img_type_use_rel r on c.type_use_id=r.type_use_id
+		left join cms_img_use u on u.img_use_id=r.img_use_id 
+		left join cms_img_type t on t.img_type_id=r.img_type_id  
+		where u.img_use_code='appointzz' and  t.img_type_code='appoint_id'
+	)) tp on tp.appoint_id=m.appoint_id
+	where m.appoint_id=#{appointId}
+    </select>
+    
+    <select id="checkIsUniqueAppoint" parameterType="map" resultType="long">
+    	select count(1) from MC_APPOINT m
+    	where m.staff_id=#{staffId} and m.user_id=#{userId} and m.status in(1,2) and to_char(m.appoint_time,'yyyy-mm-dd')=#{appointDate}
+    </select>
+</mapper>
+

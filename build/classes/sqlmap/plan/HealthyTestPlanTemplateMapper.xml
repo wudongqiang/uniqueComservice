@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.order.dao.HealthyTestPlanTemplateMapper" >
+  <resultMap id="templateResultMap" type="com.unique.plan.po.HealthyTestPlanTemplate" >
+    <id column="TEST_TEMPLATE_ID" property="testTemplateId" jdbcType="DECIMAL" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="TEMPLATE_NAME" property="templateName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPEATOR" property="opeator" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+  </resultMap>
+  
+  <resultMap id="templateDetResultMap" type="com.unique.plan.po.HealthyTestPlanTemplateDet" >
+    <id column="TEMPLETE_DET_ID" property="templeteDetId" jdbcType="DECIMAL" />
+    <result column="KPI_ID" property="kpiId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME_ID" property="testTimeId" jdbcType="DECIMAL" />
+    <result column="ALERT_RULE_ID" property="alertRuleId" jdbcType="DECIMAL" />
+    <result column="TEST_TEMPLATE_ID" property="testTemplateId" jdbcType="DECIMAL" />
+    <result column="PLAN_BEGIN_TIME" property="planBeginTime" jdbcType="TIMESTAMP" />
+    <result column="PLAN_END_TIME" property="planEndTime" jdbcType="TIMESTAMP" />
+    <result column="ALERT_TIME" property="alertTime" jdbcType="TIMESTAMP" />
+    <result column="ALERT_CON" property="alertCon" jdbcType="VARCHAR" />
+    <result column="TEST_BEGIN_TIME" property="testBeginTime" jdbcType="TIMESTAMP" />
+    <result column="TEST_END_TIME" property="testEndTime" jdbcType="TIMESTAMP" />
+    <result column="PERIOD_TYPE" property="periodType" jdbcType="DECIMAL" />
+    <result column="PERIOD_VALUE" property="periodValue" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap type="com.unique.plan.po.HealthyTestPlanTemplateDet" id="templateDetResultMapHasTestTime" extends="templateDetResultMap">
+    <result column="test_time_name" property="testTimeName" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <resultMap id="testPlanTemplateResultMap" type="com.unique.plan.po.TestPlanTemplateDetRule" >
+    <id column="TEMPLETE_DET_RULE_ID" property="templeteDetRuleId" jdbcType="DECIMAL" />
+    <result column="TEMPLETE_DET_ID" property="templeteDetId" jdbcType="DECIMAL" />
+    <result column="KPI_ID" property="kpiId" jdbcType="DECIMAL" />
+    <result column="TEST_TEMPLATE_ID" property="testTemplateId" jdbcType="DECIMAL" />
+    <result column="ONE_BEGIN_VALUE" property="oneBeginValue" jdbcType="DECIMAL" />
+    <result column="ONE_BEGIN_SYMBOL" property="oneBeginSymbol" jdbcType="VARCHAR" />
+    <result column="ONE_KPI_ID" property="oneKpiId" jdbcType="DECIMAL" />
+    <result column="ONE_END_SYMBOL" property="oneEndSymbol" jdbcType="VARCHAR" />
+    <result column="ONE_END_VALUE" property="oneEndValue" jdbcType="DECIMAL" />
+    <result column="ONE_TWO_RELATION" property="oneTwoRelation" jdbcType="VARCHAR" />
+    <result column="TWO_BEGIN_VALUE" property="twoBeginValue" jdbcType="DECIMAL" />
+    <result column="TWO_BEGIN_SYMBOL" property="twoBeginSymbol" jdbcType="VARCHAR" />
+    <result column="TWO_KPI_ID" property="twoKpiId" jdbcType="DECIMAL" />
+    <result column="TWO_END_SYMBOL" property="twoEndSymbol" jdbcType="VARCHAR" />
+    <result column="TWO_END_VALUE" property="twoEndValue" jdbcType="DECIMAL" />
+    <result column="ALERT_GRADE" property="alertGrade" jdbcType="DECIMAL" />
+    <result column="DOCTOR_ALERT_CON" property="doctorAlertCon" jdbcType="VARCHAR" />
+    <result column="USER_ALERT_RESULT" property="userAlertResult" jdbcType="VARCHAR" />
+    <result column="USER_HEALTHY_SUGGEST" property="userHealthySuggest" jdbcType="VARCHAR" />
+    <result column="one_kpi_name" property="oneKpiName" jdbcType="VARCHAR" />
+    <result column="two_kpi_name" property="twoKpiName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getTemplateByOrgId" resultMap="templateResultMap" parameterType="string">
+		select * from healthy_test_plan_template where healthy_test_plan_template.status in ('C','U')
+		and healthy_test_plan_template.org_id = #{orgId}
+  </select>
+  
+  <select id="getTemplateById" resultMap="templateResultMap" parameterType="string">
+		select * from healthy_test_plan_template where healthy_test_plan_template.status in ('C','U')
+		and healthy_test_plan_template.test_template_id = #{templateId}
+  </select>
+  
+  <select id="getTemplateDetByTemplateId" resultMap="templateDetResultMapHasTestTime" parameterType="string">
+	  select HEALTHY_TEST_PLAN_TEMPLATE_DET.*,
+	        test_time.test_time_name,
+	        to_char(test_time.test_begin_time,'hh24:mi') as begin_time,
+	        to_char(test_time.test_end_time,'hh24:mi') as end_time
+	  from HEALTHY_TEST_PLAN_TEMPLATE_DET
+	 left join test_time on test_time.test_time_id = HEALTHY_TEST_PLAN_TEMPLATE_DET.Test_Time_Id and test_time.status in ('C','U')
+	  where HEALTHY_TEST_PLAN_TEMPLATE_DET.TEST_TEMPLATE_ID = #{templateId}
+  </select>
+  
+   <select id="getTemplateDetByTemplateDetId" resultMap="templateDetResultMap" parameterType="string">
+ 	select * from HEALTHY_TEST_PLAN_TEMPLATE_DET where HEALTHY_TEST_PLAN_TEMPLATE_DET.TEMPLETE_DET_ID = #{templateDetId}
+  </select>
+  
+  <select id="getTestPlanTemplateByDetId" resultMap="testPlanTemplateResultMap" parameterType="string">
+		select TEST_PLAN_TEMPLATE_DET_RULE.*,
+		oneKpi.Kpi_Title as one_kpi_name,
+		twoKpi.Kpi_Title as two_kpi_name
+		 from TEST_PLAN_TEMPLATE_DET_RULE
+		left join survey_kpi oneKpi on TEST_PLAN_TEMPLATE_DET_RULE.One_Kpi_Id = oneKpi.Kpi_Id
+		left join survey_kpi twoKpi on TEST_PLAN_TEMPLATE_DET_RULE.Two_Kpi_Id = twoKpi.Kpi_Id
+		where TEST_PLAN_TEMPLATE_DET_RULE.TEMPLETE_DET_ID = #{templateDetId}
+  </select>
+  
+ <insert id="addHealthyPlan" parameterType="com.unique.plan.po.HealthyPlan" >
+        <selectKey keyProperty="healthyId" resultType="DECIMAL" order="BEFORE">
+            select HEALTH_PLAN_SEQ.nextval as healthyId from dual
+        </selectKey>
+    insert into HEALTHY_PLAN (HEALTHY_ID, ORG_ID, DEP_ID, 
+      USER_ID, STAFF_ID, HEALTHY_NAME, 
+      USER_NAME, CREATE_TIME, BEGIN_TIME, 
+      END_TIME, STATUS, PLAN_EFFECT, 
+      PLAN_RESULT, OP_TIME, OPEATOR
+      )
+    values (#{healthyId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{depId,jdbcType=DECIMAL}, 
+      #{userId,jdbcType=DECIMAL}, #{staffId,jdbcType=DECIMAL}, #{healthyName,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{beginTime,jdbcType=TIMESTAMP}, 
+      #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, #{planEffect,jdbcType=VARCHAR}, 
+      #{planResult,jdbcType=VARCHAR}, #{opTime,jdbcType=TIMESTAMP}, #{opeator,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <insert id="addHealthyTestPlanDet" parameterType="com.unique.plan.po.HealthyTestPlanDet" >
+        <selectKey keyProperty="planDetId" resultType="DECIMAL" order="BEFORE">
+            select seq_healthy_test_plan_det.nextval as planDetId from dual
+        </selectKey>
+    insert into HEALTHY_TEST_PLAN_DET (PLAN_DET_ID, KPI_ID, TEST_TIME_ID, 
+      PLAN_ID, TEST_BEGIN_TIME, TEST_END_TIME, 
+      ALERT_TIME, ALERT_CON, PLAN_BEGIN_TIME, 
+      PLAN_END_TIME, REFERENCE_BEGIN, REFERENCE_END, 
+      PERIOD_VALUE, PERIOD_TYPE, ALERT_RULE_ID
+      )
+    values (#{planDetId,jdbcType=DECIMAL}, #{kpiId,jdbcType=DECIMAL}, #{testTimeId,jdbcType=DECIMAL}, 
+      #{planId,jdbcType=DECIMAL}, #{testBeginTime,jdbcType=TIMESTAMP}, #{testEndTime,jdbcType=TIMESTAMP}, 
+      #{alertTime,jdbcType=TIMESTAMP}, #{alertCon,jdbcType=VARCHAR}, #{planBeginTime,jdbcType=TIMESTAMP}, 
+      #{planEndTime,jdbcType=TIMESTAMP}, #{referenceBegin,jdbcType=DECIMAL}, #{referenceEnd,jdbcType=DECIMAL}, 
+      #{periodValue,jdbcType=DECIMAL}, #{periodType,jdbcType=DECIMAL}, #{alertRuleId,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <insert id="addHealthyTestPlanDetRule" parameterType="com.unique.plan.po.HealthyTestPlanDetRule" >
+        <selectKey keyProperty="planRuleId" resultType="DECIMAL" order="BEFORE">
+            select Healthy_Test_Plan_Det_Rule_Seq.nextval as planRuleId from dual
+        </selectKey>
+    insert into HEALTHY_TEST_PLAN_DET_RULE (PLAN_RULE_ID, PLAN_ID, USER_ID, 
+      PLAN_DET_ID, KPI_ID, ONE_BEGIN_VALUE, 
+      ONE_BEGIN_SYMBOL, ONE_KPI_ID, ONE_END_SYMBOL, 
+      ONE_END_VALUE, ONE_TWO_RELATION, TWO_BEGIN_VALUE, 
+      TWO_BEGIN_SYMBOL, TWO_KPI_ID, TWO_END_SYMBOL, 
+      TWO_END_VALUE, ALERT_GRADE, DOCTOR_ALERT_CON, 
+      USER_ALERT_RESULT, USER_HEALTHY_SUGGEST)
+    values (#{planRuleId,jdbcType=DECIMAL}, #{planId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, 
+      #{planDetId,jdbcType=DECIMAL}, #{kpiId,jdbcType=DECIMAL}, #{oneBeginValue,jdbcType=DECIMAL}, 
+      #{oneBeginSymbol,jdbcType=VARCHAR}, #{oneKpiId,jdbcType=DECIMAL}, #{oneEndSymbol,jdbcType=VARCHAR}, 
+      #{oneEndValue,jdbcType=DECIMAL}, #{oneTwoRelation,jdbcType=VARCHAR}, #{twoBeginValue,jdbcType=DECIMAL}, 
+      #{twoBeginSymbol,jdbcType=VARCHAR}, #{twoKpiId,jdbcType=DECIMAL}, #{twoEndSymbol,jdbcType=VARCHAR}, 
+      #{twoEndValue,jdbcType=DECIMAL}, #{alertGrade,jdbcType=DECIMAL}, #{doctorAlertCon,jdbcType=VARCHAR}, 
+      #{userAlertResult,jdbcType=VARCHAR}, #{userHealthySuggest,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="addHealthyTestPlan" parameterType="com.unique.plan.po.HealthyTestPlan" >
+        <selectKey keyProperty="planId" resultType="DECIMAL" order="BEFORE">
+            select HEALTH_TEST_PLAN_SEQ.nextval as planId from dual
+        </selectKey>
+    insert into HEALTHY_TEST_PLAN (PLAN_ID, ORG_ID, DEP_ID, 
+      STAFF_ID, USER_ID, PLAN_BEGIN_TIME, 
+      PLAN_END_TIME, PERIOD_VALUE, PERIOD_TYPE, 
+      CREATE_TIME, OP_TIME, OPERATOR, 
+      STATUS, HEALTHY_ID, TEST_TEMPLATE_ID
+      )
+    values (#{planId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{depId,jdbcType=DECIMAL}, 
+      #{staffId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{planBeginTime,jdbcType=TIMESTAMP}, 
+      #{planEndTime,jdbcType=TIMESTAMP}, #{periodValue,jdbcType=DECIMAL}, #{periodType,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{opTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=DECIMAL}, 
+      #{status,jdbcType=CHAR}, #{healthyId,jdbcType=DECIMAL}, #{testTemplateId,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+  <insert id="addHealthyTestPlanTask" parameterType="com.unique.plan.po.HealthyTestPlanTask" >
+        <selectKey keyProperty="planTaskId" resultType="DECIMAL" order="BEFORE">
+            select GEALTH_TEST_PLAN_TASK_SEQ.nextval as planTaskId from dual
+        </selectKey>
+    insert into HEALTHY_TEST_PLAN_TASK (PLAN_TASK_ID, USER_ID, KPI_ID, 
+      PLAN_ID, EXC_TIME, EXC_STATUS, 
+      CREATE_TIME, OP_TIME, OPERATOR, 
+      PLAN_DET_ID)
+    values (#{planTaskId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{kpiId,jdbcType=DECIMAL}, 
+      #{planId,jdbcType=DECIMAL}, #{excTime,jdbcType=TIMESTAMP}, #{excStatus,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{opTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=DECIMAL}, 
+      #{planDetId,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getTemplateDetRuleById" parameterType="string" resultMap="testPlanTemplateResultMap">
+      		select TEST_PLAN_TEMPLATE_DET_RULE.*,
+		oneKpi.Kpi_Title as one_kpi_name,
+		twoKpi.Kpi_Title as two_kpi_name
+		 from TEST_PLAN_TEMPLATE_DET_RULE
+		left join survey_kpi oneKpi on TEST_PLAN_TEMPLATE_DET_RULE.One_Kpi_Id = oneKpi.Kpi_Id
+		left join survey_kpi twoKpi on TEST_PLAN_TEMPLATE_DET_RULE.Two_Kpi_Id = twoKpi.Kpi_Id
+		where 
+		 TEST_PLAN_TEMPLATE_DET_RULE.Templete_Det_Rule_Id = #{templateDetRuleId}
+  </select>
+</mapper>

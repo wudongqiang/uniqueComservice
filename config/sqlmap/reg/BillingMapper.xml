@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.billing" >
+  <resultMap id="billingResultMap" type="com.unique.reg.po.Billing" >
+    <id column="BILLING_ID" property="billingId" jdbcType="DECIMAL" />
+    <result column="BILL_TYPE_ID" property="billTypeId" jdbcType="DECIMAL" />
+    <result column="SRC_ID" property="srcId" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="OTHER" />
+  </resultMap>
+  <resultMap id="billDetailResultMap" type="com.unique.reg.po.BillDetail" >
+    <id column="BILL_DETAIL_ID" property="billDetailId" jdbcType="DECIMAL" />
+    <result column="BILLING_ID" property="billingId" jdbcType="DECIMAL" />
+    <result column="PRODUCTPRICE" property="productprice" jdbcType="DECIMAL" />
+    <result column="FEE_MONEY" property="feeMoney" jdbcType="DECIMAL" />
+    <result column="FEE_AMOUNT" property="feeAmount" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATE_TYPE" property="operateType" jdbcType="VARCHAR" />
+    <result column="OPERATE_ORG_CODE" property="operateOrgCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="billSrcTypeResultMap" type="com.unique.reg.po.BillSrcType" >
+    <id column="BILL_TYPE_ID" property="billTypeId" jdbcType="DECIMAL" />
+    <result column="BILL_TYPE_CODE" property="billTypeCode" jdbcType="VARCHAR" />
+    <result column="BILL_TYPE_NAME" property="billTypeName" jdbcType="VARCHAR" />
+    <result column="SORT_RANK" property="sortRank" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getBillTypeByCode" parameterType="string" resultMap="billSrcTypeResultMap">
+  	select * from bill_src_type where bill_type_code = #{billSrcType}
+  </select>
+  
+  
+  <insert id="addBilling" parameterType="com.unique.reg.po.Billing" >
+     <selectKey keyProperty="billingId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_BILLING.nextval as billingId from dual
+     </selectKey>
+    insert into BILLING (BILLING_ID, BILL_TYPE_ID, SRC_ID, 
+      CREATE_TIME, STATUS, OPERATOR, 
+      OP_TIME, OPERATOR_NAME)
+    values (#{billingId,jdbcType=DECIMAL}, #{billTypeId,jdbcType=DECIMAL}, #{srcId,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, #{operator,jdbcType=DECIMAL}, 
+      #{opTime,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=OTHER})
+  </insert>
+  
+  <insert id="addBillDetail" parameterType="com.unique.reg.po.BillDetail" >
+     <selectKey keyProperty="billDetailId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_BILL_DETAIL.nextval as billDetailId from dual
+     </selectKey>
+    insert into BILL_DETAIL (BILL_DETAIL_ID, BILLING_ID, PRODUCTPRICE, 
+      FEE_MONEY, FEE_AMOUNT, CREATE_TIME, 
+      STATUS, OPERATOR, OP_TIME, 
+      OPERATE_TYPE, OPERATE_ORG_CODE)
+    values (#{billDetailId,jdbcType=DECIMAL}, #{billingId,jdbcType=DECIMAL}, #{productprice,jdbcType=DECIMAL}, 
+      #{feeMoney,jdbcType=DECIMAL}, #{feeAmount,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=CHAR}, #{operator,jdbcType=DECIMAL}, #{opTime,jdbcType=TIMESTAMP}, 
+      #{operateType,jdbcType=VARCHAR}, #{operateOrgCode,jdbcType=VARCHAR})
+  </insert>
+</mapper>

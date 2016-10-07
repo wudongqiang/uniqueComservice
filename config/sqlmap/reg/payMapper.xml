@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unique.pay">
+  <resultMap id="payWayResultMap" type="com.unique.reg.po.PayWay">
+    <id column="PAY_WAY_ID" jdbcType="DECIMAL" property="payWayId" />
+    <result column="PAY_WAY_CODE" jdbcType="VARCHAR" property="payWayCode" />
+    <result column="PAY_WAY_NAME" jdbcType="VARCHAR" property="payWayName" />
+    <result column="SORT_RANK" jdbcType="DECIMAL" property="sortRank" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="OPERATOR" jdbcType="DECIMAL" property="operator" />
+    <result column="OP_TIME" jdbcType="TIMESTAMP" property="opTime" />
+    <result column="OPERATOR_NAME" jdbcType="VARCHAR" property="operatorName" />
+    <result column="POUNDAGE" jdbcType="DECIMAL" property="poundage" />
+  </resultMap>
+  
+  <!-- 查询可用的支付方式列表 -->
+  <select id="getOnPayWay" resultMap="payWayResultMap">
+  	select * from pay_way where pay_way.status in ('C','U')
+  </select>
+  
+  <resultMap id="payWayConfigMap" type="com.unique.reg.po.PayWay"  extends="payWayResultMap">
+  	 <result property="config" column="config"  jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  <select id="getPayWayByCode" resultMap="payWayConfigMap" parameterType="string">
+  	select * from pay_way where pay_way.pay_way_code=#{payWayCode}
+  </select>
+  
+  <select id="checkOrderPay" parameterType="string" resultType="int">
+  	select count(*) from mc_order_pay where mc_order_pay.pay_no = #{orderNo}
+  </select>
+  
+  <update id="updateOrderPayStatus" parameterType="map">
+  update mc_order_pay set mc_order_pay.pay_status =#{status},mc_order_pay.pay_no = #{payNo} where mc_order_pay.order_pay_id = #{orderPayId}
+  </update>
+
+</mapper>

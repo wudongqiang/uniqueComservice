@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.system.im" >
+  <resultMap id="BaseResultMap" type="com.unique.system.po.ImMsgInfo" >
+    <id column="IM_ID" property="imId" jdbcType="DECIMAL" />
+    <result column="CONTENT_TYPE" property="contentType" jdbcType="CHAR" />
+    <result column="FROM_USER" property="fromUser" jdbcType="DECIMAL" />
+    <result column="TO_USER" property="toUser" jdbcType="DECIMAL" />
+    <result column="URL" property="url" jdbcType="VARCHAR" />
+    <result column="STATS" property="stats" jdbcType="CHAR" />
+    <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="MSG_ORTHER_CON" property="msgOrtherCon" jdbcType="VARCHAR" />
+    <result column="RELATION_USER_ID" property="relationUserId" jdbcType="DECIMAL" />
+    <result column="RELATION_STAFF_ID" property="relationStaffId" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.unique.system.po.ImMsgInfo" extends="BaseResultMap" >
+    <result column="CONTENT" property="content" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+ <resultMap id="ResultMapWithName" type="com.unique.system.po.ImMsgInfo" extends="ResultMapWithBLOBs" >
+    <result column="user_user_name" property="userUserName"  jdbcType="VARCHAR" />
+    <result column="staff_user_name" property="staffUserName"  jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="addImMsg" parameterType="com.unique.system.po.ImMsgInfo" >
+     <selectKey keyProperty="imId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_IM_MSG_INFO.nextval as imId from dual
+     </selectKey>
+    insert into IM_MSG_INFO (IM_ID, CONTENT_TYPE, FROM_USER, 
+      TO_USER, URL, STATS, SEND_TIME, 
+      CONTENT,MSG_ORTHER_CON,RELATION_USER_ID,RELATION_STAFF_ID)
+    values (#{imId,jdbcType=DECIMAL}, #{contentType,jdbcType=CHAR}, #{fromUser,jdbcType=DECIMAL}, 
+      #{toUser,jdbcType=DECIMAL}, #{url,jdbcType=VARCHAR}, #{stats,jdbcType=CHAR}, #{sendTime,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=CLOB},#{msgOrtherCon,jdbcType=VARCHAR},#{relationUserId,jdbcType=DECIMAL},#{relationStaffId,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getCmsImageByWhereId" parameterType="map" resultType="string">
+  	select c.hlink_to from cms_img_lib c 
+	left join cms_img_type_use_rel r on c.type_use_id=r.type_use_id
+	left join cms_img_use u on u.img_use_id=r.img_use_id 
+	left join cms_img_type t on t.img_type_id=r.img_type_id  
+	where c.${filedName}=#{filedValue} and  t.img_type_code=#{filedName} 
+	and u.img_use_code=#{useCode} and rownum =1
+  </select>
+  
+  <select id="getWarnMsg" resultMap="ResultMapWithName" parameterType="map">
+      <include refid="com.unique.core.fenye1"></include>
+          select im_msg_info.*,
+      u.user_name as user_user_name,
+      s.user_name as staff_user_name
+      from im_msg_info 
+      left join ams_user u on u.user_id = im_msg_info.relation_user_id
+      left join ams_user s on s.user_id = im_msg_info.relation_staff_id
+      where im_msg_info.content_type = 7
+      and im_msg_info.to_user = #{userId}
+       <if test="dateStr!=null">
+		  and im_msg_info.send_time >= trunc(to_date(#{dateStr},'yyyy-mm-dd')) 
+		  and im_msg_info.send_time &lt; trunc(to_date(#{dateStr},'yyyy-mm-dd'))  + 1
+	   </if>
+	   order by im_msg_info.send_time desc
+      <include refid="com.unique.core.fenye2"></include>
+  </select>
+  
+  <select id="getWarnMsgCount" parameterType="map" resultType="long">
+      select count(*) from im_msg_info where im_msg_info.content_type = 7
+      and im_msg_info.to_user = #{userId}
+      <if test="dateStr!=null">
+	      and im_msg_info.send_time >= trunc(to_date(#{dateStr},'yyyy-mm-dd')) 
+		  and im_msg_info.send_time &lt; trunc(to_date(#{dateStr},'yyyy-mm-dd'))  + 1
+	  </if>
+  </select>
+  
+  <select id="getWarnMsgDates" parameterType="map" resultType="string">
+  	  select * from (
+	  	  select distinct to_char(send_time,'yyyy-mm-dd') s_time from im_msg_info 
+	  	  where content_type = 7 and to_user = #{userId} 
+	  	  		and send_time >= TRUNC(to_date(#{dateStr},'yyyy-mm-dd'), 'MM')   
+				and send_time &lt; last_day(to_date(#{dateStr},'yyyy-mm-dd'))+1
+  	  ) order by s_time
+  </select>
+  
+  <!-- 医生端首页预警提醒 -->
+  <resultMap  id="earlyWarnsMap" type="com.unique.mb.po.EarlyWarns">
+    <result column="user_name" property="userName"/>
+    <result column="user_id" property="userId"/>
+    <result column="status" property="status"/>
+    <result column="test_result_det_id" property="testResultDetId"/>
+    <result column="earlyName" property="earlyName"/>
+    <result column="res" property="result"/>
+    <result column="test_time" property="testTime"/>
+  </resultMap>
+  
+  <select id="getEarlyWarns" parameterType="map" resultMap="earlyWarnsMap" >
+	   <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+      select * from (<include refid="earlyWarnsSql"/>) earlyWarns
+       where 1=1
+	  	 <if test="dateStr!=null">
+	  	 	and to_char(earlyWarns.test_time,'yyyy-mm-dd')=#{dateStr}
+	  	 </if>
+	  order by earlyWarns.test_time DESC
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+  <select id="getEarlyWarnsCount" resultType="long" parameterType="map" >
+  	select count(1) from (<include refid="earlyWarnsSql"/>) earlyWarns 
+  	 where 1=1
+  	 <if test="dateStr!=null">
+  	 	and to_char(earlyWarns.test_time,'yyyy-mm-dd')=#{dateStr}
+  	 </if>
+  </select>
+  <sql id="earlyWarnsSql">
+  	with  temp as (
+	   select test_result.test_id,test_result.test_type,nvl(test_result_det.do_status,0) status,test_result_det.test_result_det_id,survey_kpi.kpi_code
+	   from test_result,test_result_det left join survey_kpi on survey_kpi.kpi_id=test_result_det.kpi_id
+	   where test_result.test_result_id=test_result_det.test_result_id and test_result_det.alert_grade=3 and test_result_det.is_alert='Y'
+	   )
+		-- 血压
+		select u.user_name,u.user_id,temp.status,temp.test_result_det_id,'血压预警' earlyName ,aa.low_tension||'/'||aa.high_tension||'mmhg' res ,aa.test_time from user_hypertension_test aa ,temp ,ams_user u where aa.test_id=temp.test_id and u.user_id=aa.user_id and temp.test_type=1 and aa.status in('C','U') and
+		 exists (select 1 from user_doctor_relation udr where udr.staff_id=#{staffId} and udr.user_id=aa.user_id )
+		union all 
+		-- 血糖
+		select u.user_name,u.user_id,temp.status,temp.test_result_det_id,'血糖预警' earlyName,aa.test_value||'mmol/L' res ,aa.test_time from user_blood_sugar_test aa ,temp ,ams_user u where aa.test_id=temp.test_id and u.user_id=aa.user_id and temp.test_type=2 and aa.status in('C','U') and
+		 exists (select 1 from user_doctor_relation udr where udr.staff_id=#{staffId} and udr.user_id=aa.user_id )
+		union all 
+		-- 心率
+		select u.user_name,u.user_id,temp.status,temp.test_result_det_id,'心率预警' earlyName,aa.rate||'次/分'  res ,aa.test_time from user_heart_rate_test aa ,temp ,ams_user u where aa.test_id=temp.test_id and u.user_id=aa.user_id and temp.test_type=5 and aa.status in('C','U') and 
+		exists (select 1 from user_doctor_relation udr where udr.staff_id=#{staffId} and udr.user_id=aa.user_id )
+		union all 
+		-- 血脂
+		select u.user_name,u.user_id,temp.status,temp.test_result_det_id,'血脂预警' earlyName,
+	       (case temp.kpi_code 
+	         when 'TG' then '甘油三酯 '||aa.TG
+	         when 'TC' then '总胆固醇 '||aa.TC
+	         when 'HDL-C' then '高密度脂蛋白胆固醇 '||aa.HDL_C
+	         when 'LDL-C' then '低密度脂蛋白胆固醇 '||aa.LDL_C
+	         when 'TC_DIVISION_HDL_C' then '总胆固醇和高密度脂蛋白胆固醇比值 '||aa.TC_DIVISION_HDL_C       
+	       end
+	       ) res ,       
+       aa.test_time 
+    from user_blood_lipid_test aa ,temp ,ams_user u 
+    where aa.test_id=temp.test_id and u.user_id=aa.user_id and temp.test_type=3 and aa.status in('C','U') 
+    	and exists (select 1 from user_doctor_relation udr where udr.staff_id=#{staffId} and udr.user_id=aa.user_id )
+  </sql>
+  
+</mapper>

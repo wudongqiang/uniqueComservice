@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.notes" >
+  <resultMap id="mcNotesMap" type="com.unique.notes.po.McNotes" >
+    <id column="NOTES_ID" property="notesId" jdbcType="DECIMAL" />
+    <result column="NOTES_TYPE_ID" property="notesTypeId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="EDITOR" property="editor" jdbcType="DECIMAL" />
+    <result column="EDIT_DATE" property="editDate" jdbcType="TIMESTAMP" />
+    <result column="EDITOR_NAME" property="editorName" jdbcType="VARCHAR" />
+    <result column="PUBLISHER" property="publisher" jdbcType="DECIMAL" />
+    <result column="PUBLISH_DATE" property="publishDate" jdbcType="TIMESTAMP" />
+    <result column="PUBLISHER_NAME" property="publisherName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+
+    <result column="NOTES_TITLE" property="notesTitle" jdbcType="VARCHAR" />
+    <result column="NOTES_PIC" property="notesPic" jdbcType="VARCHAR" />
+    <result column="NOTES_SRC" property="notesSrc" jdbcType="VARCHAR" />
+    <result column="VIEW_COUNT" property="viewCount" jdbcType="VARCHAR" />
+    <result column="CONTENT_TYPE_ID" property="contentTypeId" jdbcType="DECIMAL" />
+    <result column="IS_RECOMMEND" property="isRecommend" jdbcType="CHAR" />
+  </resultMap>
+
+  
+  <resultMap type="com.unique.notes.po.McNotes" id="mcNotesInfoMap" extends="mcNotesMap">
+   	  <result column="NOTES_TYPE_NAME" property="notesTypeName" jdbcType="CHAR" />
+   	  <result column="image" property="image" jdbcType="VARCHAR" />
+      <result column="NOTES_TEXT" property="notesText" jdbcType="CLOB"  typeHandler="org.apache.ibatis.type.ClobTypeHandler"/>
+  </resultMap>
+  
+  <resultMap id="notesTypeResultMap" type="com.unique.notes.po.NotesType" >
+    <id column="NOTES_TYPE_ID" property="notesTypeId" jdbcType="DECIMAL" />
+    <result column="NOTES_TYPE_CODE" property="notesTypeCode" jdbcType="VARCHAR" />
+    <result column="NOTES_TYPE_NAME" property="notesTypeName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="addMcNotes" parameterType="com.unique.notes.po.McNotes" >
+     <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_NOTES.NEXTVAL as notesId from dual
+     </selectKey>
+    insert into MC_NOTES (
+    		NOTES_ID,
+			NOTES_TYPE_ID,
+			ORG_ID,
+			NOTES_TEXT,
+			EDITOR,
+			EDIT_DATE,
+			EDITOR_NAME,
+			PUBLISHER,
+			PUBLISH_DATE,
+			PUBLISHER_NAME,
+			STATUS,
+			OPERATOR,
+			OP_TIME,
+			OPERATOR_NAME
+	)
+    values (
+			#{notesId,jdbcType=DECIMAL},
+			#{notesTypeId,jdbcType=DECIMAL},
+			#{orgId,jdbcType=DECIMAL},
+			#{notesText,jdbcType=CLOB},
+			#{editor,jdbcType=DECIMAL},
+			#{editDate,jdbcType=TIMESTAMP},
+			#{editorName,jdbcType=VARCHAR},
+			#{publisher,jdbcType=DECIMAL},
+			#{publishDate,jdbcType=TIMESTAMP},
+			#{publisherName,jdbcType=VARCHAR},
+			#{status,jdbcType=DECIMAL},
+			#{operator,jdbcType=DECIMAL},
+			#{opTime,jdbcType=TIMESTAMP},
+			#{operatorName,jdbcType=VARCHAR}
+	)
+  </insert>
+  <!-- 查询公告分页 -->
+  <select id="getMcNotesPageByOrgId" resultMap="mcNotesMap" parameterType="map">
+  	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  	select m.NOTES_ID,m.NOTES_TITLE,m.PUBLISH_DATE from MC_NOTES m 
+	  	join NOTES_TYPE n on m.NOTES_TYPE_ID=n.NOTES_TYPE_ID 
+	  	where m.org_id=#{orgId} and m.status = '1' and n.NOTES_TYPE_CODE='yygg'
+	  	order by m.PUBLISH_DATE DESC
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+  <!-- 查询总数 -->
+  <select id="getMcNotesCountByOrgId" resultType="long" parameterType="string">
+  	select count(m.NOTES_ID) from MC_NOTES m 
+	join NOTES_TYPE n on m.NOTES_TYPE_ID=n.NOTES_TYPE_ID 
+	where m.org_id=#{orgId} and m.status = '1' and n.NOTES_TYPE_CODE='yygg'
+  </select>
+   
+   <!-- 获取公告详情 通过Id -->
+   <select id="getMcNotesInfo" resultMap="mcNotesInfoMap" parameterType="string">
+   	 select m.*,n.NOTES_TYPE_NAME from MC_NOTES m
+   	 left join notes_type n on m.notes_type_id=n.notes_type_id
+   	 where m.NOTES_ID = #{notesId}
+   </select>
+   
+   <select id="getNotesTypes" resultMap="notesTypeResultMap">
+       select * from notes_type where notes_type.status in ('C','U') order by notes_type.SORT_RANK
+   </select>
+   
+  <!-- 根据文章栏目查询文章列表 -->
+  <select id="getMcNotesPageByType" resultMap="mcNotesInfoMap" parameterType="map">
+  	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+	  	select m.NOTES_ID,m.NOTES_TITLE,m.PUBLISH_DATE,m.NOTES_TEXT,tp.hlink_to image from MC_NOTES m 
+		left join ( select * from (
+			select c.content_id,c.hlink_to from cms_img_lib c 
+			left join cms_img_type_use_rel r on c.type_use_id=r.type_use_id
+			left join cms_img_use u on u.img_use_id=r.img_use_id 
+			left join cms_img_type t on t.img_type_id=r.img_type_id  
+			where u.img_use_code='nrtp' and  t.img_type_code='NOTES_ID'
+		)) tp on tp.content_id=m.notes_id 
+	  	where m.org_id=#{orgId} and m.status = '1' 
+	  	<if test="notesTypeId!=null">
+	  		and m.notes_type_id = #{notesTypeId}
+	  	</if>
+	  	<if test="isRcom!=null">
+	  		and m.IS_RECOMMEND = #{isRcom}
+	  	</if>
+	  	order by m.PUBLISH_DATE DESC
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  <select id="getMcNotesPageByType_Count" resultType="long" parameterType="map">
+  	select count(m.NOTES_ID) from MC_NOTES m 
+	where m.org_id=#{orgId} and m.status = '1' 
+	<if test="notesTypeId!=null">
+  		and m.notes_type_id = #{notesTypeId}
+  	</if>
+	<if test="isRcom!=null">
+  		and m.IS_RECOMMEND = #{isRcom}
+  	</if>
+  </select>
+  
+  <select id="getMcNotesLikeTitles" resultMap="mcNotesInfoMap" parameterType="string">
+  	select * from (
+	  	select m.* from MC_NOTES m 
+		where  m.NOTES_TITLE = #{title}
+		order by m.EDIT_DATE desc,m.NOTES_TITLE
+	) where rownum &lt; 6
+  </select>
+  
+  <update id="updateViewCount" parameterType="string">
+  	update MC_NOTES set view_count=nvl(view_count,0)+1 where NOTES_ID = #{notesId}
+  </update>
+  
+  <!-- 获取用户服务中的健康宣教 -->
+  <select id="getUserHealthMcNotes"  resultMap="mcNotesInfoMap" parameterType="map">
+  	 <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	 </if>
+  	select m.NOTES_ID,m.NOTES_TITLE,m.PUBLISH_DATE,m.NOTES_TEXT,tp.hlink_to image from MC_NOTES m 
+	left join ( select * from (
+		select c.content_id,c.hlink_to from cms_img_lib c 
+		left join cms_img_type_use_rel r on c.type_use_id=r.type_use_id
+		left join cms_img_use u on u.img_use_id=r.img_use_id 
+		left join cms_img_type t on t.img_type_id=r.img_type_id  
+		where u.img_use_code='nrtp' and  t.img_type_code='NOTES_ID'
+	)) tp on tp.content_id=m.notes_id
+	where exists 
+		(
+			select 1 from SERVICE_NOTES_TYPE,USER_SERVICE 
+			where SERVICE_NOTES_TYPE.SERVICE_ID=USER_SERVICE.SERVICE_ID 
+			and SERVICE_NOTES_TYPE.NOTES_TYPE_ID=m.notes_type_id 
+			and USER_SERVICE.USER_ID = #{userId}
+			and USER_SERVICE.BEGIN_TIME &lt;= sysdate
+          	and USER_SERVICE.END_TIME >=sysdate
+          	and USER_SERVICE.STATUS = 'C'
+		)
+	order by m.PUBLISH_DATE DESC
+	<if test="startRow != null and endRow!=null">
+  		<include refid="com.unique.core.fenye2"></include>
+    </if>
+  </select>
+  <select id="getUserHealthMcNotesCount"  resultType="long" parameterType="map">
+  	select count(1) from MC_NOTES m 
+	left join ( select * from (
+		select c.content_id,c.hlink_to from cms_img_lib c 
+		left join cms_img_type_use_rel r on c.type_use_id=r.type_use_id
+		left join cms_img_use u on u.img_use_id=r.img_use_id 
+		left join cms_img_type t on t.img_type_id=r.img_type_id  
+		where u.img_use_code='nrtp' and  t.img_type_code='NOTES_ID'
+	)) tp on tp.content_id=m.notes_id
+	where exists 
+		(
+			select 1 from SERVICE_NOTES_TYPE,USER_SERVICE 
+			where SERVICE_NOTES_TYPE.SERVICE_ID=USER_SERVICE.SERVICE_ID 
+			and SERVICE_NOTES_TYPE.NOTES_TYPE_ID=m.notes_type_id 
+			and USER_SERVICE.USER_ID = #{userId}
+			and USER_SERVICE.BEGIN_TIME &lt;= sysdate
+          	and USER_SERVICE.END_TIME >=sysdate
+          	and USER_SERVICE.STATUS = 'C'
+		)
+  </select>
+</mapper>

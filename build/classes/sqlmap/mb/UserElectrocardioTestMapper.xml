@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.order.dao.UserElectrocardioTestMapper" >
+  <resultMap id="UserElectrocardioTestResultMap" type="com.unique.mb.po.UserElectrocardioTest" >
+    <id column="TEST_ID" property="testId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+    <result column="USER_DEVICE_ID" property="userDeviceId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME" property="testTime" jdbcType="TIMESTAMP" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="TEST_RESULT" property="testResult" jdbcType="VARCHAR" />
+    <result column="INPUT_MODE" property="inputMode" jdbcType="CHAR" />
+    <result column="USER_DEVICE_CODE" property="userDeviceCode" jdbcType="VARCHAR" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="TEST_TIME_ID" property="testTimeId" jdbcType="DECIMAL" />
+    <result column="HR" property="hr" jdbcType="DECIMAL" />
+    <result column="QRS" property="qrs" jdbcType="DECIMAL" />
+    <result column="PR" property="pr" jdbcType="DECIMAL" />
+    <result column="QT" property="qt" jdbcType="DECIMAL" />
+    <result column="QTC" property="qtc" jdbcType="DECIMAL" />
+    <result column="P_AXIS" property="pAxis" jdbcType="DECIMAL" />
+    <result column="QRS_AXIS" property="qrsAxis" jdbcType="DECIMAL" />
+    <result column="T_AXIS" property="tAxis" jdbcType="DECIMAL" />
+    <result column="RV5" property="rv5" jdbcType="DECIMAL" />
+    <result column="SV1" property="sv1" jdbcType="DECIMAL" />
+    <result column="RV5_AND_SV1" property="rv5AndSv1" jdbcType="DECIMAL" />
+    <result column="PWIDTH" property="pwidth" jdbcType="DECIMAL" />
+    <result column="RR" property="rr" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="electrocardioResultResultMap" type="com.unique.mb.po.UserElectrocardioResult" >
+    <id column="RESULT_ID" property="resultId" jdbcType="DECIMAL" />
+    <result column="TEST_ID" property="testId" jdbcType="DECIMAL" />
+    <result column="CONTEXT" property="context" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="UserElectrocardioTestDetMap" type="com.unique.mb.po.UserElectrocardioTestDet" >
+    <id column="TEST_DET_ID" jdbcType="DECIMAL" property="testDetId" />
+    <result column="TEST_ID" jdbcType="DECIMAL" property="testId" />
+    <result column="LEAD_NUM" jdbcType="DECIMAL" property="leadNum" />
+    <result column="RATE" jdbcType="DECIMAL" property="rate" />
+    <result column="BITMAP" jdbcType="CLOB" property="bitmap" />
+  </resultMap>
+  
+  <resultMap id="heartRateResultMap" type="com.unique.mb.po.UserHeartRateTest">
+    <id column="TEST_ID" jdbcType="DECIMAL" property="testId" />
+    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="SOURCE_ID" jdbcType="DECIMAL" property="sourceId" />
+    <result column="USER_DEVICE_ID" jdbcType="DECIMAL" property="userDeviceId" />
+    <result column="TEST_TIME" jdbcType="TIMESTAMP" property="testTime" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="TEST_RESULT" jdbcType="VARCHAR" property="testResult" />
+    <result column="INPUT_MODE" jdbcType="CHAR" property="inputMode" />
+    <result column="USER_DEVICE_CODE" jdbcType="VARCHAR" property="userDeviceCode" />
+    <result column="DEVICE_TOKEN" jdbcType="VARCHAR" property="deviceToken" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="IS_ALARM" jdbcType="CHAR" property="isAlarm" />
+    <result column="TEST_TIME_ID" jdbcType="DECIMAL" property="testTimeId" />
+    <result column="RATE" jdbcType="DECIMAL" property="rate" />
+    <result column="TEST_TYPE" jdbcType="CHAR" property="testType" />
+    <result column="TEST_SOURCE_ID" jdbcType="DECIMAL" property="testSourceId" />
+  </resultMap>
+  
+  <resultMap type="com.unique.mb.po.UserTestByTime" id="testByTimeResultMap">
+      <id column="D" property="d" jdbcType="VARCHAR" />
+      <id column="H" property="h" jdbcType="DECIMAL" />
+      <id column="VALUE" property="value" jdbcType="DECIMAL" />
+      <id column="D_VALUE" property="dValue" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <insert id="addElectrocardioTest"  parameterType="com.unique.mb.po.UserElectrocardioTest" >
+		 <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_ELECTROCARDIO_TEST.nextval as testId from dual
+	     </selectKey>
+    insert into USER_ELECTROCARDIO_TEST (TEST_ID, USER_ID, SOURCE_ID, 
+      USER_DEVICE_ID, TEST_TIME, USER_NAME, 
+      TEST_RESULT, INPUT_MODE, USER_DEVICE_CODE, 
+      DEVICE_TOKEN, STATUS, 
+      TEST_TIME_ID, HR, QRS, 
+      PR, QT, QTC, P_AXIS, 
+      QRS_AXIS, T_AXIS, RV5, 
+      SV1, RV5_AND_SV1, PWIDTH, 
+      RR)
+    values (#{testId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{sourceId,jdbcType=DECIMAL}, 
+      #{userDeviceId,jdbcType=DECIMAL}, #{testTime,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}, 
+      #{testResult,jdbcType=VARCHAR}, #{inputMode,jdbcType=CHAR}, #{userDeviceCode,jdbcType=VARCHAR}, 
+      #{deviceToken,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{testTimeId,jdbcType=DECIMAL}, #{hr,jdbcType=DECIMAL}, #{qrs,jdbcType=DECIMAL}, 
+      #{pr,jdbcType=DECIMAL}, #{qt,jdbcType=DECIMAL}, #{qtc,jdbcType=DECIMAL}, #{pAxis,jdbcType=DECIMAL}, 
+      #{qrsAxis,jdbcType=DECIMAL}, #{tAxis,jdbcType=DECIMAL}, #{rv5,jdbcType=DECIMAL}, 
+      #{sv1,jdbcType=DECIMAL}, #{rv5AndSv1,jdbcType=DECIMAL}, #{pwidth,jdbcType=DECIMAL}, 
+      #{rr,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="addElectrocardioResult" parameterType="com.unique.mb.po.UserElectrocardioResult">
+		 <selectKey keyProperty="resultId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_ELECTROCARDIO_RESULT.nextval as resultId from dual
+	     </selectKey>
+    insert into USER_ELECTROCARDIO_RESULT (RESULT_ID, TEST_ID, CONTEXT
+      )
+    values (#{resultId,jdbcType=DECIMAL}, #{testId,jdbcType=DECIMAL}, #{context,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="addElectrocardioTestDet" parameterType="com.unique.mb.po.UserElectrocardioTestDet">
+		 <selectKey keyProperty="testDetId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_ELECTROCARDIO_TEST_DET.nextval as testDetId from dual
+	     </selectKey>
+    insert into USER_ELECTROCARDIO_TEST_DET (TEST_DET_ID, TEST_ID, LEAD_NUM, 
+      BITMAP,RATE)
+    values (#{testDetId,jdbcType=DECIMAL}, #{testId,jdbcType=DECIMAL}, #{leadNum,jdbcType=DECIMAL}, 
+      #{bitmap,jdbcType=CLOB}, #{rate,jdbcType=DECIMAL})
+  </insert>
+  
+  <select id="getElectrocardioTestById" parameterType="string" resultMap="UserElectrocardioTestResultMap">
+      select * from USER_ELECTROCARDIO_TEST where USER_ELECTROCARDIO_TEST.TEST_ID = #{testId}
+  </select>
+  
+  <select id="getElectrocardioTestResultById" parameterType="string" resultMap="electrocardioResultResultMap">
+      select * from user_electrocardio_result where user_electrocardio_result.TEST_ID = #{testId}
+  </select>
+  
+  <select id="getElectrocardioTestDetById" parameterType="string" resultMap="UserElectrocardioTestDetMap">
+      select * from user_electrocardio_test_det where user_electrocardio_test_det.TEST_ID = #{testId}
+  </select>
+  
+   <select id="getElectrocardioTestDetByDetId" parameterType="string" resultMap="UserElectrocardioTestDetMap">
+      select * from user_electrocardio_test_det where user_electrocardio_test_det.test_det_id = #{testDetId}
+  </select>
+  
+  <select id="getHeartRatePage" parameterType="map" resultMap="heartRateResultMap">
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+      select * from user_heart_rate_test 
+		where 1=1
+		<if test="userId!=null">
+		    and user_heart_rate_test.user_id = #{userId}
+		</if>
+		order by user_heart_rate_test.test_time desc,1 desc
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+  <select id="getHeartRatePageCount" parameterType="map" resultType="long" >
+      select count(*) from user_heart_rate_test 
+		where 1=1
+		<if test="userId!=null">
+		    and user_heart_rate_test.user_id = #{userId}
+		</if>
+  </select>
+  
+  <select id="getUserHeartRateByTestDay" parameterType="map" resultMap="testByTimeResultMap">
+     <![CDATA[
+		    select t.rate as value,
+		     to_char(t.Test_Time,'hh24') as h,
+		     t.Test_Time as D_VALUE,
+		     '' as d
+		 from user_heart_rate_test t
+		where 
+		1=1
+		  and t.user_id = #{userId}
+		  and t.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')
+		  and  t.Test_Time < to_date('${nowdate}','yyyy-mm-dd')+1
+		order by t.test_time
+	]]>
+  </select>
+  
+  <select id="getUserHeartRateByTestWeekAndMonth" parameterType="map" resultMap="testByTimeResultMap">
+	<![CDATA[
+      select 
+		  floor(avg(t.rate)) as value,
+		  0 as h,
+		  null as D_VALUE,
+		  to_char(t.Test_Time,'yyyy-mm-dd') as d
+		 from user_heart_rate_test t
+		where 
+		1=1
+		and t.user_id = #{userId}
+	]]>
+	<if test="testTimeId!=null">
+		<![CDATA[ 
+		and t.test_time_id = #{testTimeId}
+		]]>
+	</if>
+	<if test="type==2">
+	    <![CDATA[
+	    and t.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')-6
+	    ]]>
+	</if>
+	<if test="type==3">
+	    <![CDATA[
+	    and t.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')-27
+	     ]]>
+	</if>
+	<![CDATA[ 
+		and t.Test_Time < to_date('${nowdate}','yyyy-mm-dd') + 1
+		group by to_char(t.Test_Time,'yyyy-mm-dd')
+		order by to_char(t.Test_Time,'yyyy-mm-dd')
+	]]>
+  </select>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context-4.0.xsd
+			http://www.springframework.org/schema/aop 
+			http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+			http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+			http://www.springframework.org/schema/context 
+			http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<!-- 引入jdbc配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"  ignore-unresolvable="true"/> 
+	<context:property-placeholder location="classpath:comservice.properties"  ignore-unresolvable="true"/>	
+
+	<bean id="beanListener" class="com.unique.core.BeanListener"></bean>
+	
+	<context:component-scan base-package="com.unique,com.tencent">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">  
+	    <property name="jndiName">  
+	        <value>java:comp/env/zjk</value>  
+	    </property>  
+	</bean> -->
+	
+	<!--创建jdbc数据源0 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	  <property name="driverClassName" value="${db0.driver}"/>
+	  <property name="url" value="${db0.url}"/>
+	  <property name="username" value="${db0.username}"/>
+	  <property name="password" value="${db0.password}"/>
+	  <property name="initialSize" value="${db0.initialSize}"/>
+	  <property name="maxActive" value="${db0.maxActive}"/>
+	  <property name="maxIdle" value="${db0.maxIdle}"/>
+	  <property name="minIdle" value="${db0.minIdle}"/>
+	</bean>
+ 
+    	<!-- 事务相关 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+	<!-- 创建SqlSessionFactory，同时指定数据源-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:sqlmap/mybatis-config.xml" />
+	</bean>
+
+      
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	      <constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	
+</beans>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.order.dao.UseBloodLipidTestMapper" >
+  <resultMap id="BaseResultMap" type="com.unique.mb.po.UserBloodLipidTest" >
+    <id column="TEST_ID" property="testId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="SOURCE_ID" property="sourceId" jdbcType="DECIMAL" />
+    <result column="USER_DEVICE_ID" property="userDeviceId" jdbcType="DECIMAL" />
+    <result column="TEST_TIME" property="testTime" jdbcType="TIMESTAMP" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="TG" property="tg" jdbcType="DECIMAL" />
+    <result column="TC" property="tc" jdbcType="DECIMAL" />
+    <result column="HDL_C" property="hdlC" jdbcType="DECIMAL" />
+    <result column="LDL_C" property="ldlC" jdbcType="DECIMAL" />
+    <result column="TC_DIVISION_HDL_C" property="tcDivisionHdlC" jdbcType="DECIMAL" />
+    <result column="TEST_RESULT" property="testResult" jdbcType="VARCHAR" />
+    <result column="INPUT_MODE" property="inputMode" jdbcType="CHAR" />
+    <result column="USER_DEVICE_CODE" property="userDeviceCode" jdbcType="VARCHAR" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="IS_ALARM" property="isAlarm" jdbcType="CHAR" />
+    <result column="TEST_TIME_ID" property="testTimeId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap type="com.unique.mb.po.UserTestByTimeBloodLipid" id="BloodTestByTimeResultMap">
+      <id column="D" property="d" jdbcType="VARCHAR" />
+      <id column="H" property="h" jdbcType="DECIMAL" />
+      <id column="VALUE" property="value" jdbcType="DECIMAL" />
+      <id column="D_VALUE" property="dValue" jdbcType="DECIMAL" />
+      
+      <id column="TG" property="tg" jdbcType="DECIMAL" />
+      <id column="TC" property="tc" jdbcType="DECIMAL" />
+      <id column="HDL_C" property="hdlC" jdbcType="DECIMAL" />
+      <id column="LDL_C" property="ldlC" jdbcType="DECIMAL" />
+      <id column="TC_DIVISION_HDL_C" property="tcDivisionHdlC" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <insert id="addUserBloodLipidTest" parameterType="com.unique.mb.po.UserBloodLipidTest" >
+		 <selectKey keyProperty="testId" resultType="DECIMAL" order="BEFORE">
+	            select SEQ_USER_BLOOD_LIPID_TEST.nextval as testId from dual
+	     </selectKey>
+    insert into USER_BLOOD_LIPID_TEST (TEST_ID, USER_ID, SOURCE_ID, 
+      USER_DEVICE_ID, TEST_TIME, USER_NAME, 
+      TG, TC, HDL_C, LDL_C, 
+      TC_DIVISION_HDL_C, TEST_RESULT, INPUT_MODE, 
+      USER_DEVICE_CODE, DEVICE_TOKEN, STATUS, 
+      IS_ALARM, TEST_TIME_ID)
+    values (#{testId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{sourceId,jdbcType=DECIMAL}, 
+      #{userDeviceId,jdbcType=DECIMAL}, #{testTime,jdbcType=TIMESTAMP}, #{userName,jdbcType=VARCHAR}, 
+      #{tg,jdbcType=DECIMAL}, #{tc,jdbcType=DECIMAL}, #{hdlC,jdbcType=DECIMAL}, #{ldlC,jdbcType=DECIMAL}, 
+      #{tcDivisionHdlC,jdbcType=DECIMAL}, #{testResult,jdbcType=VARCHAR}, #{inputMode,jdbcType=CHAR}, 
+      #{userDeviceCode,jdbcType=VARCHAR}, #{deviceToken,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{isAlarm,jdbcType=CHAR}, #{testTimeId,jdbcType=DECIMAL})
+  </insert>
+ 
+  <select id="getBloodLipidByPage" parameterType="map" resultMap="BaseResultMap">
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye1"></include>
+	  </if>
+      select * from user_blood_lipid_test
+		where 1=1
+		<if test="userId!=null">
+		    and user_blood_lipid_test.user_id = #{userId}
+		</if>
+		order by user_blood_lipid_test.Test_Time desc
+	  <if test="startRow != null and endRow!=null">
+	  	<include refid="com.unique.core.fenye2"></include>
+	  </if>
+  </select>
+  
+  <select id="getBloodLipidByPageCount" parameterType="map" resultMap="long">
+      select count(*) from user_blood_lipid_test
+		where 1=1
+		<if test="userId!=null">
+		    and user_blood_lipid_test.user_id = #{userId}
+		</if>
+  </select>
+  
+  <select id="getBloodLipidByTestWeekAndMonth" parameterType="map" resultMap="BloodTestByTimeResultMap">
+	<![CDATA[
+      select 
+		  avg(t.TG) as TG,
+		  avg(t.TC) as TC,
+		  avg(t.HDL_C) as HDL_C,
+		  avg(t.LDL_C) as LDL_C,
+		  avg(t.TC_DIVISION_HDL_C) as TC_DIVISION_HDL_C,
+		  0 as h,
+		  null as D_VALUE,
+		  to_char(t.Test_Time,'yyyy-mm-dd') as d
+		 from user_blood_lipid_test t
+		where 
+		1=1
+		and t.user_id = #{userId}
+	]]>
+	<if test="testTimeId!=null">
+		<![CDATA[ 
+		and t.test_time_id = #{testTimeId}
+		]]>
+	</if>
+	<if test="type==2">
+	    <![CDATA[
+	    and t.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')-6
+	    ]]>
+	</if>
+	<if test="type==3">
+	    <![CDATA[
+	    and t.Test_Time >= to_date('${nowdate}','yyyy-mm-dd')-27
+	     ]]>
+	</if>
+	<![CDATA[ 
+		and t.Test_Time < to_date('${nowdate}','yyyy-mm-dd') + 1
+		group by to_char(t.Test_Time,'yyyy-mm-dd')
+		order by to_char(t.Test_Time,'yyyy-mm-dd')
+	]]>
+  </select>
+</mapper>

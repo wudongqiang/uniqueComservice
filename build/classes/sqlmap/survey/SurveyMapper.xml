@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.unique.survery" >
+   <resultMap id="surveyQusGroupResultMap" type="com.unique.survey.po.SurveyQusGroup">
+    <id column="SURVEY_GROUP_ID" jdbcType="DECIMAL" property="surveyGroupId" />
+    <result column="SURVEY_MOUDLE_ID" jdbcType="DECIMAL" property="surveyMoudleId" />
+    <result column="SURVEY_GROUP_NAME" jdbcType="VARCHAR" property="surveyGroupName" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="OP_TIME" jdbcType="TIMESTAMP" property="opTime" />
+    <result column="OPERATOR" jdbcType="DECIMAL" property="operator" />
+ 	<result column="ORDER_INDEX" jdbcType="DECIMAL" property="orderIndex" />
+   </resultMap>
+  
+   <resultMap id="surveyItemResultMap" type="com.unique.survey.po.SurveyItem">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="EQUP_CODE" jdbcType="VARCHAR" property="equpCode" />
+    <result column="EQUP_NAME" jdbcType="VARCHAR" property="equpName" />
+    <result column="INPUT_TYPE" jdbcType="DECIMAL" property="inputType" />
+    <result column="UNIT" jdbcType="VARCHAR" property="unit" />
+    <result column="SURVEY_ITEM_TYPE" jdbcType="VARCHAR" property="surveyItemType"/>
+   </resultMap>
+   
+   <resultMap id="surveySubItemResultMap" type="com.unique.survey.po.SurveyMoudleSubitem">
+    <id column="SUB_ITEM_ID" jdbcType="DECIMAL" property="subItemId" />
+    <result column="SURVEY_ITEM_ID" jdbcType="DECIMAL" property="surveyItemId" />
+    <result column="SUB_ITEM_TITLE" jdbcType="VARCHAR" property="subItemTitle" />
+    <result column="SUB_ITEM_VALUE" jdbcType="VARCHAR" property="subItemValue" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="OP_TIME" jdbcType="TIMESTAMP" property="opTime" />
+    <result column="OPERATOR" jdbcType="DECIMAL" property="operator" />
+    <result column="ORDER_INDEX" jdbcType="DECIMAL" property="orderIndex" />
+  </resultMap>
+  
+ <resultMap id="surveyMoudleResultMap" type="com.unique.survey.po.SurveyMoudle" >
+    <id column="SURVEY_MOUDLE_ID" property="surveyMoudleId" jdbcType="DECIMAL" />
+    <result column="ILL_ID" property="illId" jdbcType="DECIMAL" />
+    <result column="ILL_NAME" property="illName" jdbcType="VARCHAR" />
+    <result column="SURVEY_MOUDLE_NAME" property="surveyMoudleName" jdbcType="VARCHAR" />
+    <result column="IS_USE_PILL" property="isUsePill" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="surveyRecordResultMap" type="com.unique.survey.po.SurveyRecord" >
+    <id column="SURVEY_ID" property="surveyId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="SURVEY_MOUDLE_ID" property="surveyMoudleId" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="AGE" property="age" jdbcType="DECIMAL" />
+    <result column="BIRTH" property="birth" jdbcType="TIMESTAMP" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="SRUVEY_DATE" property="sruveyDate" jdbcType="TIMESTAMP" />
+    <result column="NEXT_SRUVEY_DATE" property="nextSruveyDate" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="RESULT" property="result" jdbcType="DECIMAL" />
+    <result column="FILL_TIME" property="fillTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap id="surveyRecordHasNameResultMap" type="com.unique.survey.po.SurveyRecord"  extends="surveyRecordResultMap">
+ 		<result column="ILL_NAME" property="illName" jdbcType="VARCHAR" />
+ 		<result column="SURVEY_MOUDLE_NAME" property="surveyMoudleName" jdbcType="VARCHAR" />
+ 		<result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR" />
+ 		<result column="sex" property="sex" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="surveyTaskMap" type="com.unique.survey.po.SurveyTask" >
+    <id column="SURVEY_TASK_ID" property="surveyTaskId" jdbcType="DECIMAL" />
+    <result column="SURVEY_MOUDLE_ID" property="surveyMoudleId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="SURVEY_SCHDULE_ID" property="surveySchduleId" jdbcType="DECIMAL" />
+    <result column="EXC_TIME" property="excTime" jdbcType="TIMESTAMP" />
+    <result column="EXC_STATUS" property="excStatus" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="kpiResultMap" type="com.unique.survey.po.SurveyKpi" >
+    <id column="KPI_ID" property="kpiId" jdbcType="DECIMAL" />
+    <result column="EQUP_ID" property="equpId" jdbcType="DECIMAL" />
+    <result column="KPI_TITLE" property="kpiTitle" jdbcType="VARCHAR" />
+    <result column="INPUT_TYPE" property="inputType" jdbcType="DECIMAL" />
+    <result column="UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="MAX_VALUE" property="maxValue" jdbcType="VARCHAR" />
+    <result column="MIN_VALUE" property="minValue" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="KPI_CODE" property="kpiCode" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="scoreRuleResultMap" type="com.unique.survey.po.ScoreRule" >
+    <id column="SCORE_RULE_ID" property="scoreRuleId" jdbcType="DECIMAL" />
+    <result column="SURVEY_MOUDLE_ID" property="surveyMoudleId" jdbcType="DECIMAL" />
+    <result column="SCORE_RULE_TITLE" property="scoreRuleTitle" jdbcType="VARCHAR" />
+    <result column="FORMULA" property="formula" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+  </resultMap>
+  
+ <resultMap id="evaluateRuleResultMap" type="com.unique.survey.po.EvaluateRule" >
+    <id column="EVALUATE_RULE_ID" property="evaluateRuleId" jdbcType="DECIMAL" />
+    <result column="SCORE_RULE_ID" property="scoreRuleId" jdbcType="DECIMAL" />
+    <result column="EVALUATE_RULE_TITLE" property="evaluateRuleTitle" jdbcType="VARCHAR" />
+    <result column="MAX_VALUE" property="maxValue" jdbcType="DECIMAL" />
+    <result column="MIN_VALUE" property="minValue" jdbcType="DECIMAL" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+  </resultMap>
+  
+ <resultMap id="surveyResultResultMap" type="com.unique.survey.po.SurveyResult" >
+    <id column="RESULT_ID" property="resultId" jdbcType="DECIMAL" />
+    <result column="KPI_ID" property="kpiId" jdbcType="DECIMAL" />
+    <result column="SURVEY_ITEM_ID" property="surveyItemId" jdbcType="DECIMAL" />
+    <result column="SUB_ITEM_ID" property="subItemId" jdbcType="DECIMAL" />
+    <result column="SURVEY_ID" property="surveyId" jdbcType="DECIMAL" />
+    <result column="NUM_VALUE" property="numValue" jdbcType="DECIMAL" />
+    <result column="STR_VALUE" property="strValue" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="MOUDLE_KPI_ID" property="moudleKpiId" jdbcType="DECIMAL" />
+    <result column="DOC_FEEDBACK" property="docFeedback" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <resultMap id="surveyResultALLResultMap" type="com.unique.survey.po.SurveyResult"  extends="surveyResultResultMap">
+ 	<result column="SUB_ITEM_TITLE" property="subItemTitle" jdbcType="VARCHAR" />
+ 	<result column="ORDER_INDEX" property="orderIndex" jdbcType="DECIMAL" />
+ 	<result column="SUB_ITEM_VALUE" property="subItemValue" jdbcType="VARCHAR" />
+ </resultMap>
+ 
+  <resultMap id="alarmRuleResultMap" type="com.unique.survey.po.AlarmRule">
+    <id column="ALARM_RULE_ID" jdbcType="DECIMAL" property="alarmRuleId" />
+    <result column="SURVEY_MOUDLE_ID" jdbcType="DECIMAL" property="surveyMoudleId" />
+    <result column="USER_ID" jdbcType="DECIMAL" property="userId" />
+    <result column="LIMIT_VALUE" jdbcType="DECIMAL" property="limitValue" />
+    <result column="VAL_RALATION" jdbcType="VARCHAR" property="valRalation" />
+    <result column="QUS_TAG" jdbcType="VARCHAR" property="qusTag" />
+    <result column="QUS_TYPE" jdbcType="DECIMAL" property="qusType" />
+    <result column="QUS_ID" jdbcType="DECIMAL" property="qusId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="OP_TIME" jdbcType="TIMESTAMP" property="opTime" />
+    <result column="OPERATOR" jdbcType="DECIMAL" property="operator" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  
+  <resultMap id="alarmTaskResultMap" type="com.unique.survey.po.AlarmTask" >
+    <id column="AT_ID" property="atId" jdbcType="DECIMAL" />
+    <result column="ALARM_RULE_ID" property="alarmRuleId" jdbcType="DECIMAL" />
+    <result column="STATS" property="stats" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="STAFF_ID" property="staffId" jdbcType="DECIMAL" />
+    <result column="SURVEY_ID" property="surveyId" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="surveySchduleResultMap" type="com.unique.survey.po.SurveySchdule" >
+  	 <result property="surveySchduleId" column="SURVEY_SCHDULE_ID" jdbcType="DECIMAL"/>
+     <result property="surveyMoudleId" column="SURVEY_MOUDLE_ID" jdbcType="DECIMAL"/>
+     <result property="userId" column="USER_ID" jdbcType="DECIMAL"/>
+     <result property="firstTime" column="FIRST_TIME" jdbcType="TIMESTAMP"/>
+     <result property="periodValue" column="PERIOD_VALUE" jdbcType="DECIMAL"/>
+     <result property="periodType" column="PERIOD_TYPE" jdbcType="DECIMAL"/>
+     <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+     <result property="opTime" column="OP_TIME" jdbcType="TIMESTAMP"/>
+     <result property="operator" column="OPERATOR" jdbcType="DECIMAL"/>
+     <result property="endTime" column="END_TIME" jdbcType="TIMESTAMP"/>
+     <result property="orgId" column="ORG_ID" jdbcType="DECIMAL"/>
+     <result property="depId" column="DEP_ID" jdbcType="DECIMAL"/>
+     <result property="staffId" column="STAFF_ID" jdbcType="DECIMAL"/>
+     <result property="status" column="STATUS" jdbcType="CHAR"/>
+    
+     <result column="survey_con" property="surveyCon" jdbcType="VARCHAR" />
+     <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+     <result column="user_name" property="userName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <!-- 根据回访模板查询组 -->
+   <select id="getGroupByMoudle" resultMap="surveyQusGroupResultMap" parameterType="string">
+	select * from survey_qus_group where survey_qus_group.status in ('C','U') and survey_qus_group.survey_moudle_id = #{moudleId}  order by survey_qus_group.order_index    
+   </select>
+   
+   <!-- 根据组ID查询随访题目 -->
+   <select id="getSurveyItem" parameterType="string" resultMap="surveyItemResultMap">
+		select * from (	
+		    select 
+		    	  survey_moudle_item.survey_item_id as id,
+		    	  survey_moudle_item.survey_item_title as item_name,
+		    	  to_char(survey_moudle_item.survey_item_type) survey_item_type,
+		           '1' as type,
+		           '' as EQUP_CODE,
+		           '' as Equp_Name,
+		           1 as INPUT_TYPE,
+		           '' as Unit,
+		           survey_moudle_item.order_index
+		     from survey_moudle_item
+		      where survey_moudle_item.survey_group_id = #{groupId}
+		    union
+		    select 
+		    	   GROUP_VS_KPI.MOUDLE_KPI_ID as id,
+		    	   GROUP_VS_KPI.KPI_NAME as item_name,
+		    	   '' as survey_item_type,
+		           '2' as type,
+		           EQUP_TYPE.EQUP_CODE,
+		           EQUP_TYPE.Equp_Name,
+		           SURVEY_KPI.INPUT_TYPE,
+		           SURVEY_KPI.Unit,
+		           GROUP_VS_KPI.Order_Index
+		     from GROUP_VS_KPI 
+		     left join SURVEY_KPI on SURVEY_KPI.KPI_ID = GROUP_VS_KPI.KPI_ID
+		     left join EQUP_TYPE on EQUP_TYPE.EQUP_ID = SURVEY_KPI.EQUP_ID
+		     where GROUP_VS_KPI.survey_group_id = #{groupId}
+           	 and SURVEY_KPI.Status = 'C'
+		) t order by t.order_index
+   </select>
+   
+   <select id="getSubItemByItem" parameterType="string" resultMap="surveySubItemResultMap">
+       select * from survey_moudle_subitem where SURVEY_ITEM_ID = #{itemId} order by survey_moudle_subitem.order_index
+   </select>
+   
+   <select id="getSubItemById" parameterType="string" resultMap="surveySubItemResultMap">
+       select * from survey_moudle_subitem where survey_moudle_subitem.sub_item_id = #{subItemId}
+   </select>
+   
+   <select id="getMoudleById" resultMap="surveyMoudleResultMap" parameterType="string">
+     select * from SURVEY_MOUDLE where SURVEY_MOUDLE.SURVEY_MOUDLE_ID = #{moudleId}
+ 	</select>
+ 	
+   <select id="getMoudleByRecordId" resultMap="surveyMoudleResultMap" parameterType="string">
+       select * from SURVEY_MOUDLE
+		left join Survey_Record on SURVEY_MOUDLE.SURVEY_MOUDLE_ID = Survey_Record.Survey_Moudle_Id
+		where Survey_Record.Survey_Id = #{recordId}
+   </select>
+   
+   
+   <sql id="getSurveyRecordByPage_param">
+       <if test="staffUserId!=null">
+          and staff.user_id= #{staffUserId}
+       </if>
+       <if test="userId!=null">
+          and survey_record.user_id= #{userId}
+       </if>
+       <if test="userName!=null">
+          and ams_user.user_name like '%'||#{userName}||'%'
+       </if>
+   </sql>
+   
+   <select id="getSurveyRecordByPage" parameterType="map" resultMap="surveyRecordHasNameResultMap">
+       <if test="startRow!=null and endRow!=null">
+           <include refid="com.unique.core.fenye1"></include>
+       </if>
+	       select survey_record.*,ams_user.IMG_URL,decode(ams_user.sex,1,'男',2,'女','未知') sex, 
+	       survey_moudle.ill_name,survey_moudle.survey_moudle_name from survey_record
+	       left join ams_user on ams_user.user_id=survey_record.user_id
+	       left join survey_moudle on survey_moudle.survey_moudle_id = survey_record.survey_moudle_id
+	       left join staff on staff.staff_id = survey_record.staff_id
+	        where  1=1
+	       <include refid="getSurveyRecordByPage_param"></include>
+	       order by survey_record.sruvey_date desc,1 desc
+       <if test="startRow!=null and endRow!=null">
+          <include refid="com.unique.core.fenye2"></include>
+       </if>
+   </select>
+   
+   <select id="getSurveyRecordByPage_count" parameterType="map" resultType="long">
+	       select count(*) from survey_record 
+	       left join staff on staff.staff_id = survey_record.staff_id
+	       left join ams_user on ams_user.user_id=survey_record.user_id
+	       where  1=1
+	       <include refid="getSurveyRecordByPage_param"></include>
+   </select>
+   
+   <resultMap id="SurveySchduleDtoMap" type="com.unique.survey.vo.SurveySchduleDto" >
+   		<result column="survey_moudle_id" jdbcType="DECIMAL" property="surveryMoudleId" />
+	    <result column="SRUVEY_DATE" jdbcType="TIMESTAMP" property="date" />
+	    <result column="user_id" jdbcType="DECIMAL" property="userId" />
+	    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+	    <result column="status_str" jdbcType="VARCHAR" property="statusStr" />
+	    <result column="survey_id" jdbcType="VARCHAR" property="surveyId" />
+	    <result column="SURVEY_TASK_ID" jdbcType="VARCHAR" property="surveyTaskId" />
+	    <result column="survey_moudle_name" jdbcType="VARCHAR" property="surveyMoudleName" />
+   </resultMap>
+   
+   
+   <!-- 
+   select t.survey_moudle_id,t.EXC_TIME,t.user_id,
+	    	decode(smr.status,'0','未填写','1','已填写','未填写') status_str,smr.survey_id, 
+	    	(select user_name from ams_user where user_id=t.user_id) user_name 
+	   		from survey_task t 
+			left join survey_schdule s on s.survey_schdule_id=t.survey_schdule_id 
+			left join  
+			(select user_id,max(survey_id) survey_id, to_char(SRUVEY_DATE,'yyyy-mm-dd') SRUVEY_DATE , max(nvl(status,'0')) status from survey_record 
+			where staff_id=#{staffId} and status in ('0','1')
+			<if test="month != null"> 
+				and SRUVEY_DATE >= TRUNC(to_date(#{month},'yyyy-mm'), 'MM') 
+				and SRUVEY_DATE &lt; last_day(to_date(#{month},'yyyy-mm'))+1 
+			</if>
+			<if test="searchDate != null"> 
+		       and SRUVEY_DATE >= trunc(to_date(#{searchDate},'yyyy-mm-dd')) 
+		       and SRUVEY_DATE &lt; trunc(to_date(#{searchDate},'yyyy-mm-dd')) + 1
+			</if>
+			group by to_char(SRUVEY_DATE,'yyyy-mm-dd'),user_id) smr
+			on smr.SRUVEY_DATE=to_char(t.EXC_TIME,'yyyy-mm-dd') and t.user_id=smr.user_id			 
+			where s.staff_id=#{staffId} and s.status in ('C','R')  
+			<if test="month != null"> 
+				and t.EXC_TIME >= TRUNC(to_date(#{month},'yyyy-mm'), 'MM') 
+				and t.EXC_TIME &lt; last_day(to_date(#{month},'yyyy-mm'))+1 
+			</if>
+			<if test="searchDate != null"> 
+		       and t.EXC_TIME >= trunc(to_date(#{searchDate},'yyyy-mm-dd')) 
+		       and t.EXC_TIME &lt; trunc(to_date(#{searchDate},'yyyy-mm-dd')) + 1
+			</if>
+		order by t.EXC_TIME DESC
+    -->
+   
+   <!-- 查询随访计划-医生端 -->
+   <select id="getSurveySchduleByStaffId" parameterType="map" resultMap="SurveySchduleDtoMap">
+	    
+	    select tmp.* from (
+	    <!-- 今天之前 查询记录 -->
+	    select smr.survey_moudle_id,smr.SRUVEY_DATE,smr.user_id,m.survey_moudle_name,
+       	  	decode(smr.status,'0','未填写','1','已填写','') status_str,to_char(smr.survey_id) survey_id, u.user_name,'' SURVEY_TASK_ID
+        from  survey_record smr
+	   		left join ams_user u on u.user_id=smr.user_id
+	   		left join survey_moudle m on m.survey_moudle_id=smr.survey_moudle_id
+			where smr.STATUS in ('0','1')
+			<if test="staffId!=null">
+				and smr.STAFF_ID=#{staffId} 
+			</if>
+			<if test="userId!=null">
+				and smr.user_id=#{userId} 
+			</if>
+			<if test="month != null"> 
+				and smr.SRUVEY_DATE >= TRUNC(to_date(#{month},'yyyy-mm'), 'MM') 
+				and smr.SRUVEY_DATE &lt; last_day(to_date(#{month},'yyyy-mm'))+1 
+			</if>
+			<if test="searchDate != null"> 
+		       and smr.SRUVEY_DATE >= trunc(to_date(#{searchDate},'yyyy-mm-dd')) 
+		       and smr.SRUVEY_DATE &lt; trunc(to_date(#{searchDate},'yyyy-mm-dd')) + 1
+			</if>
+			<!-- order by smr.SRUVEY_DATE DESC -->
+		<if test="searchDate >= sysdate">
+			 union 
+		    <!-- 今天之后  查询计划任务-->
+		    select t.survey_moudle_id,t.EXC_TIME SRUVEY_DATE,t.user_id,m.survey_moudle_name,
+	        	'' status_str,'' survey_id, u.user_name ,to_char(t.SURVEY_TASK_ID) SURVEY_TASK_ID
+	        from survey_task t 
+			left join survey_schdule s on s.survey_schdule_id=t.survey_schdule_id 
+			left join ams_user u on u.user_id=t.user_id	
+			left join survey_moudle m on m.survey_moudle_id=t.survey_moudle_id
+			where s.status in ('C','U') and t.exc_status in ('1','2')
+				<if test="staffId!=null">
+					and s.STAFF_ID=#{staffId} 
+				</if>
+				<if test="userId!=null">
+					and s.user_id=#{userId} 
+				</if>
+				<if test="month != null"> 
+					and t.EXC_TIME >= TRUNC(to_date(#{month},'yyyy-mm'), 'MM') 
+					and t.EXC_TIME &lt; last_day(to_date(#{month},'yyyy-mm'))+1 
+				</if>
+				<if test="searchDate != null"> 
+			       and t.EXC_TIME >= trunc(to_date(#{searchDate},'yyyy-mm-dd')) 
+			       and t.EXC_TIME &lt; trunc(to_date(#{searchDate},'yyyy-mm-dd')) + 1
+				</if>
+				<!-- 去除相同时间的数据 -->
+				and t.EXC_TIME not in(
+				    select smr.SRUVEY_DATE  from  survey_record smr
+					where smr.STATUS in ('0','1')
+					<if test="staffId!=null">
+						and smr.STAFF_ID=#{staffId} 
+					</if>
+					<if test="userId!=null">
+						and smr.user_id=#{userId} 
+					</if>
+					<if test="month != null"> 
+						and smr.SRUVEY_DATE >= TRUNC(to_date(#{month},'yyyy-mm'), 'MM') 
+						and smr.SRUVEY_DATE &lt; last_day(to_date(#{month},'yyyy-mm'))+1 
+					</if>
+					<if test="searchDate != null"> 
+				       and smr.SRUVEY_DATE >= trunc(to_date(#{searchDate},'yyyy-mm-dd')) 
+				       and smr.SRUVEY_DATE &lt; trunc(to_date(#{searchDate},'yyyy-mm-dd')) + 1
+					</if>
+				 )
+		  </if>
+		) tmp
+		order by tmp.SRUVEY_DATE DESC, tmp.user_name
+		
+   </select>
+   
+    <!-- 获取医生 某月的随访日期集 -->
+   <!--
+    select distinct to_char(t.EXC_TIME,'yyyy-mm-dd') from survey_schdule s
+	  join survey_task t on s.survey_schdule_id=t.survey_schdule_id 
+	  where  to_char(t.EXC_TIME,'yyyy-mm')=#{monthStr}  and s.staff_id=#{staffId} and s.status!='R'  
+    -->
+  <select id="getSurveyScheduleDates" resultType="string" parameterType="map">
+	select distinct tmp.* from (
+		select to_char(SRUVEY_DATE,'yyyy-mm-dd') SRUVEY_DATE from survey_record
+	 	where
+	 		staff_id=#{staffId} and status in('0','1') 
+	 		and SRUVEY_DATE >=TRUNC(to_date(#{monthStr},'yyyy-mm'), 'MM') and SRUVEY_DATE &lt; last_day(to_date(#{monthStr},'yyyy-mm'))+1
+	 	group by to_char(SRUVEY_DATE,'yyyy-mm-dd')	
+	 	
+	 	union
+	 	
+	    select distinct to_char(t.EXC_TIME,'yyyy-mm-dd') SRUVEY_DATE from survey_task t
+		  join survey_schdule s on s.survey_schdule_id=t.survey_schdule_id 
+		  where s.status in ('C','U') and s.staff_id=#{staffId} and t.exc_status in ('1','2')
+		  and EXC_TIME >=TRUNC(to_date(#{monthStr},'yyyy-mm'), 'MM') and EXC_TIME &lt; last_day(to_date(#{monthStr},'yyyy-mm'))+1
+ 	) tmp order by SRUVEY_DATE DESC
+  </select>
+   
+   <resultMap id="searchSurveyMoudlesMap" type="com.unique.survey.vo.SurveyMoudleDto">
+   		<result column="illName" property="illName"/>
+   		<collection property="surveyMoudles" javaType="com.unique.survey.po.SurveyMoudle" resultMap="surveyMoudleResultMap" />
+   </resultMap>
+  
+   <!-- 查询随访模板列表 按层次-->
+   <select id="searchSurveyMoudles" parameterType="map" resultMap="searchSurveyMoudlesMap">
+   		select s.*,t.ill_name illName from survey_moudle s,
+   		(select nvl(ill_id,'-1') ill_id, nvl(ill_name,'通用模板') ill_name from survey_moudle  
+   		<if test="orgId != null">
+   			where org_id=#{orgId}
+   		</if>
+   		 group by ill_id,ill_name) t
+   		 where t.ill_id=nvl(s.ill_id,'-1') and s.status != 'R' 
+   		 <if test="orgId != null">
+   			and s.org_id=#{orgId}
+   		 </if>
+   		 order by t.ill_id
+   </select>
+   
+  <!-- 添加随访结果 -->
+  <insert id="addSurveyResult" parameterType="com.unique.survey.po.SurveyResult" >
+     <selectKey keyProperty="resultId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_SURVEY_RESULT.nextval as resultId from dual
+     </selectKey>
+    insert into SURVEY_RESULT (RESULT_ID, KPI_ID, SURVEY_ITEM_ID, 
+      SUB_ITEM_ID, SURVEY_ID, NUM_VALUE, 
+      STR_VALUE, CREATE_TIME, OP_TIME, 
+      OPERATOR, MOUDLE_KPI_ID)
+    values (#{resultId,jdbcType=DECIMAL}, #{kpiId,jdbcType=DECIMAL}, #{surveyItemId,jdbcType=DECIMAL}, 
+      #{subItemId,jdbcType=DECIMAL}, #{surveyId,jdbcType=DECIMAL}, #{numValue,jdbcType=DECIMAL}, 
+      #{strValue,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{opTime,jdbcType=TIMESTAMP}, 
+      #{operator,jdbcType=DECIMAL}, #{moudleKpiId,jdbcType=DECIMAL})
+  </insert>
+  
+  <insert id="addSurveyRecord" parameterType="com.unique.survey.po.SurveyRecord" >
+     <selectKey keyProperty="surveyId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_SURVEY_RECORD.NEXTVAL as surveyId from dual
+     </selectKey>
+    insert into SURVEY_RECORD (SURVEY_ID, ORG_ID, USER_ID, 
+      STAFF_ID, DEP_ID, SURVEY_MOUDLE_ID, 
+      USER_NAME, AGE, BIRTH, 
+      STAFF_NAME, STATUS, SRUVEY_DATE, 
+      NEXT_SRUVEY_DATE, REMARK, CREATE_TIME, 
+      OP_TIME, OPERATOR, RESULT, 
+      FILL_TIME)
+    values (#{surveyId,jdbcType=DECIMAL}, #{orgId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, 
+      #{staffId,jdbcType=DECIMAL}, #{depId,jdbcType=DECIMAL}, #{surveyMoudleId,jdbcType=DECIMAL}, 
+      #{userName,jdbcType=VARCHAR}, #{age,jdbcType=DECIMAL}, #{birth,jdbcType=TIMESTAMP}, 
+      #{staffName,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{sruveyDate,jdbcType=TIMESTAMP}, 
+      #{nextSruveyDate,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{opTime,jdbcType=TIMESTAMP}, #{operator,jdbcType=DECIMAL}, #{result,jdbcType=DECIMAL}, 
+      #{fillTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <!-- 查询下次随访 -->
+  <select id="getNextSurvey" parameterType="map" resultMap="surveyTaskMap">
+	<![CDATA[
+     select * from (
+		select * from survey_task where survey_task.survey_moudle_id = #{modleId}
+		and survey_task.exc_time > #{thisTime} and survey_task.user_id = #{userId}
+		order by survey_task.exc_time 
+		) task where rownum = 1
+	]]>
+  </select>
+  
+  <select id="getKpiByGroupVsKpi" parameterType="string" resultMap="kpiResultMap">
+   <![CDATA[
+		select SURVEY_KPI.* from SURVEY_KPI
+		left join GROUP_VS_KPI on GROUP_VS_KPI.KPI_ID = SURVEY_KPI.Kpi_Id
+		where GROUP_VS_KPI.MOUDLE_KPI_ID = #{moudleKpiId}
+  ]]>
+  </select>
+  
+    <select id="getKpiByCode" parameterType="string" resultMap="kpiResultMap">
+   <![CDATA[
+		select * from SURVEY_KPI where  SURVEY_KPI.KPI_CODE = #{kpiCode}
+  ]]>
+  </select>
+  
+  <select id="getKpiById" parameterType="string" resultMap="kpiResultMap">
+   <![CDATA[
+		select * from SURVEY_KPI where  SURVEY_KPI.Kpi_Id = #{kpiId}
+  ]]>
+  </select>
+  
+  <select id="getScoreRuleByRecord" resultMap="scoreRuleResultMap" parameterType="string">
+      select * from SCORE_RULE
+		left join survey_record on survey_record.survey_moudle_id = SCORE_RULE.SURVEY_MOUDLE_ID
+		where survey_record.survey_id = #{surveyId}
+  </select>
+  
+  <select id="getSurveyRecordById" resultMap="surveyRecordResultMap" parameterType="string">
+      select * from survey_record where survey_record.survey_id = #{surveyId}
+  </select>
+  
+  <update id="updateSurveyRecord" parameterType="com.unique.survey.po.SurveyRecord" >
+    update SURVEY_RECORD
+    <set >
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="staffId != null" >
+        STAFF_ID = #{staffId,jdbcType=DECIMAL},
+      </if>
+      <if test="depId != null" >
+        DEP_ID = #{depId,jdbcType=DECIMAL},
+      </if>
+      <if test="surveyMoudleId != null" >
+        SURVEY_MOUDLE_ID = #{surveyMoudleId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        AGE = #{age,jdbcType=DECIMAL},
+      </if>
+      <if test="birth != null" >
+        BIRTH = #{birth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staffName != null" >
+        STAFF_NAME = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="sruveyDate != null" >
+        SRUVEY_DATE = #{sruveyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextSruveyDate != null" >
+        NEXT_SRUVEY_DATE = #{nextSruveyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=DECIMAL},
+      </if>
+      <if test="result != null" >
+        RESULT = #{result,jdbcType=DECIMAL},
+      </if>
+      <if test="fillTime != null" >
+        FILL_TIME = #{fillTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where SURVEY_ID = #{surveyId,jdbcType=DECIMAL}
+  </update>
+  
+ <insert id="addSurveyEval" parameterType="com.unique.survey.po.SurveyEvaluate" >
+     <selectKey keyProperty="seId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_SURVEY_EVALUATE.nextval as seId from dual
+     </selectKey>
+     insert into SURVEY_EVALUATE (SE_ID, SURVEY_ID, EVALUATE_RULE_ID
+      )
+    values (#{seId,jdbcType=DECIMAL}, #{surveyId,jdbcType=DECIMAL}, #{evaluateRuleId,jdbcType=DECIMAL}
+      )
+  </insert>
+  
+ <select id="getEvalRule" parameterType="map" resultMap="evaluateRuleResultMap">
+ <![CDATA[
+	select * from EVALUATE_RULE
+	where EVALUATE_RULE.Max_Value >= #{value}
+	and EVALUATE_RULE.Min_Value <= #{value}
+	and EVALUATE_RULE.SCORE_RULE_ID = #{scoreRuleId}
+	and rownum=1
+  ]]>
+ </select>
+ 
+ <select id="getEvalsByRecord" parameterType="string" resultMap="evaluateRuleResultMap">
+ <![CDATA[
+	select * from EVALUATE_RULE
+	left join SURVEY_EVALUATE on SURVEY_EVALUATE.EVALUATE_RULE_ID = EVALUATE_RULE.Evaluate_Rule_Id
+	where SURVEY_EVALUATE.Survey_Id = #{recordId}
+  ]]>
+ </select>
+ 
+ <select id="getAnswerByKpi" parameterType="map" resultMap="surveyResultResultMap">
+     select * from survey_result where survey_result.moudle_kpi_id = #{kpiId}  
+     and survey_result.survey_id = #{surveyId}
+     order by survey_result.result_id
+ </select>
+ 
+ <select id="getAnswerBySurveyItemId" parameterType="map" resultMap="surveyResultALLResultMap">
+	select survey_result.*,
+	survey_moudle_subitem.sub_item_title,
+	survey_moudle_subitem.order_index,
+	survey_moudle_subitem.sub_item_value
+	  from survey_result
+	 left join survey_moudle_subitem on survey_moudle_subitem.sub_item_id = survey_result.sub_item_id
+	 where survey_result.survey_item_id = #{itemId}
+	 and survey_result.survey_id = #{surveyId}
+	 order by survey_moudle_subitem.order_index
+ </select>
+ 
+ <select id="getAlarmRuleByIdAndType" parameterType="map" resultMap="alarmRuleResultMap">
+	select * from alarm_rule where alarm_rule.qus_id = #{qId} and alarm_rule.qus_type = #{qType}  
+ </select>
+ 
+  <insert id="addAlarmTask" parameterType="com.unique.survey.po.AlarmTask" >
+     <selectKey keyProperty="atId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_ALARM_TASK.nextval as atId from dual
+     </selectKey>
+    insert into ALARM_TASK (AT_ID, ALARM_RULE_ID, STATS, 
+      CREATE_TIME, SEND_TIME, STAFF_ID, 
+      SURVEY_ID)
+    values (#{atId,jdbcType=DECIMAL}, #{alarmRuleId,jdbcType=DECIMAL}, #{stats,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP}, #{staffId,jdbcType=DECIMAL}, 
+      #{surveyId,jdbcType=DECIMAL})
+  </insert>
+  
+  <!-- 随访计划  -->
+  <resultMap id="surveySchduleResultRecoders"  type="com.unique.survey.po.SurveySchdule" extends="surveySchduleResultMap">
+	  <result column="STAFF_TYPE_NAME" property="staffTypeName"/>
+	  <result column="DEP_NAME" property="depName"/>
+  	  <collection property="recoder" javaType="com.unique.survey.vo.SurveyRecoderDto">
+  		<result column="survey_id" property="surveyId"/>
+  		<result column="sruvey_date" property="sruveyDate"/>
+  		<result column="moudle_id" property="surveyMoudleId"/>
+  		<result column="r_status" property="status"/>
+  	 </collection>
+  </resultMap>
+  <select id="searchSurveySchdule" parameterType="map" resultMap="surveySchduleResultRecoders">
+	with temp as (
+	<if test="startRow!=null and endRow!=null">
+        <include refid="com.unique.core.fenye1"></include>
+    </if>    
+		select SURVEY_SCHDULE.*,STAFF.STAFF_NAME,STAFF_TYPE.STAFF_TYPE_NAME,DEP.DEP_NAME,
+			SURVEY_MOUDLE.SURVEY_MOUDLE_NAME SURVEY_CON,AMS_USER.USER_NAME
+		from SURVEY_SCHDULE 
+		left join SURVEY_MOUDLE ON SURVEY_SCHDULE.SURVEY_MOUDLE_ID=SURVEY_MOUDLE.SURVEY_MOUDLE_ID
+	  	left join AMS_USER ON AMS_USER.USER_ID=SURVEY_SCHDULE.USER_ID
+	  	left join STAFF ON STAFF.STAFF_ID=SURVEY_SCHDULE.STAFF_ID
+	  	left join STAFF_TYPE ON STAFF.STAFF_TYPE_ID=STAFF_TYPE.STAFF_TYPE_ID
+	  	left join DEP ON DEP.DEP_ID=STAFF.DEP_ID
+		where SURVEY_SCHDULE.status='C'
+		<if test="userId != null">
+			and SURVEY_SCHDULE.User_Id=#{userId,jdbcType=DECIMAL} 
+		</if>	 
+		<if test="staffId != null">
+			and SURVEY_SCHDULE.Staff_Id=#{staffId,jdbcType=DECIMAL}
+		</if>	 
+	   <!--order by SURVEY_SCHDULE.FIRST_TIME desc-->	
+		<if test="startRow!=null and endRow!=null">
+	        <include refid="com.unique.core.fenye2"></include>
+	    </if>
+    )
+    select temp.*,survey_record.survey_id,survey_record.sruvey_date,survey_record.survey_moudle_id moudle_id,
+     decode(sign(sysdate-survey_record.sruvey_date),1,survey_record.status,-1,3) r_status 
+    from temp
+    left join survey_record on temp.survey_schdule_id=survey_record.survey_schdule_id
+    where survey_record.status in (0,1)
+	   	  and temp.first_time &lt;= survey_record.sruvey_date 
+	      and temp.end_time >= survey_record.sruvey_date 
+	order by temp.FIRST_TIME DESC,survey_record.sruvey_date
+  </select>
+  
+  <select id="searchSurveySchduleCount" parameterType="map" resultType="long">
+	select
+		count(1)
+	from SURVEY_SCHDULE
+	where SURVEY_SCHDULE.status='C'
+	<if test="userId != null">
+		and SURVEY_SCHDULE.User_Id=#{userId,jdbcType=DECIMAL} 
+	</if>	 
+	<if test="staffId != null">
+		and SURVEY_SCHDULE.Staff_Id=#{staffId,jdbcType=DECIMAL}
+	</if>	 
+  </select>
+  
+  <!-- 更新随访记录结果 -->
+ <update id="updateSurveyResultFeedfack" parameterType="map">
+ 	update survey_result set DOC_FEEDBACK=#{docFeedback} 
+ 	where
+ 	  RESULT_ID in 
+ 	 <foreach collection="resultIds" item="resultId" open="(" close=")" separator=",">
+	 	 #{resultId}
+ 	 </foreach>
+ </update>
+ 
+ <select id="getSurveyMoudleItemTitle" parameterType="string" resultType="string">
+ 	 select survey_moudle_item.survey_item_title from survey_result
+   	 left join survey_moudle_item on survey_moudle_item.survey_item_id = survey_result.survey_item_id
+	 where survey_result.result_id=#{resultId} 
+ </select>
+  
+</mapper>

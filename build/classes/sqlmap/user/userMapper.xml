@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.unique.user">
+  <resultMap id="UserResultMap" type="com.unique.user.po.AmsUser" >
+    <id column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="DEP_ID" property="depId" jdbcType="DECIMAL" />
+    <result column="ORG_ID" property="orgId" jdbcType="DECIMAL" />
+    <result column="USER_TYPE_ID" property="userTypeId" jdbcType="DECIMAL" />
+    <result column="USER_CODE" property="userCode" jdbcType="VARCHAR" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="NICK_NAME" property="nickName" jdbcType="VARCHAR" />
+    <result column="BIRTH" property="birth" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="DECIMAL" />
+    <result column="ID_CARD" property="idCard" jdbcType="VARCHAR" />
+    <result column="FOLK" property="folk" jdbcType="VARCHAR" />
+    <result column="WEDLOCK" property="wedlock" jdbcType="VARCHAR" />
+    <result column="VOCATION" property="vocation" jdbcType="DECIMAL" />
+    <result column="MONEY_BAG" property="moneyBag" jdbcType="VARCHAR" />
+    <result column="ADDR_TYPE_CODE" property="addrTypeCode" jdbcType="VARCHAR" />
+    <result column="ADDR_PRO" property="addrPro" jdbcType="VARCHAR" />
+    <result column="ADDR_CITY" property="addrCity" jdbcType="VARCHAR" />
+    <result column="ADDR_COUNTY" property="addrCounty" jdbcType="VARCHAR" />
+    <result column="ADDR_XIANG" property="addrXiang" jdbcType="VARCHAR" />
+    <result column="ADDR_VILL" property="addrVill" jdbcType="VARCHAR" />
+    <result column="ADDR_NUMBER" property="addrNumber" jdbcType="VARCHAR" />
+    <result column="HOME_ADDR" property="homeAddr" jdbcType="VARCHAR" />
+    <result column="HOME_ADDR_NUM" property="homeAddrNum" jdbcType="VARCHAR" />
+    <result column="HOME_TEL" property="homeTel" jdbcType="VARCHAR" />
+    <result column="YB_TYPE" property="ybType" jdbcType="VARCHAR" />
+    <result column="YB_TYPE_CODE" property="ybTypeCode" jdbcType="VARCHAR" />
+    <result column="E_MAIL" property="eMail" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR" property="unitAddr" jdbcType="VARCHAR" />
+    <result column="LOGON_ACCT" property="logonAcct" jdbcType="VARCHAR" />
+    <result column="LOGON_PWD" property="logonPwd" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="DECIMAL" />
+    <result column="LOGIN_COUNT" property="loginCount" jdbcType="DECIMAL" />
+    <result column="Q1" property="q1" jdbcType="VARCHAR" />
+    <result column="A1" property="a1" jdbcType="VARCHAR" />
+    <result column="Q2" property="q2" jdbcType="VARCHAR" />
+    <result column="A2" property="a2" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="IS_ONLINE" property="isOnline" jdbcType="CHAR" />
+    <result column="REG_WAY" property="regWay" jdbcType="DECIMAL" />
+    <result column="IMG_URL" property="imgUrl" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="PUSH_CODE" property="pushCode" jdbcType="VARCHAR" />
+    <result column="ALLERGIC_DRUG" property="allergicDrug" jdbcType="VARCHAR" />
+    <result column="ANAPHYLACTOGEN" property="anaphylactogen" jdbcType="VARCHAR" />
+    <result column="IS_SMOKING" property="isSmoking" jdbcType="CHAR" />
+    <result column="IS_DRINKING" property="isDrinking" jdbcType="CHAR" />
+    <result column="IS_HEALTH_RECORD_DATA" property="isHealthRecordData" jdbcType="CHAR" />
+    <result column="HEALTY_RECORD_ID" property="healtyRecordId" jdbcType="VARCHAR" />
+    <result column="USER_WEIGHT" property="userWeight" jdbcType="DECIMAL" />
+    <result column="USER_HEIGHT" property="userHeight" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <resultMap id="UserFriendResultMap" type="com.unique.user.po.UserFriend" >
+    <id column="FRIEND_ID" property="friendId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="USER_SEX" property="userSex" jdbcType="CHAR" />
+    <result column="USER_BIRTH" property="userBirth" jdbcType="VARCHAR" />
+    <result column="USER_IDCARD" property="userIdcard" jdbcType="VARCHAR" />
+    <result column="USER_ADDR" property="userAddr" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="IS_SELF" property="isSelf" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="FRIEND_USER_ID" property="friendUserId" jdbcType="DECIMAL" />
+    <result column="USER_RELATION" property="userRelation" jdbcType="VARCHAR" />
+    <result column="IS_DEFAULT" property="isDefault" jdbcType="CHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="fbResultMap" type="com.unique.user.po.McFb" >
+    <id column="FB_ID" property="fbId" jdbcType="DECIMAL" />
+    <result column="FB_TYPE_ID" property="fbTypeId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+    <result column="FB_TITLE" property="fbTitle" jdbcType="VARCHAR" />
+    <result column="FB_CONTENT" property="fbContent" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="ADVISER_PHONE" property="adviserPhone" jdbcType="VARCHAR" />
+    <result column="ADVISER_NAME" property="adviserName" jdbcType="VARCHAR" />
+    <result column="ADVISER_EMAIL" property="adviserEmail" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <resultMap id="fbTypeResultMap" type="com.unique.user.po.McFbType" >
+    <id column="FB_TYPE_ID" property="fbTypeId" jdbcType="DECIMAL" />
+    <result column="FB_TYPE_NAME" property="fbTypeName" jdbcType="VARCHAR" />
+    <result column="FB_TYPE_CODE" property="fbTypeCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+  </resultMap>
+
+
+  <resultMap id="AmsUserLogResultMap" type="com.unique.user.po.AmsUserLog" >
+    <id column="USER_LOG_ID" property="userLogId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="LOGON_TIME" property="logonTime" jdbcType="TIMESTAMP" />
+    <result column="LOGOUT_TIME" property="logoutTime" jdbcType="TIMESTAMP" />
+    <result column="VISIT_IP" property="visitIp" jdbcType="VARCHAR" />
+    <result column="LOGON_WAY" property="logonWay" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <resultMap id="msgResultMap" type="com.unique.user.po.McMsg" >
+    <id column="MSG_ID" property="msgId" jdbcType="DECIMAL" />
+    <result column="MSG_TYPE_ID" property="msgTypeId" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="DEVICE_TOKEN" property="deviceToken" jdbcType="VARCHAR" />
+    <result column="MSG_TITLE" property="msgTitle" jdbcType="VARCHAR" />
+    <!-- 
+    <result column="MSG_CONTENT" property="msgContent" jdbcType="VARCHAR" />
+     -->
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="DO_STATUS" property="doStatus" jdbcType="DECIMAL" />
+    <result column="REVIEW_USER" property="reviewUser" jdbcType="DECIMAL" />
+    <result column="REVIEW_TIME" property="reviewTime" jdbcType="TIMESTAMP" />
+    <result column="REVIEW_USER_NAME" property="reviewUserName" jdbcType="VARCHAR" />
+    <result column="PUBLISH_USER" property="publishUser" jdbcType="DECIMAL" />
+    <result column="PUBLISH_TIME" property="publishTime" jdbcType="TIMESTAMP" />
+    <result column="PUBLISH_USER_NAME" property="publishUserName" jdbcType="VARCHAR" />
+    <result column="DO_THING" property="doThing" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="msgResultDetMap" type="com.unique.user.po.McMsg"  extends="msgResultMap">
+  	<result column="MSG_CONTENT" property="msgContent" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="msgTypeResultMap" type="com.unique.user.po.MsgType" >
+    <id column="MSG_TYPE_ID" property="msgTypeId" jdbcType="DECIMAL" />
+    <result column="MSG_TYPE_CODE" property="msgTypeCode" jdbcType="VARCHAR" />
+    <result column="MSG_TYPE_NAME" property="msgTypeName" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="DECIMAL" />
+  </resultMap>
+ <resultMap id="userDeviceResultMap" type="com.unique.user.po.UserDevice" >
+    <id column="USER_DEVICE_ID" property="userDeviceId" jdbcType="DECIMAL" />
+    <result column="DEVICE_TYPE" property="deviceType" jdbcType="DECIMAL" />
+    <result column="USER_ID" property="userId" jdbcType="DECIMAL" />
+    <result column="USER_DEVICE_TYPE_NAME" property="userDeviceTypeName" jdbcType="VARCHAR" />
+    <result column="USER_DEVICE_CODE" property="userDeviceCode" jdbcType="VARCHAR" />
+    <result column="USER_DEVICE_NAME" property="userDeviceName" jdbcType="VARCHAR" />
+    <result column="USER_DEVICE_DESC" property="userDeviceDesc" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="OP_TIME" property="opTime" jdbcType="TIMESTAMP" />
+    <result column="OPERATOR" property="operator" jdbcType="DECIMAL" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="regUser" parameterType="com.unique.user.po.AmsUser" >
+        <selectKey keyProperty="userId" resultType="DECIMAL" order="BEFORE">
+            select ams_user_sequence.nextval as userId from dual
+        </selectKey>
+    insert into AMS_USER (USER_ID, DEP_ID, 
+      ORG_ID, USER_TYPE_ID, USER_CODE, 
+      USER_NAME, NICK_NAME, BIRTH, 
+      SEX, ID_CARD, FOLK, 
+      WEDLOCK, VOCATION, MONEY_BAG, 
+      ADDR_TYPE_CODE, ADDR_PRO, ADDR_CITY, 
+      ADDR_COUNTY, ADDR_XIANG, ADDR_VILL, 
+      ADDR_NUMBER, HOME_ADDR, HOME_ADDR_NUM, 
+      HOME_TEL, YB_TYPE, YB_TYPE_CODE, 
+      E_MAIL, UNIT_ADDR, LOGON_ACCT, 
+      LOGON_PWD, STATUS, OPERATOR, 
+      OP_TIME, IS_ACTIVE, LOGIN_COUNT, 
+      Q1, A1, Q2, A2, 
+      CREATE_TIME, LAST_LOGIN_TIME, DEVICE_TOKEN, 
+      IS_ONLINE, REG_WAY,MOBILE,ALLERGIC_DRUG,ANAPHYLACTOGEN,IS_SMOKING,IS_DRINKING,IS_HEALTH_RECORD_DATA,HEALTY_RECORD_ID)
+    values (#{userId,jdbcType=DECIMAL}, #{depId,jdbcType=DECIMAL}, 
+      #{orgId,jdbcType=DECIMAL}, #{userTypeId,jdbcType=DECIMAL}, #{userCode,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{birth,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=DECIMAL}, #{idCard,jdbcType=VARCHAR}, #{folk,jdbcType=VARCHAR}, 
+      #{wedlock,jdbcType=VARCHAR}, #{vocation,jdbcType=DECIMAL}, #{moneyBag,jdbcType=VARCHAR}, 
+      #{addrTypeCode,jdbcType=VARCHAR}, #{addrPro,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, 
+      #{addrCounty,jdbcType=VARCHAR}, #{addrXiang,jdbcType=VARCHAR}, #{addrVill,jdbcType=VARCHAR}, 
+      #{addrNumber,jdbcType=VARCHAR}, #{homeAddr,jdbcType=VARCHAR}, #{homeAddrNum,jdbcType=VARCHAR}, 
+      #{homeTel,jdbcType=VARCHAR}, #{ybType,jdbcType=VARCHAR}, #{ybTypeCode,jdbcType=VARCHAR}, 
+      #{eMail,jdbcType=VARCHAR}, #{unitAddr,jdbcType=VARCHAR}, #{logonAcct,jdbcType=VARCHAR}, 
+      #{logonPwd,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{operator,jdbcType=DECIMAL}, 
+      #{opTime,jdbcType=TIMESTAMP}, #{isActive,jdbcType=DECIMAL}, #{loginCount,jdbcType=DECIMAL}, 
+      #{q1,jdbcType=VARCHAR}, #{a1,jdbcType=VARCHAR}, #{q2,jdbcType=VARCHAR}, #{a2,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{deviceToken,jdbcType=VARCHAR}, 
+      #{isOnline,jdbcType=CHAR}, #{regWay,jdbcType=DECIMAL},#{mobile,jdbcType=DECIMAL},
+      #{allergicDrug,jdbcType=VARCHAR},#{anaphylactogen,jdbcType=VARCHAR},#{isSmoking,jdbcType=CHAR},#{isDrinking,jdbcType=CHAR},
+      #{isHealthRecordData,jdbcType=CHAR},#{healtyRecordId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="addUserFriend" parameterType="com.unique.user.po.UserFriend" >
+      <selectKey keyProperty="friendId" resultType="DECIMAL" order="BEFORE">
+		select SEQ_USER_FRIEND.nextval as friendId from dual
+      </selectKey>
+    insert into USER_FRIEND (FRIEND_ID, USER_ID, USER_NAME, 
+      USER_SEX, USER_BIRTH, USER_IDCARD, 
+      USER_ADDR, STATUS, IS_SELF, 
+      OPERATOR, OP_TIME, OPERATOR_NAME, 
+      FRIEND_USER_ID,USER_RELATION,IS_DEFAULT,MOBILE)
+    values (#{friendId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, 
+      #{userSex,jdbcType=CHAR}, #{userBirth,jdbcType=VARCHAR}, #{userIdcard,jdbcType=VARCHAR}, 
+      #{userAddr,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{isSelf,jdbcType=CHAR}, 
+      #{operator,jdbcType=DECIMAL}, #{opTime,jdbcType=TIMESTAMP}, #{operatorName,jdbcType=VARCHAR}, 
+      #{friendUserId,jdbcType=DECIMAL},#{userRelation,jdbcType=VARCHAR},#{isDefault,jdbcType=CHAR},#{mobile,jdbcType=VARCHAR})
+  </insert>
+  <select id="checkUser" parameterType="string" resultType="int">
+  	select count(*) from ams_user where ams_user.logon_acct = #{logonAcct} or ams_user.mobile=#{logonAcct}
+  </select>
+  <select id="checkUserByIdCard" parameterType="string" resultMap="UserResultMap">
+  	select * from ams_user where ams_user.id_card = #{idCard}
+  </select>
+  
+  <select id="getUserByPassword" parameterType="com.unique.user.po.AmsUser" resultMap="UserResultMap">
+  	select * from ams_user where ams_user.status in ('C','U') /*and ams_user.is_active = 1*/
+  	 <choose>
+  	 	<when test="a1==0">
+  	 		and ams_user.logon_acct = #{logonAcct} /*单一登陆方法*/
+  	 	</when>
+  	 	<otherwise>
+  	 		and (ams_user.mobile=#{logonAcct} or ams_user.id_card=#{logonAcct}) /*混合登陆方法*/
+  	 	</otherwise>
+  	 </choose>
+  	 <if test="logonPwd!=null">
+  	  	and ams_user.logon_pwd = #{logonPwd}
+  	 </if>
+  	 <if test="typeCode!=null">
+  	 	and ams_user.user_type_id = (select user_type.user_type_id from user_type where user_type_code = #{typeCode})
+  	 </if>
+  </select>
+  
+   <select id="getUserById" parameterType="string" resultMap="UserResultMap">
+  	select * from ams_user where ams_user.user_id = #{userId}
+  </select>
+  
+  <select id="getUserByMobile" parameterType="string" resultMap="UserResultMap">
+  	select * from ams_user where ams_user.mobile = #{mobile}
+  </select>
+  
+  <!-- 通过Id和password检查用户密码 -->
+  <select id="checkUserPassword" parameterType="map" resultType="long">
+	select count(user_id) from ams_user where ams_user.user_id=#{userId} and ams_user.logon_pwd=#{logonPwd} and ams_user.status in ('C','U') and ams_user.is_active = 1
+  </select>
+  
+  <!-- 整改 获取就诊人信息时同时获取card -->
+  <resultMap type="com.unique.user.po.UserFriend" id="UserFriendAndCardMap" extends="UserFriendResultMap">
+  	<collection property="cards" javaType="com.unique.user.po.McCard">
+  		<result column="card_no" property="cardNo" />
+  		<result column="card_type_name" property="cardTypeName" />
+  	</collection>
+  </resultMap>
+  <select id="getFriendUserBySelf" parameterType="string" resultMap="UserFriendAndCardMap">
+	select user_friend.*,c.card_no,c.card_type_name from user_friend
+	left join (select mc_card.user_id,mc_card.card_no,card_type.card_type_name  from mc_card,card_type where mc_card.card_type_id=card_type.card_type_id) c
+    on user_friend.user_id=c.user_id
+	where user_friend.user_id = #{userId} and user_friend.is_self = 'Y' and user_friend.status in ('C','U') and rownum=1
+  </select>
+  
+  <!-- 查询就诊人列表 -->
+  <select id="getFriendUsersByUid" parameterType="string" resultMap="UserFriendResultMap">
+	select * from user_friend where user_friend.user_id = #{userId} and user_friend.status in ('C','U')
+  </select>
+  
+  <select id="getFriendUserByFriendId" parameterType="string" resultMap="UserFriendAndCardMap">
+	select user_friend.*,c.card_no,c.card_type_name  from user_friend 
+	left join (select mc_card.user_id,mc_card.card_no,card_type.card_type_name,mc_card.friend_id  from mc_card,card_type where mc_card.card_type_id=card_type.card_type_id) c
+    on user_friend.user_id=c.user_id and user_friend.friend_id=c.friend_id
+	where user_friend.friend_id = #{friendId} and user_friend.status in ('C','U')
+  </select>
+  
+    <update id="updateUserInfo" parameterType="com.unique.user.po.AmsUser" >
+    update AMS_USER
+    <set >
+      <if test="depId != null" >
+        DEP_ID = #{depId,jdbcType=DECIMAL},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=DECIMAL},
+      </if>
+      <if test="userTypeId != null" >
+        USER_TYPE_ID = #{userTypeId,jdbcType=DECIMAL},
+      </if>
+      <if test="userCode != null" >
+        USER_CODE = #{userCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null" >
+        BIRTH = #{birth,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=DECIMAL},
+      </if>
+      <if test="idCard != null" >
+        ID_CARD = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="folk != null" >
+        FOLK = #{folk,jdbcType=VARCHAR},
+      </if>
+      <if test="wedlock != null" >
+        WEDLOCK = #{wedlock,jdbcType=VARCHAR},
+      </if>
+      <if test="vocation != null" >
+        VOCATION = #{vocation,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyBag != null" >
+        MONEY_BAG = #{moneyBag,jdbcType=VARCHAR},
+      </if>
+      <if test="addrTypeCode != null" >
+        ADDR_TYPE_CODE = #{addrTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="addrPro != null" >
+        ADDR_PRO = #{addrPro,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null" >
+        ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null" >
+        ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrXiang != null" >
+        ADDR_XIANG = #{addrXiang,jdbcType=VARCHAR},
+      </if>
+      <if test="addrVill != null" >
+        ADDR_VILL = #{addrVill,jdbcType=VARCHAR},
+      </if>
+      <if test="addrNumber != null" >
+        ADDR_NUMBER = #{addrNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddr != null" >
+        HOME_ADDR = #{homeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddrNum != null" >
+        HOME_ADDR_NUM = #{homeAddrNum,jdbcType=VARCHAR},
+      </if>
+      <if test="homeTel != null" >
+        HOME_TEL = #{homeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="ybType != null" >
+        YB_TYPE = #{ybType,jdbcType=VARCHAR},
+      </if>
+      <if test="ybTypeCode != null" >
+        YB_TYPE_CODE = #{ybTypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eMail != null" >
+        E_MAIL = #{eMail,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddr != null" >
+        UNIT_ADDR = #{unitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="logonAcct != null" >
+        LOGON_ACCT = #{logonAcct,jdbcType=VARCHAR},
+      </if>
+      <if test="logonPwd != null" >
+        LOGON_PWD = #{logonPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=DECIMAL},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=DECIMAL},
+      </if>
+      <if test="loginCount != null" >
+        LOGIN_COUNT = #{loginCount,jdbcType=DECIMAL},
+      </if>
+      <if test="q1 != null" >
+        Q1 = #{q1,jdbcType=VARCHAR},
+      </if>
+      <if test="a1 != null" >
+        A1 = #{a1,jdbcType=VARCHAR},
+      </if>
+      <if test="q2 != null" >
+        Q2 = #{q2,jdbcType=VARCHAR},
+      </if>
+      <if test="a2 != null" >
+        A2 = #{a2,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null" >
+        LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deviceToken != null" >
+        DEVICE_TOKEN = #{deviceToken,jdbcType=VARCHAR},
+      </if>
+      <if test="isOnline != null" >
+        IS_ONLINE = #{isOnline,jdbcType=CHAR},
+      </if>
+      <if test="regWay != null" >
+        REG_WAY = #{regWay,jdbcType=DECIMAL},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="pushCode != null" >
+        PUSH_CODE = #{pushCode,jdbcType=VARCHAR},
+      </if>
+      <if test="imgUrl!=null">
+      	IMG_URL=#{imgUrl,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="allergicDrug != null">
+      	ALLERGIC_DRUG=#{allergicDrug,jdbcType=VARCHAR},
+      </if>
+      <if test="anaphylactogen != null">
+      	ANAPHYLACTOGEN=#{anaphylactogen,jdbcType=VARCHAR},
+      </if>
+      <if test="isSmoking != null">
+      	IS_SMOKING=#{isSmoking,jdbcType=CHAR},
+      </if>
+      <if test="isDrinking != null">
+      	IS_DRINKING=#{isDrinking,jdbcType=CHAR},
+      </if>
+      <if test="isHealthRecordData != null">
+      	IS_HEALTH_RECORD_DATA=#{isHealthRecordData,jdbcType=CHAR},
+      </if>
+      <if test="healtyRecordId != null">
+      	HEALTY_RECORD_ID=#{healtyRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="userWeight != null">
+      	USER_WEIGHT=#{userWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="userHeight != null">
+      	USER_HEIGHT=#{userHeight,jdbcType=DECIMAL},
+      </if>
+    </set>
+	where USER_ID = #{userId}
+  </update>
+  
+  <update id="updateUserFriend" parameterType="com.unique.user.po.UserFriend" >
+    update USER_FRIEND
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userSex != null" >
+        USER_SEX = #{userSex,jdbcType=CHAR},
+      </if>
+      <if test="userBirth != null" >
+        USER_BIRTH = #{userBirth,jdbcType=VARCHAR},
+      </if>
+      <if test="userIdcard != null" >
+        USER_IDCARD = #{userIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="userAddr != null" >
+        USER_ADDR = #{userAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=CHAR},
+      </if>
+      <if test="isSelf != null" >
+        IS_SELF = #{isSelf,jdbcType=CHAR},
+      </if>
+      <if test="operator != null" >
+        OPERATOR = #{operator,jdbcType=DECIMAL},
+      </if>
+      <if test="opTime != null" >
+        OP_TIME = #{opTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="friendUserId != null" >
+        FRIEND_USER_ID = #{friendUserId,jdbcType=DECIMAL},
+      </if>
+      <if test="userRelation != null" >
+        USER_RELATION = #{userRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        IS_DEFAULT = #{isDefault,jdbcType=CHAR},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where USER_FRIEND.friend_id = #{friendId,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="setFriendNoDefault" parameterType="string">
+  update user_friend set user_friend.is_default = 'N' where user_friend.user_id = #{userId}
+  </update>
+  
+  <update id="setFriendDefault" parameterType="string">
+  <![CDATA[
+  update user_friend set user_friend.is_default = 'Y' where user_friend.is_self = 'Y' and user_friend.user_id = #{userId}
+  ]]>
+  </update>
+  
+  <update id="delFriend" parameterType="string">
+  update user_friend set user_friend.status = 'R' where user_friend.friend_id = #{fid}
+  </update>
+  
+  <!-- 接口日志 -->
+  <insert id="serviceLog" parameterType="com.unique.user.po.UserCallLog" >
+      <selectKey keyProperty="logId" resultType="DECIMAL" order="BEFORE">
+		select SEQ_USER_CALL_LOG.nextval as logId from dual
+      </selectKey>
+    insert into USER_CALL_LOG (LOG_ID, USER_ID, USER_NAME, 
+      DEVICE_TOKEN, CALL_TIME, SOURCE_ID, 
+      CALL_METHOD, MARKS, CALL_MODULE
+      )
+    values (#{logId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, 
+      #{deviceToken,jdbcType=VARCHAR}, #{callTime,jdbcType=TIMESTAMP}, #{sourceId,jdbcType=DECIMAL}, 
+      #{callMethod,jdbcType=VARCHAR}, #{marks,jdbcType=DECIMAL}, #{callModule,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <select id="getMsgTypeByCode" resultMap="fbTypeResultMap" parameterType="string">
+  select * from mc_fb_type where mc_fb_type.fb_type_code = #{typeCode}
+  </select>
+  
+ <insert id="addMsg" parameterType="com.unique.user.po.McFb" >
+      <selectKey keyProperty="fbId" resultType="DECIMAL" order="BEFORE">
+		select SEQ_MC_FB.nextval as fbId from dual
+      </selectKey>
+    insert into MC_FB (FB_ID, FB_TYPE_ID, USER_ID, 
+      PARENT_ID, FB_TITLE, FB_CONTENT, 
+      STATUS, CREATE_TIME, OP_TIME, 
+      ADVISER_PHONE, ADVISER_NAME, ADVISER_EMAIL
+      )
+    values (#{fbId,jdbcType=DECIMAL}, #{fbTypeId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, 
+      #{parentId,jdbcType=DECIMAL}, #{fbTitle,jdbcType=VARCHAR}, #{fbContent,jdbcType=VARCHAR}, 
+      #{status,jdbcType=CHAR}, sysdate, sysdate, 
+      #{adviserPhone,jdbcType=VARCHAR}, #{adviserName,jdbcType=VARCHAR}, #{adviserEmail,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <resultMap id="askAnserfbResultMap" type="com.unique.user.po.McFb" extends="fbResultMap">
+  	<result column="ask_content" property="askContent" jdbcType="VARCHAR"/>
+  	<result column="ask_title" property="askTitle" jdbcType="VARCHAR"/>
+  </resultMap>
+  <!-- 获取分页离线消息 -->
+  <select id="getLxMessageByPage" parameterType="map" resultMap="askAnserfbResultMap">
+  <include refid="com.unique.core.fenye1"></include>
+    select answer.*,ask.FB_TITLE ask_title,ask.fb_content ask_content from mc_fb answer
+    left join mc_fb ask on ask.fb_id = answer.parent_id
+    left join mc_fb_type on mc_fb_type.fb_type_id = answer.fb_type_id 
+    where mc_fb_type.fb_type_code = #{code} and answer.status in ('0','2')
+    <if test="userId!=null">
+	    and (answer.user_id = #{userId} or ask.user_id = #{userId})
+    </if>
+    order by answer.create_time desc
+  <include refid="com.unique.core.fenye2"></include>
+  </select>
+  
+  <!-- 获取消息 -->
+  <select id="getLxMessageByPageCount" parameterType="map" resultType="long">
+    select count(*) from mc_fb answer
+    left join mc_fb ask on ask.fb_id = answer.parent_id
+    left join mc_fb_type on mc_fb_type.fb_type_id = answer.fb_type_id 
+    where mc_fb_type.fb_type_code = #{code} and answer.status in ('0','2')
+    <if test="userId!=null">
+	    and (answer.user_id = #{userId} or ask.user_id = #{userId})
+    </if>
+  </select>
+  
+   <insert id="addUserLog" parameterType="com.unique.user.po.AmsUserLog" >
+      <selectKey keyProperty="userLogId" resultType="DECIMAL" order="BEFORE">
+		select SEQ_AMS_USER_LOG.nextval as userLogId from dual
+      </selectKey>
+    insert into AMS_USER_LOG (USER_LOG_ID, USER_ID, USER_NAME, 
+      LOGON_TIME, LOGOUT_TIME, VISIT_IP, 
+      LOGON_WAY)
+    values (#{userLogId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, 
+      #{logonTime,jdbcType=TIMESTAMP}, #{logoutTime,jdbcType=TIMESTAMP}, #{visitIp,jdbcType=VARCHAR}, 
+      #{logonWay,jdbcType=DECIMAL})
+  </insert>
+  
+  <!-- 查询最后一次登陆日志 -->
+  <select id="getLastLoginLog" parameterType="string" resultMap="AmsUserLogResultMap">
+  	select * from (select * from ams_user_log where ams_user_log.user_id = #{userId} order by LOGON_TIME desc) where rownum = 1 
+  </select>
+  
+  <!-- 更新登陆信息 -->
+ <update id="updateUserLogById" parameterType="com.unique.user.po.AmsUserLog">
+    update AMS_USER_LOG
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="logonTime != null" >
+        LOGON_TIME = #{logonTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoutTime != null" >
+        LOGOUT_TIME = #{logoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="visitIp != null" >
+        VISIT_IP = #{visitIp,jdbcType=VARCHAR},
+      </if>
+      <if test="logonWay != null" >
+        LOGON_WAY = #{logonWay,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where USER_LOG_ID = #{userLogId}
+  </update>
+  
+  <select id="getMsgType" resultMap="msgTypeResultMap" parameterType="string">
+  select * from msg_type where msg_type.msg_type_code = #{typeCode}
+  </select>
+  
+  <!-- 获取分页消息 -->
+  <select id="getMsgByPage" parameterType="map" resultMap="msgResultMap">
+  <include refid="com.unique.core.fenye1"></include>
+  <![CDATA[
+	select * from mc_msg 
+	left join msg_type on msg_type.msg_type_id = mc_msg.msg_type_id
+	where mc_msg.status != 3  and mc_msg.do_status=1
+	 ]]>
+   <if test="userId != null" >
+        and mc_msg.user_id = #{userId}
+   </if>
+   <if test="typeCode != null" >
+   		and msg_type.msg_type_code in (
+	  	<foreach collection="typeCode" item="s" separator=",">
+	  	#{s}
+	  	</foreach>
+	  	)
+   </if>
+	<![CDATA[
+	order by mc_msg.create_time desc
+  ]]>
+  <include refid="com.unique.core.fenye2"></include>
+  </select>
+  
+  <!-- 获取消息 -->
+  <select id="getMsgByPageCount" parameterType="map" resultType="long">
+    <![CDATA[
+	select count(*) from mc_msg 
+	left join msg_type on msg_type.msg_type_id = mc_msg.msg_type_id
+	where mc_msg.status != 3  and mc_msg.do_status=1
+	]]>
+   <if test="userId != null" >
+        and mc_msg.user_id = #{userId}
+   </if>
+   <if test="typeCode != null" >
+   		and msg_type.msg_type_code in (
+	  	<foreach collection="typeCode" item="s" separator=",">
+	  	#{s}
+	  	</foreach>
+	  	)
+   </if>
+  </select>
+  
+  <select id="getWdMsgCount" parameterType="map" resultType="long">
+    <![CDATA[
+	select count(*) from mc_msg 
+	left join msg_type on msg_type.msg_type_id = mc_msg.msg_type_id
+	where mc_msg.status =4 and mc_msg.do_status=1
+	]]>
+   <if test="userId != null" >
+        and mc_msg.user_id = #{userId}
+   </if>
+   <if test="typeCode != null" >
+   		and msg_type.msg_type_code in (
+	  	<foreach collection="typeCode" item="s" separator=",">
+	  	#{s}
+	  	</foreach>
+	  	)
+   </if>
+  </select>
+  
+  <select id="getMegDet" parameterType="string" resultMap="msgResultDetMap">
+  	select * from mc_msg where mc_msg.msg_id = #{msgId}
+  </select>
+  
+  <!-- 1未接收2已接收3已删除4未读5已读 -->
+  <update id="setMsgRead" parameterType="string">
+	update   mc_msg set status = '5' where mc_msg.msg_id = #{msgId}
+  </update>
+  	
+  <insert id="addTsMsg" parameterType="com.unique.user.po.McMsg" >
+        <selectKey keyProperty="msgId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_MSG.nextval as msgId from dual
+        </selectKey>
+    insert into MC_MSG (MSG_ID, MSG_TYPE_ID, USER_ID, 
+      USER_NAME, DEVICE_TOKEN, MSG_TITLE, 
+      MSG_CONTENT, CREATE_TIME, STATUS, 
+      DO_STATUS, REVIEW_USER, REVIEW_TIME, 
+      REVIEW_USER_NAME, PUBLISH_USER, PUBLISH_TIME, 
+      PUBLISH_USER_NAME, DO_THING)
+    values (#{msgId,jdbcType=DECIMAL}, #{msgTypeId,jdbcType=DECIMAL}, #{userId,jdbcType=DECIMAL}, 
+      #{userName,jdbcType=VARCHAR}, #{deviceToken,jdbcType=VARCHAR}, #{msgTitle,jdbcType=VARCHAR}, 
+      #{msgContent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{status,jdbcType=CHAR},
+      #{doStatus,jdbcType=DECIMAL}, #{reviewUser,jdbcType=DECIMAL}, #{reviewTime,jdbcType=TIMESTAMP}, 
+      #{reviewUserName,jdbcType=VARCHAR}, #{publishUser,jdbcType=DECIMAL}, #{publishTime,jdbcType=TIMESTAMP}, 
+      #{publishUserName,jdbcType=VARCHAR}, #{doThing,jdbcType=VARCHAR})
+  </insert>
+ 
+ <!-- 获取患者用户消息  分页 -->
+  <select id="getUserMsgByPage" parameterType="map" resultMap="msgResultDetMap">
+  <include refid="com.unique.core.fenye1"></include>
+  <![CDATA[
+	select msg_title,msg_content,publish_time,create_time, publish_user,user_id from mc_msg  
+	where 
+	mc_msg.status != 3 and mc_msg.user_id = #{userId} and mc_msg.publish_user = #{publishUserId}
+	order by mc_msg.publish_time desc
+	 ]]>
+  <include refid="com.unique.core.fenye2"></include>
+  </select>
+ 
+<!--   <select id="getUserSimpleInfo" resultMap="" parameterType="">
+    select u.user_id, u.USER_NAME,
+		(case when u.sex is null or  u.sex=0 then '未知' when  u.sex=1 then '男' else '女' end ) sex ,
+		floor(MONTHS_BETWEEN(sysdate, to_date(u.BIRTH,'yyyy-mm-dd'))/12) as age, u.MOBILE,
+	    ADDR_PRO||ADDR_CITY||ADDR_COUNTY||ADDR_XIANG||ADDR_VILL||ADDR_NUMBER address,WEDLOCK,IMG_URL
+    from AMS_USER u 
+    where u.user_id=#{userId}
+  </select> -->
+ 
+ <!-- 获取健康知识问答针对 口腔  通过疾病名称匹配title
+ select mc_fb.* from mc_fb
+ 		join mc_fb_type on  mc_fb.FB_TYPE_ID=mc_fb_type.FB_TYPE_ID
+ 		where mc_fb_type.FB_TYPE_CODE='JKWD' fbResultMap -->
+ <select id="getMcFBLikeTitles" resultMap="askAnserfbResultMap" parameterType="map">
+ 	select * from ( 				
+ 		select  
+	    	ask.fb_id,ask.FB_TITLE ask_title,ask.fb_content ask_content,
+			ask.create_time,ask.status,answer.FB_TITLE,answer.fb_content
+	    from mc_fb ask 
+	    left join mc_fb answer on ask.fb_id=answer.parent_id
+	    left join mc_fb_type on mc_fb_type.fb_type_id = ask.fb_type_id 
+	    where mc_fb_type.fb_type_code = 'JKWD'
+	    and ask.status in ('0','2') and ask.parent_id is null 
+ 		and (
+ 		<foreach collection="titles" item="title" separator="or">
+ 			  ask.FB_TITLE like '%'||#{title}||'%' or answer.FB_TITLE like '%'||#{title}||'%'
+ 		</foreach>
+ 		or
+ 		<foreach collection="titles" item="title" separator="or">
+ 			  ask.fb_content like '%'||#{title}||'%' or answer.fb_content like '%'||#{title}||'%'
+ 		</foreach>
+ 		)
+ 		order by ask.CREATE_TIME desc,ask.fb_title
+ 	) where rownum &lt; 6
+ </select>
+ 
+ 
+ <!-- 获取分页健康问答消息 -->
+  <select id="getJkwdMessageByPage" parameterType="map" resultMap="askAnserfbResultMap">
+  <include refid="com.unique.core.fenye1"></include>
+    select 
+    	ask.fb_id,ask.FB_TITLE ask_title,ask.fb_content ask_content,ask.create_time,ask.status,answer.FB_TITLE,answer.fb_content
+    from mc_fb ask 
+    left join mc_fb answer on ask.fb_id=answer.parent_id
+    left join mc_fb_type on mc_fb_type.fb_type_id = ask.fb_type_id 
+    where mc_fb_type.fb_type_code = #{code} and ask.status in ('0','2') and ask.parent_id is null
+    <if test="userId!=null">
+	    and (answer.user_id = #{userId} or ask.user_id = #{userId})
+    </if>
+    order by ask.create_time desc
+  <include refid="com.unique.core.fenye2"></include>
+  </select>
+  
+  <!-- 获取健康问答总数 -->
+  <select id="getJkwdMessageByPageCount" parameterType="map" resultType="Integer">
+    select count(*) from mc_fb ask 
+    left join mc_fb answer on ask.fb_id=answer.parent_id
+    left join mc_fb_type on mc_fb_type.fb_type_id = ask.fb_type_id 
+    where mc_fb_type.fb_type_code = #{code} and ask.status in ('0','2') and ask.parent_id is null
+    <if test="userId!=null">
+	    and (answer.user_id = #{userId} or ask.user_id = #{userId})
+    </if>
+  </select>
+ 
+ <!-- 获取健康知识问答针对 口腔  详情 -->
+ <select id="getMcFBDetailById" resultMap="askAnserfbResultMap" parameterType="string">
+     select 
+    	ask.fb_id,ask.FB_TITLE ask_title,ask.fb_content ask_content,ask.create_time,ask.status,answer.FB_TITLE,answer.fb_content
+    from mc_fb ask 
+    left join mc_fb answer on ask.fb_id=answer.parent_id 
+    where ask.fb_id=#{fbId}
+    order by ask.create_time desc
+ </select>
+ 
+ <select id="getUserByWeChatId" parameterType="string" resultMap="UserResultMap">
+  	select * from ams_user,user_wechat
+  	where ams_user.user_id=user_wechat.user_id and user_wechat.BIND_VALUE=#{weChatId,jdbcType=VARCHAR} 
+  	and user_wechat.CLIENT_TYPE_ID=#{calltype} and ams_user.status in ('C','U') and ams_user.is_active = 1 
+ </select>
+ 
+ <insert id="addMcFb" parameterType="com.unique.user.po.McFb">
+ 	 <selectKey keyProperty="fbId" resultType="DECIMAL" order="BEFORE">
+            select SEQ_MC_FB.nextval as userId from dual
+     </selectKey>
+    <![CDATA[
+        INSERT INTO MC_FB (
+        	FB_ID ,
+        	FB_TYPE_ID ,
+        	USER_ID ,
+        	PARENT_ID ,
+        	FB_TITLE ,
+        	FB_CONTENT ,
+        	STATUS ,
+        	CREATE_TIME ,
+        	OP_TIME ,
+        	ADVISER_PHONE ,
+        	ADVISER_NAME ,
+        	ADVISER_EMAIL 
+        ) VALUES (
+        	#{fbId,jdbcType=DECIMAL} ,
+        	#{fbTypeId,jdbcType=DECIMAL} ,
+        	#{userId,jdbcType=DECIMAL} ,
+        	#{parentId,jdbcType=DECIMAL} ,
+        	#{fbTitle,jdbcType=VARCHAR} ,
+        	#{fbContent,jdbcType=VARCHAR} ,
+        	#{status,jdbcType=CHAR} ,
+        	#{createTime,jdbcType=TIMESTAMP} ,
+        	#{opTime,jdbcType=TIMESTAMP} ,
+        	#{adviserPhone,jdbcType=VARCHAR} ,
+        	#{adviserName,jdbcType=VARCHAR} ,
+        	#{adviserEmail,jdbcType=VARCHAR} 
+        )
+    ]]>
+ </insert>
+ 
+	<select id="getUserDeviceByCode" resultMap="userDeviceResultMap" parameterType="string">
+	    select * from user_device where user_device.user_device_code = #{code}
+	</select>
+	
+	<select id="userFirendIsValidIdCard" parameterType="map" resultType="int">
+		select count(1) from user_friend where status in ('C','U') and USER_ID=#{userId} and USER_IDCARD = #{idCard}
+	</select>
+
+	<select id="userFirendCheckCardUniqu" parameterType="map" resultType="int">
+		select count(1) from user_friend,mc_card
+		where user_friend.user_id=mc_card.user_id  
+			and user_friend.status in ('C','U')
+			and mc_card.status in ('C','U')
+			and user_friend.user_id=#{userId,jdbcType=DECIMAL} 
+			and mc_card.card_type_id=#{cardTypeId,jdbcType=DECIMAL}
+			and mc_card.card_no=#{cardNo,jdbcType=VARCHAR}
+			<if test="userIdCard!=null">
+				and	user_friend.user_idcard=#{userIdCard}<!-- 如果类型是医保卡需要传身份证验证同一个人 -->
+			</if>
+			<if test="friendId!=null">
+				and	mc_card.friend_Id != #{friendId}
+			</if>
+	</select>
+
+	<select id="getUserByLoginAccout" parameterType="string" resultType="int">
+		select count(1) from ams_user where ams_user.status in ('C','U') 
+		 <choose>
+	  	 	<when test="type==0">
+	  	 		and ams_user.logon_acct = #{logonAcct} /*单一登陆方法*/
+	  	 	</when>
+	  	 	<otherwise>
+	  	 		and (ams_user.mobile=#{logonAcct} or ams_user.id_card=#{logonAcct}) /*混合登陆方法*/
+	  	 	</otherwise>
+  	     </choose>
+		 
+	</select>
+	
+	
+</mapper>
